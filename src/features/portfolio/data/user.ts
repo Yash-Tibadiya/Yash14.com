@@ -14,11 +14,11 @@ export const USER: User = {
     "Open Source Contributor",
   ],
   address: "Surat, India",
-  //TODO: Add phone number and email
-  phoneNumberB64: "Kzg0Nzc3ODg4MTQ4", // E.164 format, base64 encoded (https://t.io.vn/base64-string-converter)
-  emailB64: "ZGFpQGNoYW5oZGFpLmNvbQ==", // base64 encoded
+  // base64 encoded
+  phoneNumberB64: "KzkxODc5OTQ0MjEwMQ==", // +918799442101
+  emailB64: "dGliYWRpeWF5YXNoQGdtYWlsLmNvbQ==", // tibadiyayash@gmail.com
   //TODO: Add website
-  website: "",
+  website: "https://yash143.vercel.app",
   jobTitle: "Full Stack Developer",
   jobs: [
     {

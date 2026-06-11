@@ -14,8 +14,7 @@ export const SITE_INFO = {
 
 export const LICENSE = {
   name: "MIT License",
-  //TODO: Add license url
-  url: "",
+  url: "https://github.com/Yash-Tibadiya/Portfolio/blob/main/LICENSE",
 };
 
 export const META_THEME_COLORS = {
