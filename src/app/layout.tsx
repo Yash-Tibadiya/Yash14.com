@@ -1,15 +1,15 @@
 import "./globals.css";
 
-import type { Metadata, Viewport } from "next"
-import Script from "next/script"
-import { NuqsAdapter } from "nuqs/adapters/next/app"
-import type { WebSite, WithContext } from "schema-dts"
+import type { Metadata, Viewport } from "next";
+import Script from "next/script";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import type { WebSite, WithContext } from "schema-dts";
 
-import { META_THEME_COLORS, SITE_INFO, X_HANDLE } from "@/config/site"
-import { fontVariables } from "@/lib/fonts"
-import { JsonLdScript } from "@/lib/json-ld"
-import { Providers } from "@/components/providers"
-import { USER } from "@/features/portfolio/data/user"
+import { META_THEME_COLORS, SITE_INFO, X_HANDLE } from "@/config/site";
+import { fontVariables } from "@/lib/fonts";
+import { JsonLdScript } from "@/lib/json-ld";
+import { Providers } from "@/components/providers";
+import { USER } from "@/features/portfolio/data/user";
 
 function getWebSiteJsonLd(): WithContext<WebSite> {
   return {
@@ -18,7 +18,7 @@ function getWebSiteJsonLd(): WithContext<WebSite> {
     name: SITE_INFO.name,
     url: SITE_INFO.url,
     alternateName: [USER.username],
-  }
+  };
 }
 
 // Thanks @shadcn-ui, @tailwindcss
@@ -34,7 +34,7 @@ const darkModeScript = String.raw`
       document.documentElement.classList.add('os-macos')
     }
   } catch (_) {}
-`
+`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_INFO.url),
@@ -78,36 +78,36 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "https://assets.chanhdai.com/images/favicon.ico",
-        sizes: "32x32",
+        url: "/logo/favicon.ico",
+        sizes: "48x48",
       },
       {
-        url: "https://assets.chanhdai.com/images/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        url: "/logo/favicon.png",
+        sizes: "512x512",
+        type: "image/png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "https://assets.chanhdai.com/images/favicon-dark.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        url: "/logo/favicon-dark.png",
+        sizes: "512x512",
+        type: "image/png",
         media: "(prefers-color-scheme: dark)",
       },
     ],
     apple: {
-      url: "https://assets.chanhdai.com/images/apple-touch-icon.png",
+      url: "/logo/apple-touch-icon.png",
       type: "image/png",
       sizes: "180x180",
     },
   },
-}
+};
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
   themeColor: META_THEME_COLORS.light,
-}
+};
 
 export default function RootLayout({
   children,
@@ -116,7 +116,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={fontVariables} suppressHydrationWarning>
-            <head>
+      <head>
         <script
           type="text/javascript"
           dangerouslySetInnerHTML={{ __html: darkModeScript }}
