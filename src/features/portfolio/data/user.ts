@@ -4,7 +4,7 @@ export const USER: User = {
   firstName: "Yash",
   lastName: "Timbadiya",
   displayName: "Yash Timbadiya",
-  username: "Yash_1434",
+  username: "yash14",
   gender: "male",
   pronouns: "he/him",
   bio: "Creating with code. Small details matter.",
@@ -24,7 +24,7 @@ export const USER: User = {
     {
       title: "Full Stack Developer",
       company: "EnactOn",
-      website: "https://www.enacton.com/?atp=ncdai",
+      website: "https://www.enacton.com/?atp=yash14",
       experienceId: "EnactOn",
     },
   ],
