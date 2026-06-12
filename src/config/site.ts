@@ -31,14 +31,6 @@ export const MAIN_NAV: NavItem<Route>[] = [
     title: "Blocks",
     href: "/blocks",
   },
-  {
-    title: "Blog",
-    href: "/blog",
-  },
-  {
-    title: "Sponsors",
-    href: "/sponsors",
-  },
 ];
 
 export const MOBILE_NAV: NavItem<Route>[] = [
@@ -54,9 +46,6 @@ export const GITHUB_USERNAME = "Yash-Tibadiya";
 export const SOURCE_CODE_GITHUB_REPO = "Yash-Tibadiya/Portfolio";
 export const SOURCE_CODE_GITHUB_URL =
   "https://github.com/Yash-Tibadiya/Portfolio";
-
-//TODO: Add sponsorship url
-export const SPONSORSHIP_URL = "https://github.com/sponsors/Yash-Tibadiya";
 
 export const UTM_PARAMS = {
   //TODO: Add utm source
