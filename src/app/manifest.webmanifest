@@ -1,0 +1,61 @@
+{
+  "short_name": "yash14",
+  "name": "Yash Timbadiya",
+  "description": "Creating with code. Small details matter.",
+  "icons": [
+    {
+      "src": "/logo/favicon.ico",
+      "type": "image/ico",
+      "sizes": "48x48",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/favicon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/favicon-dark.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any"
+    }
+  ],
+  "id": "/?utm_source=pwa",
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "scope": "/",
+  "screenshots": [
+    {
+      "src": "//TODO: Add screenshot",
+      "type": "image/webp",
+      "sizes": "440x956",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "//TODO: Add screenshot",
+      "type": "image/webp",
+      "sizes": "440x956",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "//TODO: Add screenshot",
+      "type": "image/webp",
+      "sizes": "1512x982",
+      "form_factor": "wide"
+    },
+    {
+      "src": "//TODO: Add screenshot",
+      "type": "image/webp",
+      "sizes": "1512x982",
+      "form_factor": "wide"
+    }
+  ]
+}
