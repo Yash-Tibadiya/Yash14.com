@@ -1,27 +1,62 @@
-import Link from "next/link"
-import { ArrowRightIcon } from "lucide-react"
+import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 export function NotFound({ className }: { className?: string }) {
   return (
     <div
       className={cn(
         "flex h-[calc(100svh-5.5rem)] flex-col items-center justify-center",
-        className
+        className,
       )}
     >
       <svg
-        className="h-28 w-full text-border"
+        className="h-32 w-full text-border"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 514 258"
+        viewBox="0 0 700 400"
         fill="none"
+        stroke="currentColor"
+        strokeWidth="1"
+        aria-hidden="true"
       >
-        <path
-          d="M65 193v64h128v-64H65Zm0 0H1V65h64m0 128V65m384 0H321v128h128m0-128V1H257v256h192v-64m0-128v128m0-128h64v128h-64M65 65h128V1H65v64Z"
-          stroke="currentColor"
-          strokeWidth="1"
+        {/* Y */}
+        <rect
+          x="202"
+          y="2"
+          width="96"
+          height="196"
+          vectorEffect="non-scaling-stroke"
+        />
+        <rect
+          x="102"
+          y="202"
+          width="96"
+          height="196"
+          vectorEffect="non-scaling-stroke"
+        />
+        <rect
+          x="2"
+          y="2"
+          width="96"
+          height="196"
+          vectorEffect="non-scaling-stroke"
+        />
+        {/* T */}
+        <rect
+          x="402"
+          y="98"
+          width="96"
+          height="296"
+          transform="rotate(-90 402 98)"
+          vectorEffect="non-scaling-stroke"
+        />
+        <rect
+          x="502"
+          y="2"
+          width="96"
+          height="396"
           vectorEffect="non-scaling-stroke"
         />
       </svg>
@@ -37,5 +72,5 @@ export function NotFound({ className }: { className?: string }) {
         </Link>
       </Button>
     </div>
-  )
+  );
 }
