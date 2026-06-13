@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "ncdai",
+  "homepage": "https://chanhdai.com/components",
+  "items": [
+    {
+      "name": "icon-swap",
+      "title": "Icon Swap",
+      "description": "Animate icon swaps with scale, blur, and fade transitions.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/registry/components/icon-swap/icon-swap.tsx",
+          "type": "registry:component",
+          "target": "@components/icon-swap.tsx"
+        }
+      ],
+      "docs": "https://chanhdai.com/components/icon-swap",
+      "categories": ["effects"],
+      "type": "registry:component",
+      "author": "ncdai <dai@chanhdai.com>"
+    }
+  ]
+}

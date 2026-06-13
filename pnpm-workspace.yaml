@@ -1,6 +1,10 @@
 allowBuilds:
-  core-js: set this to true or false
+  core-js: false
+  msw: false
+  protobufjs: false
+  puppeteer: false
   sharp: false
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - shadcn
+  - "@base-ui/*"
