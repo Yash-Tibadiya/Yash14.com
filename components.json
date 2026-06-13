@@ -21,5 +21,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@yash14": "https://yash14.com/r/{name}.json"
+  }
 }

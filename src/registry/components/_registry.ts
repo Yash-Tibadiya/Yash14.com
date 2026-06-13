@@ -16,6 +16,6 @@ export const components: Registry["items"] = [
       },
     ],
     categories: ["effects"],
-    docs: "https://chanhdai.com/components/icon-swap",
+    docs: "https://yash14.com/components/icon-swap",
   },
 ];
