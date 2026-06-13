@@ -24,6 +24,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { toast } from "sonner";
 
 import { trackEvent } from "@/lib/events";
+import { BRAND_ASSETS } from "@/config/site";
 import { useClickSound } from "@/hooks/soundcn/use-click-sound";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import {
@@ -440,7 +441,7 @@ export function CommandMenu({
 
               <CommandMenuItem onHighlight={handleCommandHighlight} asChild>
                 <a
-                  href="https://assets.chanhdai.com/chanhdai-brand.zip"
+                  href={BRAND_ASSETS.url}
                   download
                 >
                   <DownloadIcon />

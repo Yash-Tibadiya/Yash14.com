@@ -14,6 +14,8 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 
+import { BRAND_ASSETS } from "@/config/site";
+
 import { YTMark, getMarkSVG } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
 
@@ -50,7 +52,7 @@ export function BrandContextMenu({ children }: { children: React.ReactNode }) {
         <ContextMenuSeparator />
 
         <ContextMenuItem asChild>
-          <a href="https://assets.chanhdai.com/chanhdai-brand.zip" download>
+          <a href={BRAND_ASSETS.url} download>
             <Download />
             Download Brand Assets
           </a>

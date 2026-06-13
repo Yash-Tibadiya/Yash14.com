@@ -49,3 +49,7 @@ export const SOURCE_CODE_GITHUB_URL =
 export const UTM_PARAMS = {
   utm_source: "yash14.com",
 };
+
+export const BRAND_ASSETS = {
+  url: `${SITE_INFO.url}/assets/yash14-brand.zip`,
+};
