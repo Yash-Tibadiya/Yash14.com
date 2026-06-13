@@ -16,7 +16,7 @@ function Prose({
     <Comp
       data-slot="prose"
       className={cn(
-        "prose max-w-none prose-ncdai prose-zinc dark:prose-invert",
+        "prose max-w-none prose-yash14 prose-zinc dark:prose-invert",
         className,
       )}
       {...props}
