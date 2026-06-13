@@ -4,7 +4,7 @@
 // Run with:  bun run ./src/scripts/build-registry.mts
 // Or via the package.json script:  bun run registry:build
 //
-// Adapted (and trimmed) from chanhdai.com's build-registry pipeline (MIT).
+// Adapted (and trimmed) from yash14.com's build-registry pipeline (MIT).
 
 import { promises as fs } from "node:fs"
 import path from "node:path"

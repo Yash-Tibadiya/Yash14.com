@@ -5,8 +5,7 @@ import { USER } from "@/features/portfolio/data/user";
 
 export const SITE_INFO = {
   name: USER.displayName,
-  //TODO: Add website url
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://yash143.vercel.app",
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://yash14.com",
   ogImage: USER.ogImage,
   description: USER.bio,
   keywords: USER.keywords,
@@ -48,6 +47,5 @@ export const SOURCE_CODE_GITHUB_URL =
   "https://github.com/Yash-Tibadiya/Portfolio";
 
 export const UTM_PARAMS = {
-  //TODO: Add utm source
-  utm_source: "yash143.vercel.app",
+  utm_source: "yash14.com",
 };

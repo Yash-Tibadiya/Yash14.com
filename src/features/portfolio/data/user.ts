@@ -17,8 +17,7 @@ export const USER: User = {
   // base64 encoded
   phoneNumberB64: "KzkxODc5OTQ0MjEwMQ==", // +918799442101
   emailB64: "dGliYWRpeWF5YXNoQGdtYWlsLmNvbQ==", // tibadiyayash@gmail.com
-  //TODO: Add website
-  website: "https://yash143.vercel.app",
+  website: "https://yash14.com",
   jobTitle: "Full Stack Developer",
   jobs: [
     {
