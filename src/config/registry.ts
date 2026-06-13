@@ -1,3 +1,4 @@
+//TODO: Add my registry
 export const registryConfig = {
   /**
    * Registry namespace identifier for shadcn CLI

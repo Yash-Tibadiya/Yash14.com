@@ -40,7 +40,13 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import type { DocPreview } from "@/features/doc/types/document";
+import { USER } from "@/features/portfolio/data/user";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import {
+  decodeEmail,
+  decodePhoneNumber,
+  formatPhoneNumber,
+} from "@/utils/string";
 
 import { YTMark, getMarkSVG } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
@@ -121,6 +127,26 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     href: "/#insights",
     kind: "page",
     icon: <LineChartIcon />,
+  },
+];
+
+const CONTACT_EMAIL = decodeEmail(USER.emailB64);
+const CONTACT_PHONE = decodePhoneNumber(USER.phoneNumberB64);
+
+const CONTACT_LINKS: CommandLinkItem[] = [
+  {
+    title: CONTACT_EMAIL,
+    href: `mailto:${CONTACT_EMAIL}`,
+    kind: "link",
+    icon: <Icons.email />,
+    keywords: ["email", "contact", "mail"],
+  },
+  {
+    title: formatPhoneNumber(CONTACT_PHONE),
+    href: `tel:${CONTACT_PHONE}`,
+    kind: "link",
+    icon: <Icons.phone />,
+    keywords: ["phone", "contact", "number", "call"],
   },
 ];
 
@@ -213,6 +239,8 @@ export function CommandMenu({
 
       if (openInNewTab) {
         window.open(href, "_blank", "noopener");
+      } else if (href.startsWith("mailto:") || href.startsWith("tel:")) {
+        window.location.href = href;
       } else {
         router.push(href);
       }
@@ -357,6 +385,13 @@ export function CommandMenu({
             <CommandLinkGroup
               heading="Menu"
               links={MENU_LINKS}
+              onLinkHighlight={handleLinkHighlight}
+              onLinkSelect={handleOpenLink}
+            />
+
+            <CommandLinkGroup
+              heading="Contact"
+              links={CONTACT_LINKS}
               onLinkHighlight={handleLinkHighlight}
               onLinkSelect={handleOpenLink}
             />

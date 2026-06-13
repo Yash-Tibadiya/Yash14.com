@@ -23,13 +23,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
     handle: "Yash Timbadiya",
     href: "https://www.linkedin.com/in/yash-timbadiya-51a972249",
   },
-  {
-    name: "Email",
-    icon: <Icons.email />,
-    title: "Email",
-    handle: "tibadiyayash@gmail.com",
-    href: "mailto:tibadiyayash@gmail.com",
-  },
 ];
 
 export function getSocialLinkByName(name: string) {
