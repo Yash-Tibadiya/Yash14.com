@@ -1,4 +1,8 @@
-import { IconCircle, IconCircleSquare, IconGridDots } from "@tabler/icons-react"
+import {
+  IconCircle,
+  IconCircleSquare,
+  IconGridDots,
+} from "@tabler/icons-react";
 import {
   BriefcaseBusinessIcon,
   ChevronsUpDownIcon,
@@ -20,9 +24,9 @@ import {
   TerminalSquareIcon,
   VibrateIcon,
   ZapIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-type IconProps = React.HTMLAttributes<SVGElement>
+type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
   // Source: https://simpleicons.org
@@ -207,34 +211,18 @@ export const Icons = {
       />
     </svg>
   ),
+  email: (props: IconProps) => (
+    <svg viewBox="0 0 50 50" aria-hidden {...props}>
+      <path
+        d="M12 23.403V23.39 10.389L11.88 10.3h-.01L9.14 8.28C7.47 7.04 5.09 7.1 3.61 8.56 2.62 9.54 2 10.9 2 12.41v3.602L12 23.403zM38 23.39v.013l10-7.391V12.41c0-1.49-.6-2.85-1.58-3.83-1.46-1.457-3.765-1.628-5.424-.403L38.12 10.3 38 10.389V23.39zM14 24.868l10.406 7.692c.353.261.836.261 1.189 0L36 24.868V11.867L25 20l-11-8.133V24.868zM38 25.889V41c0 .552.448 1 1 1h6.5c1.381 0 2.5-1.119 2.5-2.5V18.497L38 25.889zM12 25.889L2 18.497V39.5C2 40.881 3.119 42 4.5 42H11c.552 0 1-.448 1-1V25.889z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
   apple: (props: IconProps) => (
     <svg viewBox="0 0 24 24" aria-hidden {...props}>
       <path
         d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  dailydotdev: (props: IconProps) => (
-    <svg viewBox="0 0 24 24" aria-hidden {...props}>
-      <path
-        d="M18.29 5.706a1.405 1.405 0 0 0-1.987 0L4.716 17.296l1.324-2.65-2.65-2.649 3.312-3.311 2.65 2.65 1.986-1.988-3.642-3.642a1.405 1.405 0 0 0-1.987 0L.411 11.004a1.404 1.404 0 0 0 0 1.987l4.305 4.304.993.993a1.405 1.405 0 0 0 1.987 0L19.285 6.7l-.993-.994Zm-.332 3.647 2.65 2.65-4.306 4.305a1.404 1.404 0 1 0 1.986 1.986l5.299-5.298a1.404 1.404 0 0 0 0-1.987l-4.305-4.304-1.324 2.648Z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  discord: (props: IconProps) => (
-    <svg viewBox="0 0 24 24" aria-hidden {...props}>
-      <path
-        d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"
-        fill="currentColor"
-      />
-    </svg>
-  ),
-  youtube: (props: IconProps) => (
-    <svg viewBox="0 0 24 24" aria-hidden {...props}>
-      <path
-        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
         fill="currentColor"
       />
     </svg>
@@ -642,56 +630,56 @@ export const Icons = {
       <path d="M18 12L9 21" />
     </svg>
   ),
-}
+};
 
 export function getIconForLanguageExtension(language: string) {
   switch (language) {
     case "json":
-      return <Icons.json />
+      return <Icons.json />;
     case "css":
-      return <Icons.css />
+      return <Icons.css />;
     case "js":
-      return <Icons.js />
+      return <Icons.js />;
     case "ts":
     case "typescript":
-      return <Icons.ts />
+      return <Icons.ts />;
     case "jsx":
     case "tsx":
-      return <Icons.react />
+      return <Icons.react />;
     default:
-      return <FileIcon />
+      return <FileIcon />;
   }
 }
 
 export function getIconForPackageManager(manager: string) {
   switch (manager) {
     case "pnpm":
-      return <Icons.pnpm />
+      return <Icons.pnpm />;
     case "yarn":
-      return <Icons.yarn />
+      return <Icons.yarn />;
     case "npm":
-      return <Icons.npm />
+      return <Icons.npm />;
     case "bun":
-      return <Icons.bun />
+      return <Icons.bun />;
     default:
-      return <TerminalSquareIcon />
+      return <TerminalSquareIcon />;
   }
 }
 
 export function getIcon(name: string | undefined) {
-  if (!name || !(name in Icons)) return null
-  const Icon = Icons[name as keyof typeof Icons]
-  return <Icon />
+  if (!name || !(name in Icons)) return null;
+  const Icon = Icons[name as keyof typeof Icons];
+  return <Icon />;
 }
 
 type ComponentIconProps = React.ComponentProps<"svg"> & {
-  variant?: string
-}
+  variant?: string;
+};
 
 export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
   switch (variant) {
     case "work-experience-component": {
-      return <BriefcaseBusinessIcon {...props} />
+      return <BriefcaseBusinessIcon {...props} />;
     }
 
     case "react-wheel-picker": {
@@ -707,19 +695,19 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             fill="currentColor"
           />
         </svg>
-      )
+      );
     }
 
     case "theme-switcher": {
-      return <MoonStarIcon {...props} />
+      return <MoonStarIcon {...props} />;
     }
 
     case "apple-hello-effect": {
-      return <Icons.apple {...props} />
+      return <Icons.apple {...props} />;
     }
 
     case "shimmering-text": {
-      return <ZapIcon {...props} />
+      return <ZapIcon {...props} />;
     }
 
     case "slide-to-unlock": {
@@ -739,19 +727,19 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             d="M6 12h6M9 15l3-3-3-3"
           />
         </svg>
-      )
+      );
     }
 
     case "testimonial": {
-      return <QuoteIcon {...props} />
+      return <QuoteIcon {...props} />;
     }
 
     case "testimonials-marquee": {
-      return <GalleryHorizontalEndIcon {...props} />
+      return <GalleryHorizontalEndIcon {...props} />;
     }
 
     case "github-stars": {
-      return <Star {...props} />
+      return <Star {...props} />;
     }
 
     case "github-contributions": {
@@ -768,11 +756,11 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             d="M11 5h2v2h-2zM15 17h2v2h-2zM7 17h2v2H7zM15 5h2v2h-2zM15 13h2v2h-2zM11 13h2v2h-2zM11 17h2v2h-2zM15 9h2v2h-2zM3 13h2v2H3zM3 17h2v2H3zM3 9h2v2H3zM3 5h2v2H3zM7 9h2v2H7zM19 17h2v2h-2zM19 9h2v2h-2zM7 5h2v2H7z"
           />
         </svg>
-      )
+      );
     }
 
     case "scroll-fade-effect": {
-      return <MouseIcon {...props} />
+      return <MouseIcon {...props} />;
     }
 
     case "consent-manager": {
@@ -790,43 +778,43 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             clipRule="evenodd"
           />
         </svg>
-      )
+      );
     }
 
     case "copy-button": {
-      return <CopyIcon {...props} />
+      return <CopyIcon {...props} />;
     }
 
     case "code-block-command": {
-      return <TerminalIcon {...props} />
+      return <TerminalIcon {...props} />;
     }
 
     case "text-flip": {
-      return <SeparatorHorizontalIcon {...props} />
+      return <SeparatorHorizontalIcon {...props} />;
     }
 
     case "haptic": {
-      return <VibrateIcon {...props} />
+      return <VibrateIcon {...props} />;
     }
 
     case "testimonial-spotlight": {
-      return <SunDimIcon {...props} />
+      return <SunDimIcon {...props} />;
     }
 
     case "glow-card-grid": {
-      return <LayoutGridIcon {...props} />
+      return <LayoutGridIcon {...props} />;
     }
 
     case "middle-truncation": {
-      return <ScissorsIcon {...props} />
+      return <ScissorsIcon {...props} />;
     }
 
     case "twemoji": {
-      return <Icons.x {...props} />
+      return <Icons.x {...props} />;
     }
 
     case "theme-toggle-effect": {
-      return <PaintbrushIcon {...props} />
+      return <PaintbrushIcon {...props} />;
     }
 
     case "elastic-slider": {
@@ -845,7 +833,7 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             d="M17 10v4"
           />
         </svg>
-      )
+      );
     }
 
     case "toc-minimap": {
@@ -874,27 +862,27 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
             strokeLinejoin="round"
           />
         </svg>
-      )
+      );
     }
 
     case "fluid-gradient-text": {
-      return <Droplet {...props} />
+      return <Droplet {...props} />;
     }
 
     case "brand-assets-menu": {
-      return <SquareDashed {...props} />
+      return <SquareDashed {...props} />;
     }
 
     case "icon-swap": {
-      return <IconCircleSquare {...props} />
+      return <IconCircleSquare {...props} />;
     }
 
     case "dot-grid-spotlight": {
-      return <IconGridDots {...props} />
+      return <IconGridDots {...props} />;
     }
 
     case "spinning-circular-text": {
-      return <IconCircle {...props} />
+      return <IconCircle {...props} />;
     }
 
     case "mobius-loop-icon": {
@@ -911,15 +899,15 @@ export function ComponentIcon({ variant, ...props }: ComponentIconProps) {
         >
           <path d="M 6 16 C 11 16 13 8 18 8 C 23.333 8 23.333 16 18 16 C 13 16 11 8 6 8 C 0.667 8 0.667 16 6 16 Z" />
         </svg>
-      )
+      );
     }
 
     case "chevrons-up-down-icon": {
-      return <ChevronsUpDownIcon {...props} />
+      return <ChevronsUpDownIcon {...props} />;
     }
 
     default: {
-      return <Icons.react {...props} />
+      return <Icons.react {...props} />;
     }
   }
 }
