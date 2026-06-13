@@ -51,6 +51,7 @@ import {
 import { YTMark, getMarkSVG } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
 import { ComponentIcon, Icons } from "./icons";
+import { CopyButton } from "./copy-button";
 import { Button } from "./ui/button";
 import { Kbd, KbdGroup } from "./ui/kbd";
 
@@ -65,6 +66,8 @@ type CommandLinkItem = {
   shortcut?: string;
   keywords?: string[];
   openInNewTab?: boolean;
+  copyText?: string;
+  copyEvent?: "copy_email" | "copy_phone_number";
 };
 
 type BlockItem = {
@@ -140,6 +143,8 @@ const CONTACT_LINKS: CommandLinkItem[] = [
     kind: "link",
     icon: <Icons.email />,
     keywords: ["email", "contact", "mail"],
+    copyText: CONTACT_EMAIL,
+    copyEvent: "copy_email",
   },
   {
     title: formatPhoneNumber(CONTACT_PHONE),
@@ -147,6 +152,8 @@ const CONTACT_LINKS: CommandLinkItem[] = [
     kind: "link",
     icon: <Icons.phone />,
     keywords: ["phone", "contact", "number", "call"],
+    copyText: CONTACT_PHONE,
+    copyEvent: "copy_phone_number",
   },
 ];
 
@@ -609,12 +616,32 @@ function CommandLinkGroup({
               icon
             )}
 
-            <p className="line-clamp-1">{link.title}</p>
+            <p className="line-clamp-1 min-w-0 flex-1">{link.title}</p>
 
-            {link.shortcut && (
-              <CommandShortcut className="font-mono tracking-[0.2em] max-sm:hidden">
-                {link.shortcut}
-              </CommandShortcut>
+            {link.copyText ? (
+              <CopyButton
+                className="pointer-events-auto ml-auto size-7 shrink-0 text-muted-foreground hover:text-foreground"
+                variant="ghost"
+                text={link.copyText}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                }}
+                onCopySuccess={() => {
+                  if (link.copyEvent) {
+                    trackEvent({ name: link.copyEvent });
+                  }
+                  toast.success("Copied to clipboard");
+                }}
+              />
+            ) : (
+              link.shortcut && (
+                <CommandShortcut className="font-mono tracking-[0.2em] max-sm:hidden">
+                  {link.shortcut}
+                </CommandShortcut>
+              )
             )}
           </CommandMenuItem>
         );
