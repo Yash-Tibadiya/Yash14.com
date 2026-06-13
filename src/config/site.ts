@@ -1,7 +1,6 @@
 import type { Route } from "next";
-
-import type { NavItem } from "@/types/nav";
 import { USER } from "@/features/portfolio/data/user";
+import type { NavItem } from "@/types/nav";
 
 export const SITE_INFO = {
   name: USER.displayName,
@@ -22,6 +21,10 @@ export const META_THEME_COLORS = {
 };
 
 export const MAIN_NAV: NavItem<Route>[] = [
+  {
+    title: "Brand",
+    href: "/brand-guidelines",
+  },
   {
     title: "Components",
     href: "/components",

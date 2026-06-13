@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 import { blockCategories } from "@/config/registry";
 import { SITE_INFO } from "@/config/site";
-import { getAllBlockStaticParams } from "@/lib/blocks";
 import { getDocsByCategory } from "@/features/doc/data/documents";
+import { getAllBlockStaticParams } from "@/lib/blocks";
 
 export const revalidate = false;
 export const dynamic = "force-static";
@@ -26,12 +26,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   );
 
-  const routes = ["", "/components", "/components/showcase", "/blocks"].map(
-    (route) => ({
-      url: `${SITE_INFO.url}${route}`,
-      lastModified: new Date().toISOString(),
-    }),
-  );
+  const routes = [
+    "",
+    "/components",
+    "/components/showcase",
+    "/blocks",
+    "/brand-guidelines",
+  ].map((route) => ({
+    url: `${SITE_INFO.url}${route}`,
+    lastModified: new Date().toISOString(),
+  }));
 
   return [...routes, ...components, ...blockCategoryPages, ...blocks];
 }
