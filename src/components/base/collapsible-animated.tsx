@@ -12,7 +12,7 @@ import {
   ChevronsUpDownIcon,
   type ChevronsUpDownIconHandle,
   type ChevronsUpDownIconProps,
-} from "../registry/chevrons-up-down-icon";
+} from "@/components/chevrons-up-down-icon";
 
 type CollapsibleContextType = {
   open: boolean;
