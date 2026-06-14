@@ -60,10 +60,13 @@ export function YTWordmarkClearSpace(props: React.ComponentProps<"svg">) {
         d="M2754 1h200v200h-200zM2754 770h200v200h-200zM1 201h200v200H1zM5508 570h200v200h-200z"
       />
 
-      {/* Dashed grid: outer frame, wordmark frame, and cell guides */}
+      {/* Dashed grid: outer frame, wordmark frame, and cell guides.
+          Stroke + dash are scaled ~3x so they render at the same on-screen
+          size as YTMarkClearSpace despite the much larger coordinate system. */}
       <path
         className="stroke-current/30"
-        strokeDasharray="8 4"
+        strokeWidth={3}
+        strokeDasharray="24 12"
         d="M1 1h5707M1 201h5707M1 770h5707M1 970h5707M1 1v969M201 1v969M5508 1v969M5708 1v969M2754 1v200M2954 1v200M2754 770v200M2954 770v200M1 401h200M5508 570h200"
       />
 
