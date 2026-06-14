@@ -1,5 +1,5 @@
 import { YTMark } from "@/components/yt-mark";
-import { YTWordmark } from "@/components/yt-wordmark";
+import { YTWordmarkClearSpaceSvg } from "@/components/yt-wordmark-clear-space-svg";
 
 /**
  * Clear-space demo for the YT mark.
@@ -40,8 +40,8 @@ export function YTMarkClearSpace(props: React.ComponentProps<"svg">) {
 /**
  * Clear-space demo for the YT wordmark.
  *
- * The wordmark is 5307×520 and fills its viewBox edge-to-edge, so we nest it
- * inside a larger canvas with a 200-unit border (1/2 the mark glyph height) on
+ * The wordmark is 5389×520 and fills its viewBox edge-to-edge, so we nest it
+ * inside a larger canvas with a 260-unit border (1/2 the mark glyph height) on
  * every side and visualize that border with a dashed grid + shaded cells. The
  * viewBox is padded a few units so the outer frame lines aren't clipped.
  */
@@ -50,14 +50,14 @@ export function YTWordmarkClearSpace(props: React.ComponentProps<"svg">) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="-4 -4 5717 930"
+      viewBox="-4 -4 5919 1050"
       aria-hidden
       {...props}
     >
       {/* Shaded clear-space cells (left up, right down) */}
       <path
         className="fill-current/8"
-        d="M2754 1h200v200h-200zM2754 721h200v200h-200zM1 201h200v200H1zM5508 521h200v200h-200z"
+        d="M2826 1h260v260h-260zM2826 781h260v260h-260zM1 261h260v260H1zM5650 521h260v260h-260z"
       />
 
       {/* Dashed grid: outer frame, wordmark frame, and cell guides.
@@ -67,11 +67,11 @@ export function YTWordmarkClearSpace(props: React.ComponentProps<"svg">) {
         className="stroke-current/30"
         strokeWidth={3}
         strokeDasharray="24 12"
-        d="M1 1h5707M1 201h5707M1 721h5707M1 921h5707M1 1v920M201 1v920M5508 1v920M5708 1v920M2754 1v200M2954 1v200M2754 721v200M2954 721v200M1 401h200M5508 521h200"
+        d="M1 1h5909M1 261h5909M1 781h5909M1 1041h5909M1 1v1040M261 1v1040M5650 1v1040M5910 1v1040M2826 1v260M3086 1v260M2826 781v260M3086 781v260M1 521h260M5650 521h260"
       />
 
       {/* Wordmark */}
-      <YTWordmark x={201} y={201} width={5307} height={520} />
+      <YTWordmarkClearSpaceSvg x={261} y={261} width={5389} height={520} />
     </svg>
   );
 }
