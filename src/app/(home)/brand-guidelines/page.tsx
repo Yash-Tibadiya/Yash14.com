@@ -1,11 +1,15 @@
-import { Download } from "lucide-react";
+import { ArrowLeftIcon, Download } from "lucide-react";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { YTMark } from "@/components/yt-mark";
 import { YTWordmark } from "@/components/yt-wordmark";
 import { BRAND_ASSETS, SITE_INFO } from "@/config/site";
+import { LLMCopyButtonWithViewOptions } from "@/features/doc/components/doc-page-actions";
+import { DocShareMenu } from "@/features/doc/components/doc-share-menu";
+import { CopyBrandSvgButton } from "./copy-brand-svg-button";
 import {
   Panel,
   PanelContent,
@@ -41,11 +45,43 @@ export const metadata: Metadata = {
 export default function BrandPage() {
   return (
     <div className="mx-auto md:max-w-3xl">
+      {/* Top spacer */}
+      <div className="h-12 border-x border-line" />
+
+      {/* Page toolbar + title */}
+      <div className="border-x border-line">
+        <div className="screen-line-bottom h-px" />
+
+        <div className="flex items-center justify-between p-2 pl-4">
+          <Button
+            className="h-7 gap-2 border-none px-0 text-muted-foreground hover:text-foreground hover:no-underline"
+            variant="link"
+            size="sm"
+            asChild
+          >
+            <Link href="/">
+              <ArrowLeftIcon />
+              Home
+            </Link>
+          </Button>
+
+          <div className="flex items-center gap-2">
+            <LLMCopyButtonWithViewOptions markdownUrl="/brand.md" />
+            <DocShareMenu title={PAGE_TITLE} url="/brand-guidelines" />
+          </div>
+        </div>
+
+        <div className="screen-line-top screen-line-bottom py-px">
+          <div className="h-4" />
+        </div>
+
+        <h1 className="screen-line-bottom px-4 text-3xl font-semibold tracking-tight text-balance">
+          {PAGE_TITLE}
+        </h1>
+      </div>
+
       {/* Intro */}
       <Panel>
-        <PanelHeader>
-          <PanelTitle>{PAGE_TITLE}</PanelTitle>
-        </PanelHeader>
         <PanelDescription className="px-4">
           {PAGE_DESCRIPTION} Right-click any logo on this page to copy it as SVG
           or download the full brand assets pack.
@@ -64,13 +100,14 @@ export default function BrandPage() {
           </PanelContent>
         </BrandContextMenu>
 
-        <div className="screen-line-top flex justify-center p-4">
+        <div className="screen-line-top flex flex-wrap justify-center gap-2 p-4">
           <Button asChild variant="outline" size="sm">
             <a href={MARK_ASSET} download>
               <Download />
               Download Mark
             </a>
           </Button>
+          <CopyBrandSvgButton type="mark" />
         </div>
       </Panel>
 
@@ -86,13 +123,14 @@ export default function BrandPage() {
           </PanelContent>
         </BrandContextMenu>
 
-        <div className="screen-line-top flex justify-center p-4">
+        <div className="screen-line-top flex flex-wrap justify-center gap-2 p-4">
           <Button asChild variant="outline" size="sm">
             <a href={LOGOTYPE_ASSET} download>
               <Download />
               Download Logotype
             </a>
           </Button>
+          <CopyBrandSvgButton type="logotype" />
         </div>
       </Panel>
 
