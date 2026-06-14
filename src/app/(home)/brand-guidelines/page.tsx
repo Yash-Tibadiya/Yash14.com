@@ -1,6 +1,7 @@
-import { ArrowLeftIcon, Download } from "lucide-react";
+import { ArrowLeftIcon, Download, LinkIcon } from "lucide-react";
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import type React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -94,7 +95,7 @@ export default function BrandPage() {
       {/* Mark */}
       <Panel>
         <PanelHeader>
-          <PanelTitle>Mark</PanelTitle>
+          <AnchorHeading id="mark">Mark</AnchorHeading>
         </PanelHeader>
 
         <BrandContextMenu>
@@ -117,7 +118,7 @@ export default function BrandPage() {
       {/* Logotype */}
       <Panel>
         <PanelHeader>
-          <PanelTitle>Logotype</PanelTitle>
+          <AnchorHeading id="logotype">Logotype</AnchorHeading>
         </PanelHeader>
 
         <BrandContextMenu>
@@ -140,7 +141,7 @@ export default function BrandPage() {
       {/* Clear Space */}
       <Panel>
         <PanelHeader>
-          <PanelTitle>Clear Space</PanelTitle>
+          <AnchorHeading id="clear-space">Clear Space</AnchorHeading>
         </PanelHeader>
 
         <PanelDescription className="px-4">
@@ -158,7 +159,7 @@ export default function BrandPage() {
       {/* Color */}
       <Panel>
         <PanelHeader>
-          <PanelTitle>Color</PanelTitle>
+          <AnchorHeading id="color">Color</AnchorHeading>
         </PanelHeader>
 
         <PanelDescription className="px-4">
@@ -166,7 +167,7 @@ export default function BrandPage() {
           dark surfaces to keep the mark legible.
         </PanelDescription>
 
-        <PanelContent className="screen-line-top grid grid-cols-1 gap-px p-0 sm:grid-cols-2">
+        <PanelContent className="grid grid-cols-1 gap-px p-0 sm:grid-cols-2">
           <ColorSwatch name="Ink" hex="#09090B" className="bg-[#09090B]" />
           <ColorSwatch name="Paper" hex="#FFFFFF" className="bg-white" />
         </PanelContent>
@@ -191,6 +192,29 @@ export default function BrandPage() {
       {/* Bottom spacer */}
       <div className="h-4 border-x border-line" />
     </div>
+  );
+}
+
+function AnchorHeading({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <PanelTitle id={id} className="scroll-mt-20">
+      <a
+        href={`#${id}`}
+        className="group/anchor inline-flex items-center gap-2 no-underline"
+      >
+        {children}
+        <LinkIcon
+          className="size-5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover/panel-title:opacity-100"
+          aria-hidden
+        />
+      </a>
+    </PanelTitle>
   );
 }
 
