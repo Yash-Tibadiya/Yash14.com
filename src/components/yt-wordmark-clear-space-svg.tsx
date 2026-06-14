@@ -3,7 +3,7 @@ export function YTWordmarkClearSpaceSvg(props: React.ComponentProps<"svg">) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 5389 520"
+      viewBox="0 0 5345 520"
       aria-hidden
       {...props}
     >
