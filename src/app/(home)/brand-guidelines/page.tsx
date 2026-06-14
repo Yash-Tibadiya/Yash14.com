@@ -3,7 +3,10 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {
+  YTMarkClearSpace,
+  YTWordmarkClearSpace,
+} from "@/components/yt-clear-space";
 import { YTMark } from "@/components/yt-mark";
 import { YTWordmark } from "@/components/yt-wordmark";
 import { BRAND_ASSETS, SITE_INFO } from "@/config/site";
@@ -26,7 +29,7 @@ const BrandContextMenu = dynamic(() =>
 const MARK_ASSET = "/assets/yash14-brand/yash14-mark.svg";
 const LOGOTYPE_ASSET = "/assets/yash14-brand/yash14-logotype.svg";
 
-const PAGE_TITLE = "Brand";
+const PAGE_TITLE = "YT Brand";
 const PAGE_DESCRIPTION = `Key elements of the ${USER.displayName} visual identity, including the mark, logotype, clear space, and color.`;
 
 export const metadata: Metadata = {
@@ -146,12 +149,9 @@ export default function BrandPage() {
           recognizable and legible.
         </PanelDescription>
 
-        <PanelContent className="screen-line-top flex items-center justify-center py-16">
-          <div className="inline-block border border-dashed border-line p-(--clear-space) [--clear-space:--spacing(8)] sm:[--clear-space:--spacing(10)]">
-            <div className="border border-dashed border-line p-(--clear-space)">
-              <YTMark className="h-16 w-auto text-foreground sm:h-20" />
-            </div>
-          </div>
+        <PanelContent className="screen-line-top flex flex-col items-center justify-center gap-8 px-4 py-16">
+          <YTMarkClearSpace className="h-auto w-1/2 text-foreground sm:w-1/3" />
+          <YTWordmarkClearSpace className="h-auto w-full text-foreground" />
         </PanelContent>
       </Panel>
 
@@ -188,7 +188,8 @@ export default function BrandPage() {
         </PanelContent>
       </Panel>
 
-      <Separator />
+      {/* Bottom spacer */}
+      <div className="h-4 border-x border-line" />
     </div>
   );
 }
