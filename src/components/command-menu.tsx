@@ -15,6 +15,7 @@ import {
   MonitorIcon,
   MoonStarIcon,
   RssIcon,
+  SquareDashedIcon,
   SunMediumIcon,
   TextInitialIcon,
   TypeIcon,
@@ -80,6 +81,13 @@ const MENU_LINKS: CommandLinkItem[] = [
     kind: "page",
     icon: <YTMark />,
     shortcut: "GH",
+  },
+  {
+    title: "Brand",
+    href: "/brand-guidelines",
+    kind: "page",
+    icon: <SquareDashedIcon />,
+    shortcut: "GR",
   },
   {
     title: "Components",
@@ -440,10 +448,7 @@ export function CommandMenu({
               </CommandMenuItem>
 
               <CommandMenuItem onHighlight={handleCommandHighlight} asChild>
-                <a
-                  href={BRAND_ASSETS.url}
-                  download
-                >
+                <a href={BRAND_ASSETS.url} download>
                   <DownloadIcon />
                   Download Brand Assets
                 </a>

@@ -13,6 +13,7 @@ export function KeyboardShortcuts() {
   useHotkeys("g>h", () => navigate("/", "g>h"));
   useHotkeys("g>c", () => navigate("/components", "g>c"));
   useHotkeys("g>b", () => navigate("/blocks", "g>b"));
+  useHotkeys("g>r", () => navigate("/brand-guidelines", "g>r"));
 
   return null;
 }
