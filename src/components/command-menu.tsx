@@ -20,6 +20,7 @@ import {
   TextInitialIcon,
   TypeIcon,
 } from "lucide-react";
+import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { useTheme } from "next-themes";
 import { useHotkeys } from "react-hotkeys-hook";
 import { toast } from "sonner";
@@ -169,6 +170,14 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
   icon: item.icon,
   openInNewTab: true,
 }));
+
+const COMMAND_MENU_ACTIVE_LAYOUT_ID = "command-menu-active";
+
+const COMMAND_MENU_ACTIVE_SPRING = {
+  type: "spring",
+  stiffness: 480,
+  damping: 38,
+} as const;
 
 const OTHER_LINK_ITEMS: CommandLinkItem[] = [
   {
@@ -391,8 +400,9 @@ export function CommandMenu({
         <CommandMenuInput />
 
         <div className="rounded-xl bg-background ring-1 ring-border">
-          <CommandList className="min-h-80 supports-timeline-scroll:scroll-fade-effect-y">
-            <CommandEmpty>No results found.</CommandEmpty>
+          <LayoutGroup id="command-menu">
+            <CommandList className="min-h-80 supports-timeline-scroll:scroll-fade-effect-y">
+              <CommandEmpty>No results found.</CommandEmpty>
 
             <CommandLinkGroup
               heading="Menu"
@@ -447,11 +457,17 @@ export function CommandMenu({
                 Copy Logotype as SVG
               </CommandMenuItem>
 
-              <CommandMenuItem onHighlight={handleCommandHighlight} asChild>
-                <a href={BRAND_ASSETS.url} download>
-                  <DownloadIcon />
-                  Download Brand Assets
-                </a>
+              <CommandMenuItem
+                onHighlight={handleCommandHighlight}
+                onSelect={() => {
+                  const anchor = document.createElement("a");
+                  anchor.href = BRAND_ASSETS.url;
+                  anchor.download = "";
+                  anchor.click();
+                }}
+              >
+                <DownloadIcon />
+                Download Brand Assets
               </CommandMenuItem>
             </CommandGroup>
 
@@ -488,7 +504,8 @@ export function CommandMenu({
               onLinkHighlight={handleLinkHighlight}
               onLinkSelect={handleOpenLink}
             />
-          </CommandList>
+            </CommandList>
+          </LayoutGroup>
         </div>
 
         <CommandMenuFooter selectedCommandKind={selectedCommandKind} />
@@ -570,22 +587,47 @@ function CommandMenuItem({
   "aria-selected"?: string;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
+  const [isSelected, setIsSelected] = useState(false);
+  const reduceMotion = useReducedMotion();
+
+  const syncSelected = useCallback(() => {
+    const selected = ref.current?.getAttribute("aria-selected") === "true";
+    setIsSelected(selected);
+    if (selected) {
+      onHighlight?.();
+    }
+  }, [onHighlight]);
 
   useMutationObserver(ref, (mutations) => {
-    mutations.forEach((mutation) => {
+    for (const mutation of mutations) {
       if (
         mutation.type === "attributes" &&
-        mutation.attributeName === "aria-selected" &&
-        ref.current?.getAttribute("aria-selected") === "true"
+        mutation.attributeName === "aria-selected"
       ) {
-        onHighlight?.();
+        syncSelected();
       }
-    });
+    }
   });
+
+  useEffect(() => {
+    syncSelected();
+  }, [syncSelected]);
 
   return (
     <CommandItem ref={ref} {...props}>
-      {children}
+      {isSelected ? (
+        <motion.span
+          layoutId={COMMAND_MENU_ACTIVE_LAYOUT_ID}
+          className="absolute inset-0 z-0 rounded-lg bg-primary/5"
+          transition={
+            reduceMotion ? { duration: 0 } : COMMAND_MENU_ACTIVE_SPRING
+          }
+        />
+      ) : null}
+
+      <div className="relative z-10 flex w-full min-w-0 items-center gap-2">
+        {children}
+      </div>
     </CommandItem>
   );
 }
