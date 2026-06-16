@@ -540,11 +540,18 @@ function CommandMenuInput() {
   }, [searchValue]);
 
   return (
-    <CommandInput
-      placeholder="Type a command or search…"
-      value={searchValue}
-      onValueChange={setSearchValue}
-    />
+    <div className="relative">
+      <CommandInput
+        placeholder="Type a command or search…"
+        value={searchValue}
+        onValueChange={setSearchValue}
+        className="pr-14"
+      />
+
+      <Kbd className="absolute top-1/2 right-5 -translate-y-1/2 max-sm:hidden">
+        Esc
+      </Kbd>
+    </div>
   );
 }
 

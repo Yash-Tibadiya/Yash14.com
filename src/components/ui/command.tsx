@@ -50,7 +50,7 @@ function CommandDialog({
         data-slot="command-dialog-content"
         className="rounded-2xl bg-surface p-0 outline-none max-sm:top-16 max-sm:translate-y-0 sm:max-w-lg"
         showCloseButton={false}
-        showOverlay={false}
+        overlayClassName="backdrop-blur-sm"
       >
         <Command
           className={cn(
