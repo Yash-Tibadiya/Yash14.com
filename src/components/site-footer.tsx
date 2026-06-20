@@ -1,6 +1,7 @@
-import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
+import { LICENSE } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
+import { SiteFooterAttribution } from "@/components/site-footer-attribution";
 import { SiteFooterLinks } from "@/components/site-footer-links";
 import { getSocialLinkByName } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
@@ -86,27 +87,7 @@ export function SiteFooter() {
           </figure>
         </div>
 
-        <p className="screen-line-top px-4 py-4 text-center font-mono text-sm text-balance text-muted-foreground">
-          Built by{" "}
-          <a
-            className="link-underline hover:text-white transition-colors"
-            href={xLink?.href}
-            target="_blank"
-            rel="noopener"
-          >
-            Yash_Tibadiya
-          </a>
-          . The source code is available on{" "}
-          <a
-            className="link-underline hover:text-white transition-colors"
-            href={SOURCE_CODE_GITHUB_URL}
-            target="_blank"
-            rel="noopener"
-          >
-            GitHub
-          </a>
-          .
-        </p>
+        <SiteFooterAttribution />
 
         <div className="screen-line-top screen-line-bottom flex w-full before:z-1 after:z-1">
           <SiteFooterLinks />
