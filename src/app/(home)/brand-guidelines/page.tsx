@@ -106,7 +106,7 @@ export default function BrandPage() {
       <DocGrid>
         <DocLeftCol />
 
-        <div className="mx-auto w-full md:max-w-3xl">
+        <div className="mx-auto w-full md:max-w-4xl">
           {/* Intro */}
           <Panel>
             <PanelDescription className="px-4">

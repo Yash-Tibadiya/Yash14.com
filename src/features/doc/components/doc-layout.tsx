@@ -8,7 +8,7 @@ export function DocContainer({
     <div
       data-slot="doc-container"
       className={cn(
-        "mx-auto w-full border-x border-line md:max-w-3xl",
+        "mx-auto w-full border-x border-line md:max-w-4xl",
         className,
       )}
       {...props}
@@ -21,7 +21,7 @@ export function DocGrid({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="doc-grid"
       className={cn(
-        "mx-auto grid w-full grid-cols-1 lg:grid-cols-[1fr_var(--container-3xl)_1fr]",
+        "mx-auto grid w-full grid-cols-1 lg:grid-cols-[1fr_var(--container-4xl)_1fr]",
         className,
       )}
       {...props}

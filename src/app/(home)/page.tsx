@@ -32,7 +32,7 @@ export default function HomePage() {
       <JsonLdScript data={getPageJsonLd()} />
 
       <div className="[--separator-height:--spacing(8)] **:data-[slot=panel]:scroll-mt-[calc(var(--header-height)+var(--separator-height))]">
-        <div className="mx-auto md:max-w-3xl">
+        <div className="mx-auto md:max-w-4xl">
           {/* <ProfileHeader />
           <Separator />
 
