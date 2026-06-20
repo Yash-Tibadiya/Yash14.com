@@ -1,7 +1,25 @@
 {
-  "name": "portfolio",
+  "name": "yash14.com",
   "version": "0.1.0",
-  "private": true,
+  "description": "A pixel-perfect dev portfolio and shadcn registry.",
+  "homepage": "https://yash14.com",
+  "license": "MIT",
+  "author": {
+    "name": "Yash Tibadiya",
+    "email": "hello@yash14.com",
+    "url": "https://github.com/Yash-Tibadiya"
+  },
+  "contributors": [
+    {
+      "name": "Yash Tibadiya",
+      "email": "hello@yash14.com",
+      "url": "https://github.com/Yash-Tibadiya"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yash-Tibadiya/Yash14.com.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
