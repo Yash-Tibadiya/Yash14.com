@@ -100,7 +100,7 @@ export function SiteFooter() {
         )}
       >
         <div
-          className="mx-auto flex h-64 items-center justify-center before:z-1 before:transition-[background-color] md:max-w-7xl"
+          className="mx-auto flex items-center justify-center before:z-1 before:transition-[background-color] md:max-w-7xl"
           data-header-container
         >
 
