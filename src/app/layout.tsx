@@ -119,7 +119,7 @@ export default function RootLayout({
       <head>
         <meta
           name="dmca-site-verification"
-          content="VjlScmVBWUZLbF12Tmk0anYwZ2UrUT090"
+          content="VjlScmVBWUZLbFl2Tmk0anYwZ2UrUT090"
         />
         <script
           type="text/javascript"
