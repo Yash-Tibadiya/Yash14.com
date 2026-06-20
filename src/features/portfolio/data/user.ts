@@ -28,7 +28,7 @@ export const USER: User = {
     },
   ],
   about: `
-- I'm Yash Timbadiya (call me Yash) — a Full Stack Developer with 1+ years of experience, known for pixel-perfect execution and an obsessive attention to detail.
+- I'm Yash Timbadiya (call me Yash) — a Full Stack Developer with 2+ years of experience, known for pixel-perfect execution and an obsessive attention to detail.
 - Passionate about exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.
 `,
   //TODO: Add name pronunciation url
