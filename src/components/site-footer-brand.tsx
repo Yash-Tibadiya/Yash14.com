@@ -37,7 +37,7 @@ export const SiteFooterInteractiveLogotype = ({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
-      className="block select-none"
+      className="block select-none hover:cursor-crosshair"
     >
       <defs>
         <linearGradient
