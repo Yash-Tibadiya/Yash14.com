@@ -32,12 +32,12 @@ export const SiteFooterInteractiveLogotype = ({
       ref={svgRef}
       width="100%"
       height="100%"
-      viewBox="0 0 200 68"
+      viewBox="0 0 200 46"
       xmlns="http://www.w3.org/2000/svg"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onMouseMove={(e) => setCursor({ x: e.clientX, y: e.clientY })}
-      className="select-none"
+      className="block select-none"
     >
       <defs>
         <linearGradient
@@ -89,22 +89,22 @@ export const SiteFooterInteractiveLogotype = ({
       </defs>
       <text
         x="50%"
-        y="50%"
+        y="34"
         textAnchor="middle"
         dominantBaseline="middle"
         strokeWidth="0.3"
-        className="fill-transparent stroke-neutral-200 font-[helvetica] text-[3rem] font-bold dark:stroke-neutral-800 sm:translate-y-[22%]"
+        className="fill-transparent stroke-neutral-200 font-[helvetica] text-[3rem] font-bold dark:stroke-neutral-800"
         style={{ opacity: hovered ? 0.7 : 0 }}
       >
         {text}
       </text>
       <motion.text
         x="50%"
-        y="50%"
+        y="34"
         textAnchor="middle"
         dominantBaseline="middle"
         strokeWidth="0.3"
-        className="fill-transparent stroke-neutral-200 font-[helvetica] text-[3rem] font-bold dark:stroke-neutral-800 sm:translate-y-[22%]"
+        className="fill-transparent stroke-neutral-200 font-[helvetica] text-[3rem] font-bold dark:stroke-neutral-800"
         initial={{ strokeDashoffset: 1000, strokeDasharray: 1000 }}
         animate={{
           strokeDashoffset: 0,
@@ -119,13 +119,13 @@ export const SiteFooterInteractiveLogotype = ({
       </motion.text>
       <text
         x="50%"
-        y="50%"
+        y="34"
         textAnchor="middle"
         dominantBaseline="middle"
         stroke="url(#textGradient)"
         strokeWidth="0.3"
         mask="url(#textMask)"
-        className="fill-transparent font-[helvetica] text-[3rem] font-bold sm:translate-y-[25%] translate-x-[1%]"
+        className="fill-transparent font-[helvetica] text-[3rem] font-bold sm:translate-y-[3%] translate-x-[1.5%]"
       >
         {text}
       </text>
