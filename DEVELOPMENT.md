@@ -15,7 +15,7 @@ Ensure you have the following installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Yash-Tibadiya/Portfolio.git minimal-dev-portfolio
+git clone https://github.com/Yash-Tibadiya/Yash14.com.git minimal-dev-portfolio
 cd minimal-dev-portfolio
 ```
 
