@@ -93,11 +93,24 @@ export function SiteFooter() {
         </div> */}
       </div>
 
-      <SiteFooterInteractiveLogotype />
+      <div
+        className={cn(
+          "max-w-screen overflow-x-hidden bg-background px-2",
+          "transition-shadow duration-300",
+        )}
+      >
+        <div
+          className="mx-auto flex h-64 items-center justify-center before:z-1 before:transition-[background-color] md:max-w-7xl"
+          data-header-container
+        >
 
-      <div className="pb-[env(safe-area-inset-bottom,0px)]">
-        <div className="flex h-24" />
+          <SiteFooterInteractiveLogotype text="YASH 14" />
+        </div>
       </div>
+
+      {/* <div className="pb-[env(safe-area-inset-bottom,0px)]">
+        <div className="flex h-24" />
+      </div> */}
     </footer>
   );
 }
