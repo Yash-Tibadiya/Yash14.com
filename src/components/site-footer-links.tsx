@@ -1,0 +1,117 @@
+"use client";
+
+import Link from "next/link";
+import { BotIcon, LinkIcon, RssIcon } from "lucide-react";
+import { toast } from "sonner";
+
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { Icons } from "@/components/icons";
+import { SITE_INFO } from "@/config/site";
+import { cn } from "@/lib/utils";
+import { copyText } from "@/utils/copy";
+
+const DMCA_URL =
+  process.env.NEXT_PUBLIC_DMCA_URL ||
+  "https://www.dmca.com/ProtectionPro.aspx";
+
+const FOOTER_LINKS = [
+  {
+    label: "llms.txt",
+    href: "/llms.txt",
+    icon: BotIcon,
+  },
+  {
+    label: "RSS",
+    href: "/rss",
+    icon: RssIcon,
+  },
+] as const;
+
+export function SiteFooterLinks() {
+  return (
+    <div className="mx-auto flex items-center justify-center gap-3 border-x border-line bg-background px-4">
+      {FOOTER_LINKS.map((link, index) => {
+        const Icon = link.icon;
+
+        return (
+          <div className="contents" key={link.href}>
+            {index > 0 ? <Separator /> : null}
+            <FooterLink label={link.label} href={link.href}>
+              <Icon className="size-4" />
+            </FooterLink>
+          </div>
+        );
+      })}
+
+      <Separator />
+
+      <FooterLink
+        href={DMCA_URL}
+        copyUrl={DMCA_URL}
+        ariaLabel="DMCA.com Protection Status"
+        className="font-sans"
+      >
+        <Icons.dmca className="h-4.5 w-auto" />
+      </FooterLink>
+    </div>
+  );
+}
+
+function FooterLink({
+  label,
+  href,
+  copyUrl,
+  ariaLabel,
+  className,
+  children,
+}: {
+  label?: string;
+  href: string;
+  copyUrl?: string;
+  ariaLabel?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const absoluteUrl = copyUrl ?? `${SITE_INFO.url}${href}`;
+
+  return (
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <Link
+          className={cn(
+            "flex items-center gap-1.5 font-mono text-sm text-muted-foreground transition-[color] hover:text-foreground",
+            className,
+          )}
+          href={href}
+          target="_blank"
+          rel="noopener"
+          aria-label={ariaLabel}
+        >
+          {children}
+          {label}
+        </Link>
+      </ContextMenuTrigger>
+
+      <ContextMenuContent className="w-fit">
+        <ContextMenuItem
+          onClick={() => {
+            copyText(absoluteUrl);
+            toast.success("Link copied");
+          }}
+        >
+          <LinkIcon />
+          Copy link
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
+  );
+}
+
+function Separator({ className, ...props }: React.ComponentProps<"div">) {
+  return <div className={cn("flex h-11 w-px bg-line", className)} {...props} />;
+}
