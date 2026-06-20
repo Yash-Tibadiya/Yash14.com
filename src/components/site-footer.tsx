@@ -55,20 +55,6 @@ export function SiteFooter() {
           </Item>
 
           <Item>
-            <dt>Source code</dt>
-            <dd>
-              <a
-                className="link-underline"
-                href={SOURCE_CODE_GITHUB_URL}
-                target="_blank"
-                rel="noopener"
-              >
-                GitHub
-              </a>
-            </dd>
-          </Item>
-
-          <Item>
             <dt>License</dt>
             <dd>
               <a
@@ -82,6 +68,45 @@ export function SiteFooter() {
             </dd>
           </Item>
         </dl>
+
+        <div className="screen-line-top pt-4">
+          <figure className="relative mx-auto flex flex-col items-center px-4 text-center z-10 pb-3">
+            <blockquote className="w-full text-center">
+              <p className="font-serif italic tracking-tight text-lg sm:text-2xl md:text-3xl">
+                “Learn continually. There‘s always{" "}
+                <span className="bg-linear-to-r from-[#7182ff] via-[#3cff52] to-[#ff7a00] bg-clip-text text-transparent">
+                  one more thing{" "}
+                </span>{" "}
+                to learn”
+              </p>
+            </blockquote>
+            <figcaption className="mt-2 text-right text-sm opacity-85 flex flex-col items-center">
+              ~ Steve Jobs
+            </figcaption>
+          </figure>
+        </div>
+
+        <p className="screen-line-top px-4 py-4 text-center font-mono text-sm text-balance text-muted-foreground">
+          Built by{" "}
+          <a
+            className="link-underline hover:text-white transition-colors"
+            href={xLink?.href}
+            target="_blank"
+            rel="noopener"
+          >
+            Yash_Tibadiya
+          </a>
+          . The source code is available on{" "}
+          <a
+            className="link-underline hover:text-white transition-colors"
+            href={SOURCE_CODE_GITHUB_URL}
+            target="_blank"
+            rel="noopener"
+          >
+            GitHub
+          </a>
+          .
+        </p>
 
         <div className="screen-line-top screen-line-bottom flex w-full before:z-1 after:z-1">
           <SiteFooterLinks />
@@ -106,10 +131,6 @@ export function SiteFooter() {
           <SiteFooterInteractiveLogotype text="YASH 14" />
         </div>
       </div>
-
-      {/* <div className="pb-[env(safe-area-inset-bottom,0px)]">
-        <div className="flex h-24" />
-      </div> */}
     </footer>
   );
 }
