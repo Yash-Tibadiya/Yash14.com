@@ -88,7 +88,7 @@ const MENU_LINKS: CommandLinkItem[] = [
     href: "/brand-guidelines",
     kind: "page",
     icon: <SquareDashedIcon />,
-    shortcut: "GR",
+    shortcut: "GY",
   },
   {
     title: "Components",
