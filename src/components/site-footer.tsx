@@ -103,7 +103,6 @@ export function SiteFooter() {
           className="mx-auto flex items-center justify-center before:z-1 before:transition-[background-color] md:max-w-7xl"
           data-header-container
         >
-
           <SiteFooterInteractiveLogotype text="YASH 14" />
         </div>
       </div>
