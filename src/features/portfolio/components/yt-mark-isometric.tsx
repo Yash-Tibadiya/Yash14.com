@@ -116,14 +116,12 @@ function buildGeometry(): Geometry {
   // Top-plane edges where filled meets empty.
   for (let x = 0; x <= COLS; x++) {
     for (let y = 0; y < ROWS; y++) {
-      if (filled(x - 1, y) !== filled(x, y))
-        addEdge([x, y, 1], [x, y + 1, 1]);
+      if (filled(x - 1, y) !== filled(x, y)) addEdge([x, y, 1], [x, y + 1, 1]);
     }
   }
   for (let y = 0; y <= ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (filled(x, y - 1) !== filled(x, y))
-        addEdge([x, y, 1], [x + 1, y, 1]);
+      if (filled(x, y - 1) !== filled(x, y)) addEdge([x, y, 1], [x + 1, y, 1]);
     }
   }
 
@@ -138,7 +136,8 @@ function buildGeometry(): Geometry {
     if (!filled(c, r + 1)) {
       addEdge([c, r + 1, 0], [c + 1, r + 1, 0]);
       if (!southExposed(c - 1, r)) addEdge([c, r + 1, 1], [c, r + 1, 0]);
-      if (!southExposed(c + 1, r)) addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0]);
+      if (!southExposed(c + 1, r))
+        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0]);
     }
   }
 
@@ -159,9 +158,9 @@ const TOP_FILLS = GEO.topFills.map((p) => toShape(p, true));
 const EDGES = GEO.edges.map((e) => toShape(e, false));
 
 const GUIDE_LINES = [
-  "M-700 864L1300 -231",
-  "M-700 664L1300 -491",
-  "M-700 -604L1300 650",
+  "M-700 855L1230 -259",
+  "M-700 596L1230 -511",
+  "M-700 -258L1300 894",
 ];
 
 export function YTMarkIsometric() {
