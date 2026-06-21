@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import type { Transition } from "motion/react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 import { metalClickSound } from "@/lib/soundcn/metal-click";
 import { useSound } from "@/hooks/soundcn/use-sound";
@@ -183,8 +183,19 @@ const GUIDE_LINES = [
   "M-700 -520L1300 644",
 ];
 
+const GUIDE_DASH = "4 2";
+const GUIDE_DASH_PERIOD = 6;
+
+const guideLineTransition: Transition = {
+  repeat: Infinity,
+  duration: 0.7,
+  // duration: 1.4,
+  ease: "linear",
+};
+
 export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
+  const reduceMotion = useReducedMotion();
 
   const transition: Transition = {
     type: "spring",
@@ -229,9 +240,20 @@ export function YTMarkIsometric() {
         </pattern>
       </defs>
 
-      <g className="stroke-line" strokeWidth="1" strokeDasharray="4 2">
+      <g className="stroke-line">
         {GUIDE_LINES.map((d) => (
-          <path key={d} d={d} />
+          <motion.path
+            key={d}
+            d={d}
+            stroke="var(--line)"
+            strokeWidth={1}
+            strokeDasharray={GUIDE_DASH}
+            initial={{ strokeDashoffset: 0 }}
+            animate={{
+              strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+            }}
+            transition={reduceMotion ? undefined : guideLineTransition}
+          />
         ))}
       </g>
 
