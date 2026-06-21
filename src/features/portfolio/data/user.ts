@@ -34,13 +34,17 @@ export const USER: User = {
   //TODO: Add name pronunciation url
   avatar: "",
   avatarVariants: {
-    lightOff: "",
-    lightOn: "",
-    darkOff: "",
-    darkOn: "",
+    lightOff:
+      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
+    lightOn:
+      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
+    darkOff:
+      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
+    darkOn:
+      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
   },
   ogImage: "",
-  namePronunciationUrl: "",
+  namePronunciationUrl: "/audio/yashtimbadiya.mp3",
   timeZone: "Asia/Kolkata",
   keywords: [
     "Full Stack Developer",

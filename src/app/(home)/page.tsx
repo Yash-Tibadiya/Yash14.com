@@ -16,7 +16,7 @@ import { absoluteUrl, cn } from "@/lib/utils";
 //   InsightsSkeleton,
 // } from "@/features/portfolio/components/insights"
 // import { Overview } from "@/features/portfolio/components/overview"
-// import { ProfileHeader } from "@/features/portfolio/components/profile-header"
+import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 // import { Projects } from "@/features/portfolio/components/projects"
 // import { SocialLinks } from "@/features/portfolio/components/social-links-v2"
 // import { TechStack } from "@/features/portfolio/components/tech-stack"
@@ -35,38 +35,38 @@ export default function HomePage() {
 
       <div className="[--separator-height:--spacing(8)] **:data-[slot=panel]:scroll-mt-[calc(var(--header-height)+var(--separator-height))]">
         <div className="mx-auto md:max-w-3xl">
-          {/* <ProfileHeader />
+          <ProfileHeader />
           <Separator />
 
-          <Overview />
-          <SocialLinks />
-          <Separator />
+          {/* <Overview /> */}
+          {/* <SocialLinks /> */}
+          {/* <Separator /> */}
 
-          <About />
-          <Separator />
+          {/* <About /> */}
+          {/* <Separator /> */}
 
-          <TechStack />
-          <Separator />
+          {/* <TechStack /> */}
+          {/* <Separator /> */}
 
-          <Components />
-          <Separator />
+          {/* <Components /> */}
+          {/* <Separator /> */}
 
-          <Experiences />
-          <Separator />
+          {/* <Experiences /> */}
+          {/* <Separator /> */}
 
-          <Projects />
-          <Separator />
+          {/* <Projects /> */}
+          {/* <Separator /> */}
 
-          <Certifications />
-          <Separator />
+          {/* <Certifications /> */}
+          {/* <Separator /> */}
 
-          <Bookmarks />
-          <Separator />
+          {/* <Bookmarks /> */}
+          {/* <Separator /> */}
 
-          <Suspense fallback={<InsightsSkeleton />}>
-            <Insights />
-          </Suspense>
-          <Separator /> */}
+          {/* <Suspense fallback={<InsightsSkeleton />}> */}
+          {/* <Insights /> */}
+          {/* </Suspense> */}
+          {/* <Separator /> */}
         </div>
       </div>
     </>
@@ -93,15 +93,6 @@ function Separator({ className }: { className?: string }) {
         "stripe-divider h-(--separator-height) w-full border-x border-line",
         className,
       )}
-    >
-      {/* <div
-        className="absolute -top-1.25 -left-1.25 z-2 flex size-2.25 border bg-background"
-        aria-hidden
-      />
-      <div
-        className="absolute -top-1.25 -right-1.25 z-2 flex size-2.25 border bg-background"
-        aria-hidden
-      /> */}
-    </div>
+    ></div>
   );
 }
