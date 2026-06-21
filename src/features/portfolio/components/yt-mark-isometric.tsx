@@ -159,8 +159,12 @@ const EDGES = GEO.edges.map((e) => toShape(e, false));
 
 const GUIDE_LINES = [
   "M-700 855L1230 -259",
+  "M-700 727L1230 -387",
   "M-700 596L1230 -511",
-  "M-700 -258L1300 894",
+  "M-700 -255.5L1300 892",
+  "M-700 -322L1300 830",
+  "M-700 -453L1300 706",
+  "M-700 -520L1300 644",
 ];
 
 export function YTMarkIsometric() {
