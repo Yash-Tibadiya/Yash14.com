@@ -404,106 +404,106 @@ export function CommandMenu({
             <CommandList className="min-h-80 supports-timeline-scroll:scroll-fade-effect-y">
               <CommandEmpty>No results found.</CommandEmpty>
 
-            <CommandLinkGroup
-              heading="Menu"
-              links={MENU_LINKS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
+              <CommandLinkGroup
+                heading="Menu"
+                links={MENU_LINKS}
+                onLinkHighlight={handleLinkHighlight}
+                onLinkSelect={handleOpenLink}
+              />
 
-            <CommandLinkGroup
-              heading="Contact"
-              links={CONTACT_LINKS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
+              <CommandLinkGroup
+                heading="Contact"
+                links={CONTACT_LINKS}
+                onLinkHighlight={handleLinkHighlight}
+                onLinkSelect={handleOpenLink}
+              />
 
-            <CommandLinkGroup
-              heading="Portfolio"
-              links={PORTFOLIO_LINKS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
+              <CommandLinkGroup
+                heading="Portfolio"
+                links={PORTFOLIO_LINKS}
+                onLinkHighlight={handleLinkHighlight}
+                onLinkSelect={handleOpenLink}
+              />
 
-            {componentsGroup}
+              {componentsGroup}
 
-            {blocksGroup}
+              {blocksGroup}
 
-            <CommandLinkGroup
-              heading="Social Links"
-              links={SOCIAL_LINK_ITEMS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
+              <CommandLinkGroup
+                heading="Social Links"
+                links={SOCIAL_LINK_ITEMS}
+                onLinkHighlight={handleLinkHighlight}
+                onLinkSelect={handleOpenLink}
+              />
 
-            <CommandGroup heading="Brand Assets">
-              <CommandMenuItem
-                onHighlight={handleCommandHighlight}
-                onSelect={() => {
-                  handleCopyText(getMarkSVG(), "Mark as SVG copied");
-                }}
-              >
-                <YTMark />
-                Copy Mark as SVG
-              </CommandMenuItem>
+              <CommandGroup heading="Brand Assets">
+                <CommandMenuItem
+                  onHighlight={handleCommandHighlight}
+                  onSelect={() => {
+                    handleCopyText(getMarkSVG(), "Mark as SVG copied");
+                  }}
+                >
+                  <YTMark />
+                  Copy Mark as SVG
+                </CommandMenuItem>
 
-              <CommandMenuItem
-                onHighlight={handleCommandHighlight}
-                onSelect={() => {
-                  handleCopyText(getWordmarkSVG(), "Logotype as SVG copied");
-                }}
-              >
-                <TypeIcon />
-                Copy Logotype as SVG
-              </CommandMenuItem>
+                <CommandMenuItem
+                  onHighlight={handleCommandHighlight}
+                  onSelect={() => {
+                    handleCopyText(getWordmarkSVG(), "Logotype as SVG copied");
+                  }}
+                >
+                  <TypeIcon />
+                  Copy Logotype as SVG
+                </CommandMenuItem>
 
-              <CommandMenuItem
-                onHighlight={handleCommandHighlight}
-                onSelect={() => {
-                  const anchor = document.createElement("a");
-                  anchor.href = BRAND_ASSETS.url;
-                  anchor.download = "";
-                  anchor.click();
-                }}
-              >
-                <DownloadIcon />
-                Download Brand Assets
-              </CommandMenuItem>
-            </CommandGroup>
+                <CommandMenuItem
+                  onHighlight={handleCommandHighlight}
+                  onSelect={() => {
+                    const anchor = document.createElement("a");
+                    anchor.href = BRAND_ASSETS.url;
+                    anchor.download = "";
+                    anchor.click();
+                  }}
+                >
+                  <DownloadIcon />
+                  Download Brand Assets
+                </CommandMenuItem>
+              </CommandGroup>
 
-            <CommandGroup heading="Theme">
-              <CommandMenuItem
-                keywords={["theme"]}
-                onHighlight={handleCommandHighlight}
-                onSelect={createThemeHandler("light")}
-              >
-                <SunMediumIcon />
-                Light
-              </CommandMenuItem>
-              <CommandMenuItem
-                keywords={["theme"]}
-                onHighlight={handleCommandHighlight}
-                onSelect={createThemeHandler("dark")}
-              >
-                <MoonStarIcon />
-                Dark
-              </CommandMenuItem>
-              <CommandMenuItem
-                keywords={["theme"]}
-                onHighlight={handleCommandHighlight}
-                onSelect={createThemeHandler("system")}
-              >
-                <MonitorIcon />
-                System
-              </CommandMenuItem>
-            </CommandGroup>
+              <CommandGroup heading="Theme">
+                <CommandMenuItem
+                  keywords={["theme"]}
+                  onHighlight={handleCommandHighlight}
+                  onSelect={createThemeHandler("light")}
+                >
+                  <SunMediumIcon />
+                  Light
+                </CommandMenuItem>
+                <CommandMenuItem
+                  keywords={["theme"]}
+                  onHighlight={handleCommandHighlight}
+                  onSelect={createThemeHandler("dark")}
+                >
+                  <MoonStarIcon />
+                  Dark
+                </CommandMenuItem>
+                <CommandMenuItem
+                  keywords={["theme"]}
+                  onHighlight={handleCommandHighlight}
+                  onSelect={createThemeHandler("system")}
+                >
+                  <MonitorIcon />
+                  System
+                </CommandMenuItem>
+              </CommandGroup>
 
-            <CommandLinkGroup
-              heading="Other"
-              links={OTHER_LINK_ITEMS}
-              onLinkHighlight={handleLinkHighlight}
-              onLinkSelect={handleOpenLink}
-            />
+              <CommandLinkGroup
+                heading="Other"
+                links={OTHER_LINK_ITEMS}
+                onLinkHighlight={handleLinkHighlight}
+                onLinkSelect={handleOpenLink}
+              />
             </CommandList>
           </LayoutGroup>
         </div>

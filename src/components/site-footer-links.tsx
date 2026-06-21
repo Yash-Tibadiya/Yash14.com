@@ -16,8 +16,7 @@ import { cn } from "@/lib/utils";
 import { copyText } from "@/utils/copy";
 
 const DMCA_URL =
-  process.env.NEXT_PUBLIC_DMCA_URL ||
-  "https://www.dmca.com/ProtectionPro.aspx";
+  process.env.NEXT_PUBLIC_DMCA_URL || "https://www.dmca.com/ProtectionPro.aspx";
 
 const FOOTER_LINKS = [
   {

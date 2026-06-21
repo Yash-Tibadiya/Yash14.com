@@ -32,15 +32,9 @@ export const USER: User = {
 - Passionate about exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.
 `,
   //TODO: Add name pronunciation url
-  avatar: "",
-  avatarVariants: {
-    lightOff: "",
-    lightOn: "",
-    darkOff: "",
-    darkOn: "",
-  },
+  avatar: "/assets/yash.jpg",
   ogImage: "",
-  namePronunciationUrl: "",
+  namePronunciationUrl: "/audio/yashtimbadiya.mp3",
   timeZone: "Asia/Kolkata",
   keywords: [
     "Full Stack Developer",
