@@ -33,8 +33,8 @@ const ROWS = 4;
 const COS = -55.4256; // 64 · cos30° — horizontal run of one tile edge
 const SIN = 32; //       64 · sin30° — vertical rise of one tile edge
 const ZUNIT = 64; //     vertical pixels per 1 unit of plate height
-const OX = 350; //     shift so every projected x ≥ 0
-const OY = 32; //        shift so every projected y ≥ 0
+const OX = 320; //     shift so every projected x ≥ 0
+const OY = 10; //        shift so every projected y ≥ 0
 
 const TOP_NORMAL = 0.5; //  resting plate thickness
 const TOP_PRESSED = 0.25; // pressed-in plate thickness
@@ -184,7 +184,7 @@ export function YTMarkIsometric() {
   return (
     <motion.svg
       className="h-auto w-full touch-manipulation overflow-visible [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
-      viewBox="0 0 555 352"
+      viewBox="-31 -20 617 315"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
