@@ -34,6 +34,8 @@ const COS = -55.4256; // 64 · cos30° — horizontal run of one tile edge
 const SIN = 32; //       64 · sin30° — vertical rise of one tile edge
 const ZUNIT = 64; //     vertical pixels per 1 unit of plate height
 const OX = 320; //     shift so every projected x ≥ 0
+//TODO: Uncomment this when the design is finalized
+// const OX = 360; //     shift so every projected x ≥ 0
 const OY = 10; //        shift so every projected y ≥ 0
 
 const TOP_NORMAL = 0.5; //  resting plate thickness
