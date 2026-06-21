@@ -32,17 +32,7 @@ export const USER: User = {
 - Passionate about exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.
 `,
   //TODO: Add name pronunciation url
-  avatar: "",
-  avatarVariants: {
-    lightOff:
-      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
-    lightOn:
-      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
-    darkOff:
-      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
-    darkOn:
-      "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
-  },
+  avatar: "https://images.pexels.com/photos/34282197/pexels-photo-34282197.jpeg",
   ogImage: "",
   namePronunciationUrl: "/audio/yashtimbadiya.mp3",
   timeZone: "Asia/Kolkata",

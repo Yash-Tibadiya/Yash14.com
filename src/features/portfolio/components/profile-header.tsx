@@ -1,7 +1,5 @@
-import { AvatarLights } from "@/features/portfolio/components/avatar-lights";
 import { USER } from "@/features/portfolio/data/user";
 
-import { AvatarLightsToggle } from "./avatar-lights-toggle";
 import { ChanhDaiMarkIsometric } from "./chanhdai-mark-isometric";
 import { FlipSentences } from "./flip-sentences";
 import { PronounceMyName } from "./pronounce-my-name";
@@ -19,12 +17,20 @@ export function ProfileHeader() {
 
       <div className="flex flex-col sm:row-span-2 sm:row-start-1">
         <div className="screen-line-top mt-auto shrink-0 border-r border-line">
-          <AvatarLightsToggle className="group/avatar-lights-toggle mx-0.5 my-0.75 flex outline-none">
-            <AvatarLights
-              className="ring-border ring-offset-background group-focus-visible/avatar-lights-toggle:ring-1 group-focus-visible/avatar-lights-toggle:ring-offset-2"
-              variants={USER.avatarVariants}
-            />
-          </AvatarLightsToggle>
+          <div className="mx-0.5 my-0.75 flex">
+            <div className="pointer-events-none relative size-30 rounded-full min-[24rem]:size-32 sm:size-40">
+              <img
+                className="size-full rounded-full object-cover select-none"
+                src={USER.avatar}
+                alt={USER.displayName}
+                fetchPriority="high"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 rounded-full inset-ring-1 inset-ring-foreground/10"
+                aria-hidden
+              />
+            </div>
+          </div>
         </div>
       </div>
 
