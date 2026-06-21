@@ -63,7 +63,8 @@ const southExposed = (c: number, r: number) =>
 type Geometry = {
   sideFills: Point[][];
   topFills: Point[][];
-  edges: Point[][];
+  wallEdges: Point[][];
+  topEdges: Point[][];
 };
 
 function buildGeometry(): Geometry {
@@ -104,24 +105,28 @@ function buildGeometry(): Geometry {
   }
 
   // Outline = boundary edges only (omit seams between adjacent blocks).
-  const edgeMap = new Map<string, Point[]>();
+  const wallEdgeMap = new Map<string, Point[]>();
+  const topEdgeMap = new Map<string, Point[]>();
   const keyOf = (p: Point) => p.join(",");
-  const addEdge = (a: Point, b: Point) => {
+  const addEdge = (a: Point, b: Point, layer: "wall" | "top") => {
     const ka = keyOf(a);
     const kb = keyOf(b);
     const key = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
-    if (!edgeMap.has(key)) edgeMap.set(key, [a, b]);
+    const map = layer === "top" ? topEdgeMap : wallEdgeMap;
+    if (!map.has(key)) map.set(key, [a, b]);
   };
 
   // Top-plane edges where filled meets empty.
   for (let x = 0; x <= COLS; x++) {
     for (let y = 0; y < ROWS; y++) {
-      if (filled(x - 1, y) !== filled(x, y)) addEdge([x, y, 1], [x, y + 1, 1]);
+      if (filled(x - 1, y) !== filled(x, y))
+        addEdge([x, y, 1], [x, y + 1, 1], "top");
     }
   }
   for (let y = 0; y <= ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      if (filled(x, y - 1) !== filled(x, y)) addEdge([x, y, 1], [x + 1, y, 1]);
+      if (filled(x, y - 1) !== filled(x, y))
+        addEdge([x, y, 1], [x + 1, y, 1], "top");
     }
   }
 
@@ -129,19 +134,25 @@ function buildGeometry(): Geometry {
   // with a coplanar neighbouring wall so stems read as one continuous face).
   for (const [c, r] of cells) {
     if (!filled(c + 1, r)) {
-      addEdge([c + 1, r, 0], [c + 1, r + 1, 0]);
-      if (!eastExposed(c, r - 1)) addEdge([c + 1, r, 1], [c + 1, r, 0]);
-      if (!eastExposed(c, r + 1)) addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0]);
+      addEdge([c + 1, r, 0], [c + 1, r + 1, 0], "wall");
+      if (!eastExposed(c, r - 1)) addEdge([c + 1, r, 1], [c + 1, r, 0], "wall");
+      if (!eastExposed(c, r + 1))
+        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
     }
     if (!filled(c, r + 1)) {
-      addEdge([c, r + 1, 0], [c + 1, r + 1, 0]);
-      if (!southExposed(c - 1, r)) addEdge([c, r + 1, 1], [c, r + 1, 0]);
+      addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall");
+      if (!southExposed(c - 1, r)) addEdge([c, r + 1, 1], [c, r + 1, 0], "wall");
       if (!southExposed(c + 1, r))
-        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0]);
+        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
     }
   }
 
-  return { topFills, sideFills, edges: [...edgeMap.values()] };
+  return {
+    topFills,
+    sideFills,
+    wallEdges: [...wallEdgeMap.values()],
+    topEdges: [...topEdgeMap.values()],
+  };
 }
 
 const GEO = buildGeometry();
@@ -155,7 +166,10 @@ const toShape = (points: Point[], close: boolean): Shape => ({
 
 const SIDE_FILLS = GEO.sideFills.map((p) => toShape(p, true));
 const TOP_FILLS = GEO.topFills.map((p) => toShape(p, true));
-const EDGES = GEO.edges.map((e) => toShape(e, false));
+const WALL_EDGES = GEO.wallEdges.map((e) => toShape(e, false));
+const TOP_EDGES = GEO.topEdges.map((e) => toShape(e, false));
+
+const SURFACE_FILL = "var(--background)";
 
 const GUIDE_LINES = [
   "M-700 855L1230 -259",
@@ -168,7 +182,7 @@ const GUIDE_LINES = [
 ];
 
 export function YTMarkIsometric() {
-  const patternId = useId();
+  const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
 
   const transition: Transition = {
     type: "spring",
@@ -204,6 +218,7 @@ export function YTMarkIsometric() {
           height="10"
           patternUnits="userSpaceOnUse"
         >
+          <rect width="10" height="10" fill={SURFACE_FILL} />
           <path
             d="M-1 1l2 -2M0 10l10 -10M9 11l2 -2"
             stroke="var(--pattern)"
@@ -222,7 +237,20 @@ export function YTMarkIsometric() {
       {SIDE_FILLS.map((shape, i) => (
         <motion.path
           key={`side-${i}`}
-          className="fill-background"
+          d={shape.normal}
+          fill={SURFACE_FILL}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+
+      {/* Wall outlines sit under the hatched top faces */}
+      {WALL_EDGES.map((shape, i) => (
+        <motion.path
+          key={`wall-edge-${i}`}
+          d={shape.normal}
+          stroke="var(--stroke)"
+          strokeWidth="1"
           variants={variantsFor(shape)}
           transition={transition}
         />
@@ -232,7 +260,8 @@ export function YTMarkIsometric() {
       {TOP_FILLS.map((shape, i) => (
         <motion.path
           key={`top-bg-${i}`}
-          className="fill-background"
+          d={shape.normal}
+          fill={SURFACE_FILL}
           variants={variantsFor(shape)}
           transition={transition}
         />
@@ -240,16 +269,18 @@ export function YTMarkIsometric() {
       {TOP_FILLS.map((shape, i) => (
         <motion.path
           key={`top-pattern-${i}`}
-          fill={`url(#${patternId})`}
+          d={shape.normal}
+          fill={`url(#${patternId})`} 
           variants={variantsFor(shape)}
           transition={transition}
         />
       ))}
 
-      {/* Outer silhouette outline */}
-      {EDGES.map((shape, i) => (
+      {/* Top-plane silhouette outline */}
+      {TOP_EDGES.map((shape, i) => (
         <motion.path
-          key={`edge-${i}`}
+          key={`top-edge-${i}`}
+          d={shape.normal}
           stroke="var(--stroke)"
           strokeWidth="1"
           variants={variantsFor(shape)}
