@@ -33,9 +33,9 @@ const ROWS = 4;
 const COS = -55.4256; // 64 · cos30° — horizontal run of one tile edge
 const SIN = 32; //       64 · sin30° — vertical rise of one tile edge
 const ZUNIT = 64; //     vertical pixels per 1 unit of plate height
-const OX = 320; //     shift so every projected x ≥ 0
+// const OX = 320; //     shift so every projected x ≥ 0
 //TODO: Uncomment this when the design is finalized
-// const OX = 360; //     shift so every projected x ≥ 0
+const OX = 360; //     shift so every projected x ≥ 0
 const OY = 10; //        shift so every projected y ≥ 0
 
 const TOP_NORMAL = 0.5; //  resting plate thickness
@@ -173,14 +173,24 @@ const TOP_EDGES = GEO.topEdges.map((e) => toShape(e, false));
 
 const SURFACE_FILL = "var(--background)";
 
+// const GUIDE_LINES = [
+//   "M-700 855L1230 -259",
+//   "M-700 727L1230 -387",
+//   "M-700 596L1230 -511",
+//   "M-700 -255.5L1300 892",
+//   "M-700 -322L1300 830",
+//   "M-700 -453L1300 706",
+//   "M-700 -520L1300 644",
+// ];
+
 const GUIDE_LINES = [
-  "M-700 855L1230 -259",
-  "M-700 727L1230 -387",
-  "M-700 596L1230 -511",
-  "M-700 -255.5L1300 892",
-  "M-700 -322L1300 830",
-  "M-700 -453L1300 706",
-  "M-700 -520L1300 644",
+  "M-700 879L1230 -237",
+  "M-700 751L1230 -365",
+  "M-700 620L1230 -489",
+  "M-700 -282L1300 873",
+  "M-700 -348L1300 811",
+  "M-700 -474L1300 680.5",
+  "M-700 -542L1300 619",
 ];
 
 const GUIDE_DASH = "4 2";
