@@ -212,9 +212,22 @@ const BAND_FILL = "M-700 -542L1300 619L1300 680.5L-700 -474Z";
 // 2nd Background
 const BAND_FILL_2 = "M-700 -348L1300 811L1300 873L-700 -282Z";
 
+// Guide lines at indices 3-6 form the long edges of the two corridors (they run
+// along the bands, not across them). The remaining lines ascend across the
+// corridors — their crossing segments are recolored to the background so the
+// band reads as cutting through them.
+const BAND_EDGE_LINES = new Set([
+  GUIDE_LINES[3],
+  GUIDE_LINES[4],
+  GUIDE_LINES[5],
+  GUIDE_LINES[6],
+]);
+const CROSSING_GUIDE_LINES = GUIDE_LINES.filter((d) => !BAND_EDGE_LINES.has(d));
+
 export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
   const bandId = `yt-band${useId().replace(/:/g, "")}`;
+  const bandClipId = `yt-band-clip${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
 
   const transition: Transition = {
@@ -266,6 +279,13 @@ export function YTMarkIsometric() {
           <stop offset="50%" stopColor="var(--band)" stopOpacity="1" />
           <stop offset="100%" stopColor="var(--band)" stopOpacity="0" />
         </linearGradient>
+
+        {/* Clip to the two corridors so crossing guide lines can be recolored
+            only where they overlap a band fill. */}
+        <clipPath id={bandClipId}>
+          <path d={BAND_FILL} />
+          <path d={BAND_FILL_2} />
+        </clipPath>
       </defs>
 
       {/* Tinted corridor between two parallel guide lines */}
@@ -278,6 +298,27 @@ export function YTMarkIsometric() {
             key={d}
             d={d}
             stroke="var(--line)"
+            strokeWidth={1}
+            strokeDasharray={GUIDE_DASH}
+            initial={{ strokeDashoffset: 0 }}
+            animate={{
+              strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+            }}
+            transition={reduceMotion ? undefined : guideLineTransition}
+          />
+        ))}
+      </g>
+
+      {/* Where crossing guide lines pass over a band fill, redraw their
+          segments in the background colour so the corridor cuts through them.
+          Same path/dash/offset as above, clipped to the corridors, so the
+          recoloured dashes stay aligned with the originals. */}
+      <g clipPath={`url(#${bandClipId})`}>
+        {CROSSING_GUIDE_LINES.map((d) => (
+          <motion.path
+            key={`band-cut-${d}`}
+            d={d}
+            stroke="var(--background)"
             strokeWidth={1}
             strokeDasharray={GUIDE_DASH}
             initial={{ strokeDashoffset: 0 }}
