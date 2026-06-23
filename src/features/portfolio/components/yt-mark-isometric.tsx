@@ -353,11 +353,10 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 10.2 },
-  { kind: "truck", band: 0, phase: 0.4, duration: 11.5 },
-  { kind: "car", band: 0, phase: 0.72, duration: 9.6 },
-  { kind: "truck", band: 1, phase: 0.15, duration: 10.4 },
-  { kind: "car", band: 1, phase: 0.55, duration: 8.6 },
+  { kind: "car", band: 0, phase: 0.0, duration: 7 },
+  { kind: "truck", band: 0, phase: 0.4, duration: 7 },
+  { kind: "truck", band: 1, phase: 0.15, duration: 7 },
+  { kind: "car", band: 1, phase: 0.55, duration: 7 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -408,6 +407,7 @@ function Vehicle({
         x: { ...loop, delay: -elapsed },
         y: { ...loop, delay: -elapsed },
         opacity: { ...loop, delay: -elapsed, times: [0, 0.12, 0.88, 1] },
+        // opacity: { ...loop, delay: -elapsed, times: [0, 0, 1, 1] },
       }}
     >
       <VehicleShape kind={spec.kind} />
