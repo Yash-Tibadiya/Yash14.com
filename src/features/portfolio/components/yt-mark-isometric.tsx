@@ -342,10 +342,12 @@ function VehicleShape({ kind }: { kind: "car" | "truck" }) {
 }
 
 // Centreline of each corridor in screen space: derived from the matching
-// BAND_* top/bottom edges, clipped to the svg viewBox so travel length equals
-// the visible band span (with a little padding past the top/bottom edges).
+// BAND_* top/bottom edges, clipped to the svg viewBox. Extra runout at both
+// ends keeps the loop reset off-screen so vehicles exit naturally instead of
+// popping away at the bottom edge.
 const VIEWBOX = { x: -31, y: -20, w: 617, h: 315 };
 const PATH_PAD = 45;
+const PATH_RUNOUT = 240; // travel past the padded viewBox before looping
 
 type BandPath = {
   start: [number, number];
@@ -367,6 +369,7 @@ function bandTrafficPath(
   bottom: string,
   view = VIEWBOX,
   pad = PATH_PAD,
+  runout = PATH_RUNOUT,
 ): BandPath {
   const [t0, t1] = parseBandLine(top);
   const [b0, b1] = parseBandLine(bottom);
@@ -381,8 +384,8 @@ function bandTrafficPath(
   const yMax = view.y + view.h + pad;
   const tStart = Math.max(0, Math.min(1, (yMin - c0[1]) / dy));
   const tEnd = Math.max(0, Math.min(1, (yMax - c0[1]) / dy));
-  const lo = Math.min(tStart, tEnd);
-  const hi = Math.max(tStart, tEnd);
+  const lo = Math.max(0, Math.min(tStart, tEnd) - runout / fullLen);
+  const hi = Math.min(1, Math.max(tStart, tEnd) + runout / fullLen);
 
   return {
     start: [c0[0] + lo * dx, c0[1] + lo * dy],
@@ -453,13 +456,9 @@ function Vehicle({
     <motion.g
       initial={{ x: sx, y: sy }}
       animate={{ x: [sx, ex], y: [sy, ey] }}
-      // initial={{ x: sx, y: sy, opacity: 0 }}
-      // animate={{ x: [sx, ex], y: [sy, ey], opacity: [0, 1, 1, 0] }}
       transition={{
         x: { ...loop, delay: -elapsed },
         y: { ...loop, delay: -elapsed },
-        // opacity: { ...loop, delay: -elapsed, times: [0, 0.12, 0.88, 1] },
-        // opacity: { ...loop, delay: -elapsed, times: [0, 0, 1, 1] },
       }}
     >
       <VehicleShape kind={spec.kind} />
