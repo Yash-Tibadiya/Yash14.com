@@ -471,6 +471,7 @@ export function YTMarkIsometric() {
   const bandId = `yt-band${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
+  const [showTraffic, setShowTraffic] = useState(false);
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -501,7 +502,10 @@ export function YTMarkIsometric() {
       aria-hidden
       initial="normal"
       whileTap="pressed"
-      onTap={() => play()}
+      onTap={() => {
+        play();
+        setShowTraffic((visible) => !visible);
+      }}
     >
       <defs>
         <pattern
@@ -577,21 +581,22 @@ export function YTMarkIsometric() {
         ))}
       </g>
 
-      {/* Traffic on the corridors — above wall faces, below hatched tops. */}
-      <g
-        style={{ position: "relative", zIndex: 40 }}
-        className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
-      >
-        {TRAFFIC.map((spec, i) => (
-          <Vehicle
-            // biome-ignore lint/suspicious/noArrayIndexKey: static config list
-            key={i}
-            spec={spec}
-            reduce={reduceMotion}
-            animateTraffic={animateTraffic}
-          />
-        ))}
-      </g>
+      {showTraffic ? (
+        <g
+          style={{ position: "relative", zIndex: 40 }}
+          className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
+        >
+          {TRAFFIC.map((spec, i) => (
+            <Vehicle
+              // biome-ignore lint/suspicious/noArrayIndexKey: static config list
+              key={i}
+              spec={spec}
+              reduce={reduceMotion}
+              animateTraffic={animateTraffic}
+            />
+          ))}
+        </g>
+      ) : null}
 
       <g style={{ position: "relative", zIndex: 50 }}>
         {/* Hatched top faces */}
