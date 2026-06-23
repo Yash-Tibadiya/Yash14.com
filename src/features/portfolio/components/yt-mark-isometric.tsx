@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import type { Transition } from "motion/react";
 import { motion, useReducedMotion } from "motion/react";
 
@@ -360,23 +360,32 @@ const TRAFFIC: VehicleSpec[] = [
   { kind: "car", band: 1, phase: 0.55, duration: 8.6 },
 ];
 
+function vehicleTranslate(band: BandPath, phase: number) {
+  const [sx, sy] = band.start;
+  return {
+    x: sx + phase * band.dist * band.dir[0],
+    y: sy + phase * band.dist * band.dir[1],
+  };
+}
+
 function Vehicle({
   spec,
   reduce,
+  animateTraffic,
 }: {
   spec: VehicleSpec;
   reduce: boolean | null;
+  animateTraffic: boolean;
 }) {
   const band = TRAFFIC_BANDS[spec.band];
   const [sx, sy] = band.start;
   const ex = sx + band.dist * band.dir[0];
   const ey = sy + band.dist * band.dir[1];
 
-  if (reduce) {
-    const px = sx + spec.phase * band.dist * band.dir[0];
-    const py = sy + spec.phase * band.dist * band.dir[1];
+  if (reduce || !animateTraffic) {
+    const { x, y } = vehicleTranslate(band, spec.phase);
     return (
-      <g transform={`translate(${px.toFixed(2)} ${py.toFixed(2)})`}>
+      <g transform={`translate(${x.toFixed(2)} ${y.toFixed(2)})`}>
         <VehicleShape kind={spec.kind} />
       </g>
     );
@@ -384,19 +393,21 @@ function Vehicle({
 
   const loop = {
     duration: spec.duration,
-    delay: spec.phase * spec.duration,
     ease: "linear" as const,
     repeat: Number.POSITIVE_INFINITY,
   };
+  // Negative delay starts the loop mid-cycle at `spec.phase`, matching the
+  // static fallback position so the handoff from SSR/hydration is seamless.
+  const elapsed = spec.phase * spec.duration;
 
   return (
     <motion.g
-      initial={false}
+      initial={{ x: sx, y: sy, opacity: 0 }}
       animate={{ x: [sx, ex], y: [sy, ey], opacity: [0, 1, 1, 0] }}
       transition={{
-        x: loop,
-        y: loop,
-        opacity: { ...loop, times: [0, 0.12, 0.88, 1] },
+        x: { ...loop, delay: -elapsed },
+        y: { ...loop, delay: -elapsed },
+        opacity: { ...loop, delay: -elapsed, times: [0, 0.12, 0.88, 1] },
       }}
     >
       <VehicleShape kind={spec.kind} />
@@ -408,6 +419,13 @@ export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
   const bandId = `yt-band${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
+  const [animateTraffic, setAnimateTraffic] = useState(false);
+
+  useEffect(() => {
+    if (reduceMotion === false) {
+      setAnimateTraffic(true);
+    }
+  }, [reduceMotion]);
 
   const transition: Transition = {
     type: "spring",
@@ -490,6 +508,7 @@ export function YTMarkIsometric() {
             key={i}
             spec={spec}
             reduce={reduceMotion}
+            animateTraffic={animateTraffic}
           />
         ))}
       </g>
