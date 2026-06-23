@@ -494,7 +494,7 @@ export function YTMarkIsometric() {
 
   return (
     <motion.svg
-      className="h-auto w-full touch-manipulation overflow-visible [--band:color-mix(in_oklab,var(--foreground)_7%,transparent)] [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
+      className="relative isolate h-auto w-full touch-manipulation overflow-visible [--band:color-mix(in_oklab,var(--foreground)_7%,transparent)] [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
       viewBox="-31 -20 617 315"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -529,30 +529,59 @@ export function YTMarkIsometric() {
         </linearGradient>
       </defs>
 
-      {/* Tinted corridor between two parallel guide lines */}
-      <path d={BAND_FILL} fill={`url(#${bandId})`} />
-      <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
+      <g style={{ position: "relative", zIndex: 0 }}>
+        {/* Tinted corridor between two parallel guide lines */}
+        <path d={BAND_FILL} fill={`url(#${bandId})`} />
+        <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
 
-      <g className="stroke-line">
-        {GUIDE_LINES.map((d) => (
+        <g className="stroke-line">
+          {GUIDE_LINES.map((d) => (
+            <motion.path
+              key={d}
+              d={d}
+              stroke="var(--line)"
+              strokeWidth={1}
+              strokeDasharray={GUIDE_DASH}
+              initial={{ strokeDashoffset: 0 }}
+              animate={{
+                strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+              }}
+              transition={reduceMotion ? undefined : guideLineTransition}
+            />
+          ))}
+        </g>
+      </g>
+
+      <g style={{ position: "relative", zIndex: 10 }}>
+        {/* Recessed wall faces */}
+        {SIDE_FILLS.map((shape, i) => (
           <motion.path
-            key={d}
-            d={d}
-            stroke="var(--line)"
-            strokeWidth={1}
-            strokeDasharray={GUIDE_DASH}
-            initial={{ strokeDashoffset: 0 }}
-            animate={{
-              strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
-            }}
-            transition={reduceMotion ? undefined : guideLineTransition}
+            key={`side-${i}`}
+            d={shape.normal}
+            fill={SURFACE_FILL}
+            variants={variantsFor(shape)}
+            transition={transition}
+          />
+        ))}
+
+        {/* Wall outlines sit under the hatched top faces */}
+        {WALL_EDGES.map((shape, i) => (
+          <motion.path
+            key={`wall-edge-${i}`}
+            d={shape.normal}
+            stroke="var(--stroke)"
+            strokeWidth="1"
+            variants={variantsFor(shape)}
+            transition={transition}
           />
         ))}
       </g>
 
-      {/* Traffic on the corridors. Painted before the monogram so the "YT"
-          blocks occlude each vehicle like a tunnel as it slips beneath. */}
-      <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
+      {/* Traffic on the corridors — above wall faces, below hatched tops. */}
+      <g
+        style={{ position: "relative", zIndex: 40 }}
+        className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
+      >
         {TRAFFIC.map((spec, i) => (
           <Vehicle
             // biome-ignore lint/suspicious/noArrayIndexKey: static config list
@@ -564,60 +593,39 @@ export function YTMarkIsometric() {
         ))}
       </g>
 
-      {/* Recessed wall faces */}
-      {SIDE_FILLS.map((shape, i) => (
-        <motion.path
-          key={`side-${i}`}
-          d={shape.normal}
-          fill={SURFACE_FILL}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
+      <g style={{ position: "relative", zIndex: 50 }}>
+        {/* Hatched top faces */}
+        {TOP_FILLS.map((shape, i) => (
+          <motion.path
+            key={`top-bg-${i}`}
+            d={shape.normal}
+            fill={SURFACE_FILL}
+            variants={variantsFor(shape)}
+            transition={transition}
+          />
+        ))}
+        {TOP_FILLS.map((shape, i) => (
+          <motion.path
+            key={`top-pattern-${i}`}
+            d={shape.normal}
+            fill={`url(#${patternId})`}
+            variants={variantsFor(shape)}
+            transition={transition}
+          />
+        ))}
 
-      {/* Wall outlines sit under the hatched top faces */}
-      {WALL_EDGES.map((shape, i) => (
-        <motion.path
-          key={`wall-edge-${i}`}
-          d={shape.normal}
-          stroke="var(--stroke)"
-          strokeWidth="1"
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-
-      {/* Hatched top faces */}
-      {TOP_FILLS.map((shape, i) => (
-        <motion.path
-          key={`top-bg-${i}`}
-          d={shape.normal}
-          fill={SURFACE_FILL}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-      {TOP_FILLS.map((shape, i) => (
-        <motion.path
-          key={`top-pattern-${i}`}
-          d={shape.normal}
-          fill={`url(#${patternId})`}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-
-      {/* Top-plane silhouette outline */}
-      {TOP_EDGES.map((shape, i) => (
-        <motion.path
-          key={`top-edge-${i}`}
-          d={shape.normal}
-          stroke="var(--stroke)"
-          strokeWidth="1"
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
+        {/* Top-plane silhouette outline */}
+        {TOP_EDGES.map((shape, i) => (
+          <motion.path
+            key={`top-edge-${i}`}
+            d={shape.normal}
+            stroke="var(--stroke)"
+            strokeWidth="1"
+            variants={variantsFor(shape)}
+            transition={transition}
+          />
+        ))}
+      </g>
     </motion.svg>
   );
 }
