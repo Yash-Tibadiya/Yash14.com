@@ -212,6 +212,198 @@ const BAND_FILL = "M-700 -542L1300 619L1300 680.5L-700 -474Z";
 // 2nd Background
 const BAND_FILL_2 = "M-700 -348L1300 811L1300 873L-700 -282Z";
 
+// ----------------------------------------------------------------- traffic --
+// Cars and trucks ride the two corridors. They reuse the block projection so
+// each vehicle reads as a small isometric plate: forward (u) runs down the
+// corridor (the +fy axis), side (v) crosses it (+fx) and up (w) is +z. One
+// floor unit = 64px, matching the monogram. Vehicles are painted *before* the
+// blocks, so the "YT" occludes them like a tunnel mouth as they pass beneath.
+const FWD = { x: -COS, y: SIN }; //  ( 55.43,  32) — along the corridor
+const VSIDE = { x: COS, y: SIN }; // (-55.43,  32) — across the corridor
+const VUP = { x: 0, y: -ZUNIT }; //  (     0, -64) — vertical
+
+const vproj = (u: number, v: number, w: number): [number, number] => [
+  u * FWD.x + v * VSIDE.x + w * VUP.x,
+  u * FWD.y + v * VSIDE.y + w * VUP.y,
+];
+
+const poly = (corners: Array<[number, number]>) =>
+  `M${corners.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join("L")}Z`;
+
+type Box = { u: [number, number]; v: [number, number]; w: [number, number] };
+
+// The three viewer-facing faces of a local box: the down-left side (v = max),
+// the down-right front (u = max) and the top (w = max).
+function boxFaces({ u: [u0, u1], v: [v0, v1], w: [w0, w1] }: Box) {
+  return {
+    side: poly([
+      vproj(u0, v1, w0),
+      vproj(u1, v1, w0),
+      vproj(u1, v1, w1),
+      vproj(u0, v1, w1),
+    ]),
+    front: poly([
+      vproj(u1, v0, w0),
+      vproj(u1, v1, w0),
+      vproj(u1, v1, w1),
+      vproj(u1, v0, w1),
+    ]),
+    top: poly([
+      vproj(u0, v0, w1),
+      vproj(u1, v0, w1),
+      vproj(u1, v1, w1),
+      vproj(u0, v1, w1),
+    ]),
+  };
+}
+
+type Prim = { d: string; fill: string; stroked: boolean };
+
+const boxPrims = (b: Box): Prim[] => {
+  const f = boxFaces(b);
+  return [
+    { d: f.side, fill: "var(--v-side)", stroked: true },
+    { d: f.front, fill: "var(--v-front)", stroked: true },
+    { d: f.top, fill: "var(--v-top)", stroked: true },
+  ];
+};
+
+// A wheel patch sits on the visible side plane (v fixed) as a small rectangle
+// spanning the (u, w) plane.
+const wheelPrim = (
+  u: [number, number],
+  w: [number, number],
+  v: number,
+): Prim => ({
+  d: poly([
+    vproj(u[0], v, w[0]),
+    vproj(u[1], v, w[0]),
+    vproj(u[1], v, w[1]),
+    vproj(u[0], v, w[1]),
+  ]),
+  fill: "var(--v-wheel)",
+  stroked: false,
+});
+
+// Each vehicle is a back-to-front list of primitives: lower/farther boxes first
+// so nearer/upper boxes paint over them.
+function buildCar(): Prim[] {
+  const body: Box = { u: [-0.52, 0.52], v: [-0.26, 0.26], w: [0.05, 0.19] };
+  const cabin: Box = { u: [-0.3, 0.18], v: [-0.2, 0.2], w: [0.19, 0.33] };
+  return [
+    ...boxPrims(body),
+    wheelPrim([0.24, 0.42], [0, 0.11], 0.26),
+    wheelPrim([-0.42, -0.24], [0, 0.11], 0.26),
+    ...boxPrims(cabin),
+  ];
+}
+
+function buildTruck(): Prim[] {
+  const chassis: Box = { u: [-0.92, 0.92], v: [-0.27, 0.27], w: [0.04, 0.15] };
+  const cargo: Box = { u: [-0.9, 0.34], v: [-0.29, 0.29], w: [0.15, 0.5] };
+  const cab: Box = { u: [0.37, 0.9], v: [-0.26, 0.26], w: [0.15, 0.4] };
+  return [
+    ...boxPrims(chassis),
+    wheelPrim([0.54, 0.78], [0, 0.12], 0.29),
+    wheelPrim([-0.58, -0.34], [0, 0.12], 0.29),
+    wheelPrim([-0.88, -0.64], [0, 0.12], 0.29),
+    ...boxPrims(cargo),
+    ...boxPrims(cab),
+  ];
+}
+
+const CAR_PRIMS = buildCar();
+const TRUCK_PRIMS = buildTruck();
+
+function VehicleShape({ kind }: { kind: "car" | "truck" }) {
+  const prims = kind === "truck" ? TRUCK_PRIMS : CAR_PRIMS;
+  return (
+    <g strokeLinejoin="round">
+      {prims.map((p, i) => (
+        <path
+          // biome-ignore lint/suspicious/noArrayIndexKey: static, ordered list
+          key={i}
+          d={p.d}
+          fill={p.fill}
+          stroke={p.stroked ? "var(--v-stroke)" : "none"}
+          strokeWidth={p.stroked ? 0.9 : 0}
+        />
+      ))}
+    </g>
+  );
+}
+
+// Centreline of each corridor in screen space: a start just before the visible
+// stretch, the unit forward direction (30°, down-right) and the travel length
+// that carries a vehicle fully across and off the far end.
+type BandPath = {
+  start: [number, number];
+  dir: [number, number];
+  dist: number;
+};
+const TRAFFIC_BANDS: BandPath[] = [
+  { start: [65, -65], dir: [0.8660254, 0.5], dist: 692 }, // BAND_FILL
+  { start: [-109, 27], dir: [0.8660254, 0.5], dist: 625 }, // BAND_FILL_2
+];
+
+type VehicleSpec = {
+  kind: "car" | "truck";
+  band: number;
+  phase: number; // 0..1 starting offset along the corridor
+  duration: number; // seconds for one full pass
+};
+const TRAFFIC: VehicleSpec[] = [
+  { kind: "car", band: 0, phase: 0.0, duration: 10.2 },
+  { kind: "truck", band: 0, phase: 0.4, duration: 11.5 },
+  { kind: "car", band: 0, phase: 0.72, duration: 9.6 },
+  { kind: "truck", band: 1, phase: 0.15, duration: 10.4 },
+  { kind: "car", band: 1, phase: 0.55, duration: 8.6 },
+];
+
+function Vehicle({
+  spec,
+  reduce,
+}: {
+  spec: VehicleSpec;
+  reduce: boolean | null;
+}) {
+  const band = TRAFFIC_BANDS[spec.band];
+  const [sx, sy] = band.start;
+  const ex = sx + band.dist * band.dir[0];
+  const ey = sy + band.dist * band.dir[1];
+
+  if (reduce) {
+    const px = sx + spec.phase * band.dist * band.dir[0];
+    const py = sy + spec.phase * band.dist * band.dir[1];
+    return (
+      <g transform={`translate(${px.toFixed(2)} ${py.toFixed(2)})`}>
+        <VehicleShape kind={spec.kind} />
+      </g>
+    );
+  }
+
+  const loop = {
+    duration: spec.duration,
+    delay: spec.phase * spec.duration,
+    ease: "linear" as const,
+    repeat: Number.POSITIVE_INFINITY,
+  };
+
+  return (
+    <motion.g
+      initial={false}
+      animate={{ x: [sx, ex], y: [sy, ey], opacity: [0, 1, 1, 0] }}
+      transition={{
+        x: loop,
+        y: loop,
+        opacity: { ...loop, times: [0, 0.12, 0.88, 1] },
+      }}
+    >
+      <VehicleShape kind={spec.kind} />
+    </motion.g>
+  );
+}
+
 export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
   const bandId = `yt-band${useId().replace(/:/g, "")}`;
@@ -285,6 +477,19 @@ export function YTMarkIsometric() {
               strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
             }}
             transition={reduceMotion ? undefined : guideLineTransition}
+          />
+        ))}
+      </g>
+
+      {/* Traffic on the corridors. Painted before the monogram so the "YT"
+          blocks occlude each vehicle like a tunnel as it slips beneath. */}
+      <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
+        {TRAFFIC.map((spec, i) => (
+          <Vehicle
+            // biome-ignore lint/suspicious/noArrayIndexKey: static config list
+            key={i}
+            spec={spec}
+            reduce={reduceMotion}
           />
         ))}
       </g>
