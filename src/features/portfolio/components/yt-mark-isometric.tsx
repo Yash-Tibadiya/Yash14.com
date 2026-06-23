@@ -208,9 +208,17 @@ const guideLineTransition: Transition = {
 
 // 1st Background
 // Top edge: "M-700 -542L1300 619", bottom edge: "M-700 -474L1300 680.5".
-const BAND_FILL = "M-700 -542L1300 619L1300 680.5L-700 -474Z";
+const BAND_0 = {
+  top: "M-700 -542L1300 619",
+  bottom: "M-700 -474L1300 680.5",
+} as const;
+const BAND_FILL = `${BAND_0.top}L1300 680.5L-700 -474Z`;
 // 2nd Background
-const BAND_FILL_2 = "M-700 -348L1300 811L1300 873L-700 -282Z";
+const BAND_1 = {
+  top: "M-700 -348L1300 811",
+  bottom: "M-700 -282L1300 873",
+} as const;
+const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 
 // ----------------------------------------------------------------- traffic --
 // Cars and trucks ride the two corridors. They reuse the block projection so
@@ -333,17 +341,59 @@ function VehicleShape({ kind }: { kind: "car" | "truck" }) {
   );
 }
 
-// Centreline of each corridor in screen space: a start just before the visible
-// stretch, the unit forward direction (30°, down-right) and the travel length
-// that carries a vehicle fully across and off the far end.
+// Centreline of each corridor in screen space: derived from the matching
+// BAND_* top/bottom edges, clipped to the svg viewBox so travel length equals
+// the visible band span (with a little padding past the top/bottom edges).
+const VIEWBOX = { x: -31, y: -20, w: 617, h: 315 };
+const PATH_PAD = 45;
+
 type BandPath = {
   start: [number, number];
   dir: [number, number];
   dist: number;
 };
+
+function parseBandLine(d: string): [[number, number], [number, number]] {
+  const m = d.match(/^M([-\d.]+)\s+([-\d.]+)L([-\d.]+)\s+([-\d.]+)/);
+  if (!m) throw new Error(`Invalid band line: ${d}`);
+  return [
+    [Number(m[1]), Number(m[2])],
+    [Number(m[3]), Number(m[4])],
+  ];
+}
+
+function bandTrafficPath(
+  top: string,
+  bottom: string,
+  view = VIEWBOX,
+  pad = PATH_PAD,
+): BandPath {
+  const [t0, t1] = parseBandLine(top);
+  const [b0, b1] = parseBandLine(bottom);
+  const c0: [number, number] = [(t0[0] + b0[0]) / 2, (t0[1] + b0[1]) / 2];
+  const c1: [number, number] = [(t1[0] + b1[0]) / 2, (t1[1] + b1[1]) / 2];
+  const dx = c1[0] - c0[0];
+  const dy = c1[1] - c0[1];
+  const fullLen = Math.hypot(dx, dy);
+  const dir: [number, number] = [dx / fullLen, dy / fullLen];
+
+  const yMin = view.y - pad;
+  const yMax = view.y + view.h + pad;
+  const tStart = Math.max(0, Math.min(1, (yMin - c0[1]) / dy));
+  const tEnd = Math.max(0, Math.min(1, (yMax - c0[1]) / dy));
+  const lo = Math.min(tStart, tEnd);
+  const hi = Math.max(tStart, tEnd);
+
+  return {
+    start: [c0[0] + lo * dx, c0[1] + lo * dy],
+    dir,
+    dist: (hi - lo) * fullLen,
+  };
+}
+
 const TRAFFIC_BANDS: BandPath[] = [
-  { start: [65, -65], dir: [0.8660254, 0.5], dist: 692 }, // BAND_FILL
-  { start: [-109, 27], dir: [0.8660254, 0.5], dist: 625 }, // BAND_FILL_2
+  bandTrafficPath(BAND_0.top, BAND_0.bottom),
+  bandTrafficPath(BAND_1.top, BAND_1.bottom),
 ];
 
 type VehicleSpec = {
@@ -401,12 +451,14 @@ function Vehicle({
 
   return (
     <motion.g
-      initial={{ x: sx, y: sy, opacity: 0 }}
-      animate={{ x: [sx, ex], y: [sy, ey], opacity: [0, 1, 1, 0] }}
+      initial={{ x: sx, y: sy }}
+      animate={{ x: [sx, ex], y: [sy, ey] }}
+      // initial={{ x: sx, y: sy, opacity: 0 }}
+      // animate={{ x: [sx, ex], y: [sy, ey], opacity: [0, 1, 1, 0] }}
       transition={{
         x: { ...loop, delay: -elapsed },
         y: { ...loop, delay: -elapsed },
-        opacity: { ...loop, delay: -elapsed, times: [0, 0.12, 0.88, 1] },
+        // opacity: { ...loop, delay: -elapsed, times: [0, 0.12, 0.88, 1] },
         // opacity: { ...loop, delay: -elapsed, times: [0, 0, 1, 1] },
       }}
     >
