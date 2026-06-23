@@ -143,7 +143,8 @@ function buildGeometry(): Geometry {
     }
     if (!filled(c, r + 1)) {
       addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall");
-      if (!southExposed(c - 1, r)) addEdge([c, r + 1, 1], [c, r + 1, 0], "wall");
+      if (!southExposed(c - 1, r))
+        addEdge([c, r + 1, 1], [c, r + 1, 0], "wall");
       if (!southExposed(c + 1, r))
         addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
     }
@@ -203,8 +204,17 @@ const guideLineTransition: Transition = {
   ease: "linear",
 };
 
+// The diagonal corridor between two adjacent ascending guide lines.
+
+// 1st Background
+// Top edge: "M-700 -542L1300 619", bottom edge: "M-700 -474L1300 680.5".
+const BAND_FILL = "M-700 -542L1300 619L1300 680.5L-700 -474Z";
+// 2nd Background
+const BAND_FILL_2 = "M-700 -348L1300 811L1300 873L-700 -282Z";
+
 export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
+  const bandId = `yt-band${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
 
   const transition: Transition = {
@@ -223,7 +233,7 @@ export function YTMarkIsometric() {
 
   return (
     <motion.svg
-      className="h-auto w-full touch-manipulation overflow-visible [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
+      className="h-auto w-full touch-manipulation overflow-visible [--band:color-mix(in_oklab,var(--foreground)_7%,transparent)] [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
       viewBox="-31 -20 617 315"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +258,19 @@ export function YTMarkIsometric() {
             strokeWidth="1"
           />
         </pattern>
+
+        {/* Soft fade along the diagonal corridor — light in the middle,
+            falling off to transparent at both ends. */}
+        <linearGradient id={bandId} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="var(--band)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--band)" stopOpacity="1" />
+          <stop offset="100%" stopColor="var(--band)" stopOpacity="0" />
+        </linearGradient>
       </defs>
+
+      {/* Tinted corridor between two parallel guide lines */}
+      <path d={BAND_FILL} fill={`url(#${bandId})`} />
+      <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
 
       <g className="stroke-line">
         {GUIDE_LINES.map((d) => (
@@ -304,7 +326,7 @@ export function YTMarkIsometric() {
         <motion.path
           key={`top-pattern-${i}`}
           d={shape.normal}
-          fill={`url(#${patternId})`} 
+          fill={`url(#${patternId})`}
           variants={variantsFor(shape)}
           transition={transition}
         />
