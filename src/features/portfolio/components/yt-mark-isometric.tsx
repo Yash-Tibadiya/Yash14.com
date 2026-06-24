@@ -165,7 +165,12 @@ function buildGeometry(): Geometry {
       if (!southExposed(c - 1, r))
         addEdge([c, r + 1, 1], [c, r + 1, 0], "wall", southBehindTraffic);
       if (!southExposed(c + 1, r))
-        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall", southBehindTraffic);
+        addEdge(
+          [c + 1, r + 1, 1],
+          [c + 1, r + 1, 0],
+          "wall",
+          southBehindTraffic,
+        );
     }
   }
 
@@ -445,12 +450,12 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 5 },
-  { kind: "car", band: 0, phase: 0.4, duration: 5 },
-  { kind: "car", band: 1, phase: 0.15, duration: 7 },
+  { kind: "car", band: 0, phase: 0.0, duration: 7 },
+  { kind: "car", band: 0, phase: 0.4, duration: 7 },
+  { kind: "car", band: 1, phase: 0.15, duration: 6 },
   // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
   // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 7 },
+  { kind: "car", band: 1, phase: 0.55, duration: 6 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
