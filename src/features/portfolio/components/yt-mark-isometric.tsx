@@ -62,10 +62,13 @@ const eastExposed = (c: number, r: number) => filled(c, r) && !filled(c + 1, r);
 const southExposed = (c: number, r: number) =>
   filled(c, r) && !filled(c, r + 1);
 
+type TaggedFill = { points: Point[]; behindTraffic: boolean };
+type TaggedEdge = { points: Point[]; behindTraffic: boolean };
+
 type Geometry = {
-  sideFills: Point[][];
+  sideFills: TaggedFill[];
   topFills: Point[][];
-  wallEdges: Point[][];
+  wallEdges: TaggedEdge[];
   topEdges: Point[][];
 };
 
@@ -80,7 +83,7 @@ function buildGeometry(): Geometry {
   cells.sort((a, b) => a[0] + a[1] - (b[0] + b[1]));
 
   const topFills: Point[][] = [];
-  const sideFills: Point[][] = [];
+  const sideFills: TaggedFill[] = [];
   for (const [c, r] of cells) {
     topFills.push([
       [c, r, 1],
@@ -89,33 +92,53 @@ function buildGeometry(): Geometry {
       [c, r + 1, 1],
     ]);
     if (!filled(c + 1, r)) {
-      sideFills.push([
-        [c + 1, r, 1],
-        [c + 1, r + 1, 1],
-        [c + 1, r + 1, 0],
-        [c + 1, r, 0],
-      ]);
+      sideFills.push({
+        points: [
+          [c + 1, r, 1],
+          [c + 1, r + 1, 1],
+          [c + 1, r + 1, 0],
+          [c + 1, r, 0],
+        ],
+        behindTraffic: false,
+      });
     }
     if (!filled(c, r + 1)) {
-      sideFills.push([
-        [c, r + 1, 1],
-        [c + 1, r + 1, 1],
-        [c + 1, r + 1, 0],
-        [c, r + 1, 0],
-      ]);
+      sideFills.push({
+        points: [
+          [c, r + 1, 1],
+          [c + 1, r + 1, 1],
+          [c + 1, r + 1, 0],
+          [c, r + 1, 0],
+        ],
+        behindTraffic: r === ROWS - 1,
+      });
     }
   }
 
   // Outline = boundary edges only (omit seams between adjacent blocks).
-  const wallEdgeMap = new Map<string, Point[]>();
+  const wallEdgeMap = new Map<string, TaggedEdge>();
   const topEdgeMap = new Map<string, Point[]>();
   const keyOf = (p: Point) => p.join(",");
-  const addEdge = (a: Point, b: Point, layer: "wall" | "top") => {
+  const addEdge = (
+    a: Point,
+    b: Point,
+    layer: "wall" | "top",
+    behindTraffic = false,
+  ) => {
     const ka = keyOf(a);
     const kb = keyOf(b);
     const key = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
     const map = layer === "top" ? topEdgeMap : wallEdgeMap;
-    if (!map.has(key)) map.set(key, [a, b]);
+    if (layer === "top") {
+      if (!map.has(key)) (map as Map<string, Point[]>).set(key, [a, b]);
+      return;
+    }
+    const existing = wallEdgeMap.get(key);
+    if (existing) {
+      existing.behindTraffic ||= behindTraffic;
+    } else {
+      wallEdgeMap.set(key, { points: [a, b], behindTraffic });
+    }
   };
 
   // Top-plane edges where filled meets empty.
@@ -135,18 +158,20 @@ function buildGeometry(): Geometry {
   // Visible wall bottoms and their silhouette verticals (skip verticals shared
   // with a coplanar neighbouring wall so stems read as one continuous face).
   for (const [c, r] of cells) {
+    const bottomFace = r === ROWS - 1;
     if (!filled(c + 1, r)) {
-      addEdge([c + 1, r, 0], [c + 1, r + 1, 0], "wall");
-      if (!eastExposed(c, r - 1)) addEdge([c + 1, r, 1], [c + 1, r, 0], "wall");
+      addEdge([c + 1, r, 0], [c + 1, r + 1, 0], "wall", bottomFace);
+      if (!eastExposed(c, r - 1))
+        addEdge([c + 1, r, 1], [c + 1, r, 0], "wall", bottomFace);
       if (!eastExposed(c, r + 1))
-        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
+        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall", bottomFace);
     }
     if (!filled(c, r + 1)) {
-      addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall");
+      addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall", bottomFace);
       if (!southExposed(c - 1, r))
-        addEdge([c, r + 1, 1], [c, r + 1, 0], "wall");
+        addEdge([c, r + 1, 1], [c, r + 1, 0], "wall", bottomFace);
       if (!southExposed(c + 1, r))
-        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
+        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall", bottomFace);
     }
   }
 
@@ -167,9 +192,19 @@ const toShape = (points: Point[], close: boolean): Shape => ({
   pressed: pathD(points, TOP_PRESSED, close),
 });
 
-const SIDE_FILLS = GEO.sideFills.map((p) => toShape(p, true));
+const SIDE_FILLS_BEHIND = GEO.sideFills
+  .filter((f) => f.behindTraffic)
+  .map((f) => toShape(f.points, true));
+const SIDE_FILLS_FRONT = GEO.sideFills
+  .filter((f) => !f.behindTraffic)
+  .map((f) => toShape(f.points, true));
 const TOP_FILLS = GEO.topFills.map((p) => toShape(p, true));
-const WALL_EDGES = GEO.wallEdges.map((e) => toShape(e, false));
+const WALL_EDGES_BEHIND = GEO.wallEdges
+  .filter((e) => e.behindTraffic)
+  .map((e) => toShape(e.points, false));
+const WALL_EDGES_FRONT = GEO.wallEdges
+  .filter((e) => !e.behindTraffic)
+  .map((e) => toShape(e.points, false));
 const TOP_EDGES = GEO.topEdges.map((e) => toShape(e, false));
 
 const SURFACE_FILL = "var(--background)";
@@ -224,8 +259,9 @@ const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 // Cars and trucks ride the two corridors. They reuse the block projection so
 // each vehicle reads as a small isometric plate: forward (u) runs down the
 // corridor (the +fy axis), side (v) crosses it (+fx) and up (w) is +z. One
-// floor unit = 64px, matching the monogram. Vehicles are painted *before* the
-// blocks, so the "YT" occludes them like a tunnel mouth as they pass beneath.
+// floor unit = 64px, matching the monogram. Vehicles are painted after the
+// bottom foot walls but before the rest of the blocks, so cars pass in front of
+// the feet while the upper "YT" still occludes them like a tunnel mouth.
 const FWD = { x: -COS, y: SIN }; //  ( 55.43,  32) — along the corridor
 const VSIDE = { x: COS, y: SIN }; // (-55.43,  32) — across the corridor
 const VUP = { x: 0, y: -ZUNIT }; //  (     0, -64) — vertical
@@ -567,11 +603,29 @@ export function YTMarkIsometric() {
         ))}
       </g>
 
+      {/* Bottom foot walls paint before traffic so cars pass in front */}
+      {SIDE_FILLS_BEHIND.map((shape, i) => (
+        <motion.path
+          key={`side-behind-${i}`}
+          d={shape.normal}
+          fill={SURFACE_FILL}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+      {WALL_EDGES_BEHIND.map((shape, i) => (
+        <motion.path
+          key={`wall-edge-behind-${i}`}
+          d={shape.normal}
+          stroke="var(--stroke)"
+          strokeWidth="1"
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+
       {showTraffic ? (
-        <g
-          style={{ position: "relative", zIndex: 40 }}
-          className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
-        >
+        <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
           {TRAFFIC.map((spec, i) => (
             <Vehicle
               // biome-ignore lint/suspicious/noArrayIndexKey: static config list
@@ -585,7 +639,7 @@ export function YTMarkIsometric() {
       ) : null}
 
       {/* Recessed wall faces */}
-      {SIDE_FILLS.map((shape, i) => (
+      {SIDE_FILLS_FRONT.map((shape, i) => (
         <motion.path
           key={`side-${i}`}
           d={shape.normal}
@@ -596,7 +650,7 @@ export function YTMarkIsometric() {
       ))}
 
       {/* Wall outlines sit under the hatched top faces */}
-      {WALL_EDGES.map((shape, i) => (
+      {WALL_EDGES_FRONT.map((shape, i) => (
         <motion.path
           key={`wall-edge-${i}`}
           d={shape.normal}
