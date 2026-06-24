@@ -295,13 +295,25 @@ const wheelPrim = (
 
 // Each vehicle is a back-to-front list of primitives: lower/farther boxes first
 // so nearer/upper boxes paint over them.
+
+// function buildCar(): Prim[] {
+//   const body: Box = { u: [-0.52, 0.52], v: [-0.26, 0.26], w: [0.05, 0.19] };
+//   const cabin: Box = { u: [-0.3, 0.18], v: [-0.2, 0.2], w: [0.19, 0.33] };
+//   return [
+//     ...boxPrims(body),
+//     wheelPrim([0.24, 0.42], [0, 0.11], 0.26),
+//     wheelPrim([-0.42, -0.24], [0, 0.11], 0.26),
+//     ...boxPrims(cabin),
+//   ];
+// }
+
 function buildCar(): Prim[] {
-  const body: Box = { u: [-0.52, 0.52], v: [-0.26, 0.26], w: [0.05, 0.19] };
-  const cabin: Box = { u: [-0.3, 0.18], v: [-0.2, 0.2], w: [0.19, 0.33] };
+  const body: Box = { u: [-0.47, 0.47], v: [-0.23, 0.23], w: [0.05, 0.17] };
+  const cabin: Box = { u: [-0.27, 0.16], v: [-0.18, 0.18], w: [0.17, 0.3] };
   return [
     ...boxPrims(body),
-    wheelPrim([0.24, 0.42], [0, 0.11], 0.26),
-    wheelPrim([-0.42, -0.24], [0, 0.11], 0.26),
+    wheelPrim([0.22, 0.38], [0, 0.1], 0.23),
+    wheelPrim([-0.38, -0.22], [0, 0.1], 0.23),
     ...boxPrims(cabin),
   ];
 }
@@ -406,10 +418,12 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 9 },
-  { kind: "truck", band: 0, phase: 0.4, duration: 9 },
-  { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 8 },
+  { kind: "car", band: 0, phase: 0.0, duration: 5 },
+  { kind: "car", band: 0, phase: 0.4, duration: 5 },
+  { kind: "car", band: 1, phase: 0.15, duration: 7 },
+  // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
+  // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
+  { kind: "car", band: 1, phase: 0.55, duration: 7 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -533,50 +547,22 @@ export function YTMarkIsometric() {
         </linearGradient>
       </defs>
 
-      <g style={{ position: "relative", zIndex: 0 }}>
-        {/* Tinted corridor between two parallel guide lines */}
-        <path d={BAND_FILL} fill={`url(#${bandId})`} />
-        <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
+      <path d={BAND_FILL} fill={`url(#${bandId})`} />
+      <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
 
-        <g className="stroke-line">
-          {GUIDE_LINES.map((d) => (
-            <motion.path
-              key={d}
-              d={d}
-              stroke="var(--line)"
-              strokeWidth={1}
-              strokeDasharray={GUIDE_DASH}
-              initial={{ strokeDashoffset: 0 }}
-              animate={{
-                strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
-              }}
-              transition={reduceMotion ? undefined : guideLineTransition}
-            />
-          ))}
-        </g>
-      </g>
-
-      <g style={{ position: "relative", zIndex: 10 }}>
-        {/* Recessed wall faces */}
-        {SIDE_FILLS.map((shape, i) => (
+      <g className="stroke-line">
+        {GUIDE_LINES.map((d) => (
           <motion.path
-            key={`side-${i}`}
-            d={shape.normal}
-            fill={SURFACE_FILL}
-            variants={variantsFor(shape)}
-            transition={transition}
-          />
-        ))}
-
-        {/* Wall outlines sit under the hatched top faces */}
-        {WALL_EDGES.map((shape, i) => (
-          <motion.path
-            key={`wall-edge-${i}`}
-            d={shape.normal}
-            stroke="var(--stroke)"
-            strokeWidth="1"
-            variants={variantsFor(shape)}
-            transition={transition}
+            key={d}
+            d={d}
+            stroke="var(--line)"
+            strokeWidth={1}
+            strokeDasharray={GUIDE_DASH}
+            initial={{ strokeDashoffset: 0 }}
+            animate={{
+              strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+            }}
+            transition={reduceMotion ? undefined : guideLineTransition}
           />
         ))}
       </g>
@@ -598,39 +584,60 @@ export function YTMarkIsometric() {
         </g>
       ) : null}
 
-      <g style={{ position: "relative", zIndex: 50 }}>
-        {/* Hatched top faces */}
-        {TOP_FILLS.map((shape, i) => (
-          <motion.path
-            key={`top-bg-${i}`}
-            d={shape.normal}
-            fill={SURFACE_FILL}
-            variants={variantsFor(shape)}
-            transition={transition}
-          />
-        ))}
-        {TOP_FILLS.map((shape, i) => (
-          <motion.path
-            key={`top-pattern-${i}`}
-            d={shape.normal}
-            fill={`url(#${patternId})`}
-            variants={variantsFor(shape)}
-            transition={transition}
-          />
-        ))}
+      {/* Recessed wall faces */}
+      {SIDE_FILLS.map((shape, i) => (
+        <motion.path
+          key={`side-${i}`}
+          d={shape.normal}
+          fill={SURFACE_FILL}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
 
-        {/* Top-plane silhouette outline */}
-        {TOP_EDGES.map((shape, i) => (
-          <motion.path
-            key={`top-edge-${i}`}
-            d={shape.normal}
-            stroke="var(--stroke)"
-            strokeWidth="1"
-            variants={variantsFor(shape)}
-            transition={transition}
-          />
-        ))}
-      </g>
+      {/* Wall outlines sit under the hatched top faces */}
+      {WALL_EDGES.map((shape, i) => (
+        <motion.path
+          key={`wall-edge-${i}`}
+          d={shape.normal}
+          stroke="var(--stroke)"
+          strokeWidth="1"
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+
+      {/* Hatched top faces */}
+      {TOP_FILLS.map((shape, i) => (
+        <motion.path
+          key={`top-bg-${i}`}
+          d={shape.normal}
+          fill={SURFACE_FILL}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+      {TOP_FILLS.map((shape, i) => (
+        <motion.path
+          key={`top-pattern-${i}`}
+          d={shape.normal}
+          fill={`url(#${patternId})`}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+
+      {/* Top-plane silhouette outline */}
+      {TOP_EDGES.map((shape, i) => (
+        <motion.path
+          key={`top-edge-${i}`}
+          d={shape.normal}
+          stroke="var(--stroke)"
+          strokeWidth="1"
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
     </motion.svg>
   );
 }
