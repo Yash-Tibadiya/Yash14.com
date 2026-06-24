@@ -452,10 +452,10 @@ type VehicleSpec = {
 const TRAFFIC: VehicleSpec[] = [
   { kind: "car", band: 0, phase: 0.0, duration: 7 },
   { kind: "car", band: 0, phase: 0.4, duration: 7 },
-  { kind: "car", band: 1, phase: 0.15, duration: 6 },
+  { kind: "car", band: 1, phase: 0.15, duration: 5 },
   // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
   // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 6 },
+  { kind: "car", band: 1, phase: 0.55, duration: 5 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -517,7 +517,7 @@ export function YTMarkIsometric() {
   const bandId = `yt-band${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
-  const [showTraffic, setShowTraffic] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -550,7 +550,7 @@ export function YTMarkIsometric() {
       whileTap="pressed"
       onTap={() => {
         play();
-        setShowTraffic((visible) => !visible);
+        setActive((on) => !on);
       }}
     >
       <defs>
@@ -579,8 +579,12 @@ export function YTMarkIsometric() {
         </linearGradient>
       </defs>
 
-      <path d={BAND_FILL} fill={`url(#${bandId})`} />
-      <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
+      {active ? (
+        <>
+          <path d={BAND_FILL} fill={`url(#${bandId})`} />
+          <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
+        </>
+      ) : null}
 
       <g className="stroke-line">
         {GUIDE_LINES.map((d) => (
@@ -620,7 +624,7 @@ export function YTMarkIsometric() {
         />
       ))}
 
-      {showTraffic ? (
+      {active ? (
         <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
           {TRAFFIC.map((spec, i) => (
             <Vehicle
