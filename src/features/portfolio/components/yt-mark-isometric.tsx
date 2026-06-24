@@ -64,8 +64,10 @@ const southExposed = (c: number, r: number) =>
 
 type Geometry = {
   sideFills: Point[][];
+  sideFillsBehindTraffic: Point[][];
   topFills: Point[][];
   wallEdges: Point[][];
+  wallEdgesBehindTraffic: Point[][];
   topEdges: Point[][];
 };
 
@@ -81,6 +83,7 @@ function buildGeometry(): Geometry {
 
   const topFills: Point[][] = [];
   const sideFills: Point[][] = [];
+  const sideFillsBehindTraffic: Point[][] = [];
   for (const [c, r] of cells) {
     topFills.push([
       [c, r, 1],
@@ -97,24 +100,39 @@ function buildGeometry(): Geometry {
       ]);
     }
     if (!filled(c, r + 1)) {
-      sideFills.push([
+      const wall: Point[] = [
         [c, r + 1, 1],
         [c + 1, r + 1, 1],
         [c + 1, r + 1, 0],
         [c, r + 1, 0],
-      ]);
+      ];
+      if (r === ROWS - 1) {
+        sideFillsBehindTraffic.push(wall);
+      } else {
+        sideFills.push(wall);
+      }
     }
   }
 
   // Outline = boundary edges only (omit seams between adjacent blocks).
   const wallEdgeMap = new Map<string, Point[]>();
+  const wallEdgeBehindTrafficMap = new Map<string, Point[]>();
   const topEdgeMap = new Map<string, Point[]>();
   const keyOf = (p: Point) => p.join(",");
-  const addEdge = (a: Point, b: Point, layer: "wall" | "top") => {
+  const addEdge = (
+    a: Point,
+    b: Point,
+    layer: "wall" | "top",
+    behindTraffic = false,
+  ) => {
     const ka = keyOf(a);
     const kb = keyOf(b);
     const key = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
-    const map = layer === "top" ? topEdgeMap : wallEdgeMap;
+    if (layer === "top") {
+      if (!topEdgeMap.has(key)) topEdgeMap.set(key, [a, b]);
+      return;
+    }
+    const map = behindTraffic ? wallEdgeBehindTrafficMap : wallEdgeMap;
     if (!map.has(key)) map.set(key, [a, b]);
   };
 
@@ -135,6 +153,7 @@ function buildGeometry(): Geometry {
   // Visible wall bottoms and their silhouette verticals (skip verticals shared
   // with a coplanar neighbouring wall so stems read as one continuous face).
   for (const [c, r] of cells) {
+    const southBehindTraffic = r === ROWS - 1;
     if (!filled(c + 1, r)) {
       addEdge([c + 1, r, 0], [c + 1, r + 1, 0], "wall");
       if (!eastExposed(c, r - 1)) addEdge([c + 1, r, 1], [c + 1, r, 0], "wall");
@@ -142,18 +161,25 @@ function buildGeometry(): Geometry {
         addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
     }
     if (!filled(c, r + 1)) {
-      addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall");
+      addEdge([c, r + 1, 0], [c + 1, r + 1, 0], "wall", southBehindTraffic);
       if (!southExposed(c - 1, r))
-        addEdge([c, r + 1, 1], [c, r + 1, 0], "wall");
+        addEdge([c, r + 1, 1], [c, r + 1, 0], "wall", southBehindTraffic);
       if (!southExposed(c + 1, r))
-        addEdge([c + 1, r + 1, 1], [c + 1, r + 1, 0], "wall");
+        addEdge(
+          [c + 1, r + 1, 1],
+          [c + 1, r + 1, 0],
+          "wall",
+          southBehindTraffic,
+        );
     }
   }
 
   return {
     topFills,
     sideFills,
+    sideFillsBehindTraffic,
     wallEdges: [...wallEdgeMap.values()],
+    wallEdgesBehindTraffic: [...wallEdgeBehindTrafficMap.values()],
     topEdges: [...topEdgeMap.values()],
   };
 }
@@ -168,8 +194,14 @@ const toShape = (points: Point[], close: boolean): Shape => ({
 });
 
 const SIDE_FILLS = GEO.sideFills.map((p) => toShape(p, true));
+const SIDE_FILLS_BEHIND_TRAFFIC = GEO.sideFillsBehindTraffic.map((p) =>
+  toShape(p, true),
+);
 const TOP_FILLS = GEO.topFills.map((p) => toShape(p, true));
 const WALL_EDGES = GEO.wallEdges.map((e) => toShape(e, false));
+const WALL_EDGES_BEHIND_TRAFFIC = GEO.wallEdgesBehindTraffic.map((e) =>
+  toShape(e, false),
+);
 const TOP_EDGES = GEO.topEdges.map((e) => toShape(e, false));
 
 const SURFACE_FILL = "var(--background)";
@@ -418,12 +450,12 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 5 },
-  { kind: "car", band: 0, phase: 0.4, duration: 5 },
-  { kind: "car", band: 1, phase: 0.15, duration: 7 },
+  { kind: "car", band: 0, phase: 0.0, duration: 7 },
+  { kind: "car", band: 0, phase: 0.4, duration: 7 },
+  { kind: "car", band: 1, phase: 0.15, duration: 6 },
   // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
   // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 7 },
+  { kind: "car", band: 1, phase: 0.55, duration: 6 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -567,11 +599,29 @@ export function YTMarkIsometric() {
         ))}
       </g>
 
+      {/* Bottom south walls + their outlines — before traffic so cars pass in front */}
+      {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
+        <motion.path
+          key={`side-behind-${i}`}
+          d={shape.normal}
+          fill={SURFACE_FILL}
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+      {WALL_EDGES_BEHIND_TRAFFIC.map((shape, i) => (
+        <motion.path
+          key={`wall-edge-behind-${i}`}
+          d={shape.normal}
+          stroke="var(--stroke)"
+          strokeWidth="1"
+          variants={variantsFor(shape)}
+          transition={transition}
+        />
+      ))}
+
       {showTraffic ? (
-        <g
-          style={{ position: "relative", zIndex: 40 }}
-          className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
-        >
+        <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
           {TRAFFIC.map((spec, i) => (
             <Vehicle
               // biome-ignore lint/suspicious/noArrayIndexKey: static config list
