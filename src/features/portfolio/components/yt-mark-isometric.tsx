@@ -565,28 +565,17 @@ export function YTMarkIsometric() {
 
   const bandTransition = reduceMotion ? { duration: 0 } : bandRevealTransition;
 
-  const bandFillOpacityTransition: Transition = reduceMotion
-    ? { duration: 0 }
-    : active
-      ? { duration: 5, ease: [0.22, 1, 0.36, 1] }
-      : { duration: 0.7, ease: [0.22, 1, 0.36, 1] };
+  const bandFillSweepDuration = 4;
+  const bandFillSweepEase = [0.22, 1, 0.36, 1] as const;
 
-  const bandFillTransition: Transition = reduceMotion
+  const bandFillSweepTransition: Transition = reduceMotion
     ? { duration: 0 }
-    : active
-      ? {
-          duration: 4,
-          ease: [0.22, 1, 0.36, 1],
-        }
-      : {
-          duration: 0.56,
-          ease: [0.22, 1, 0.36, 1],
-        };
+    : { duration: bandFillSweepDuration, ease: bandFillSweepEase };
 
-  const bandFillProgress = active ? [0, 1] : 0;
+  const bandFillProgress = active ? [0, 1] : [1, 0];
   const bandFillTailProgress = active
     ? [BAND_FILL_FEATHER, 1 + BAND_FILL_FEATHER]
-    : BAND_FILL_FEATHER;
+    : [1 + BAND_FILL_FEATHER, BAND_FILL_FEATHER];
 
   return (
     <motion.svg
@@ -634,12 +623,14 @@ export function YTMarkIsometric() {
             stopColor="var(--foreground)"
             stopOpacity={0}
             animate={{
-              stopOpacity: active ? BAND_FILL_OPACITY : 0,
+              stopOpacity: active
+                ? [0, BAND_FILL_OPACITY]
+                : [BAND_FILL_OPACITY, 0],
               offset: bandFillProgress,
             }}
             transition={{
-              stopOpacity: bandFillOpacityTransition,
-              offset: bandFillTransition,
+              stopOpacity: bandFillSweepTransition,
+              offset: bandFillSweepTransition,
             }}
           />
           <motion.stop
@@ -647,7 +638,7 @@ export function YTMarkIsometric() {
             stopColor="var(--foreground)"
             stopOpacity={0}
             animate={{ offset: bandFillTailProgress }}
-            transition={bandFillTransition}
+            transition={bandFillSweepTransition}
           />
           <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
         </motion.linearGradient>
@@ -664,12 +655,14 @@ export function YTMarkIsometric() {
             stopColor="var(--foreground)"
             stopOpacity={0}
             animate={{
-              stopOpacity: active ? BAND_FILL_OPACITY : 0,
+              stopOpacity: active
+                ? [0, BAND_FILL_OPACITY]
+                : [BAND_FILL_OPACITY, 0],
               offset: bandFillProgress,
             }}
             transition={{
-              stopOpacity: bandFillOpacityTransition,
-              offset: bandFillTransition,
+              stopOpacity: bandFillSweepTransition,
+              offset: bandFillSweepTransition,
             }}
           />
           <motion.stop
@@ -677,7 +670,7 @@ export function YTMarkIsometric() {
             stopColor="var(--foreground)"
             stopOpacity={0}
             animate={{ offset: bandFillTailProgress }}
-            transition={bandFillTransition}
+            transition={bandFillSweepTransition}
           />
           <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
         </motion.linearGradient>
