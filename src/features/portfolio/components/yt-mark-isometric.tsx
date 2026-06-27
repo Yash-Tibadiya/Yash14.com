@@ -252,6 +252,9 @@ const BAND_1 = {
 } as const;
 const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 
+const BAND_FILL_OPACITY = 0.08;
+const BAND_FILL_FEATHER = 0.22; // length of the gradient leading edge
+
 // ----------------------------------------------------------------- traffic --
 // Cars and trucks ride the two corridors. They reuse the block projection so
 // each vehicle reads as a small isometric plate: forward (u) runs down the
@@ -561,7 +564,30 @@ export function YTMarkIsometric() {
   });
 
   const bandTransition = reduceMotion ? { duration: 0 } : bandRevealTransition;
-  const bandStopOpacity = active ? 0.07 : 0;
+
+  const bandFillOpacityTransition: Transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.35, ease: [0.22, 1, 0.36, 1] };
+
+  const bandFillTransition: Transition = reduceMotion
+    ? { duration: 0 }
+    : active
+      ? {
+          duration: 2,
+          ease: [0.22, 1, 0.36, 1],
+          repeat: Infinity,
+          repeatType: "mirror",
+          repeatDelay: 0.4,
+        }
+      : {
+          duration: 0.35,
+          ease: [0.22, 1, 0.36, 1],
+        };
+
+  const bandFillProgress = active ? [0, 1] : 0;
+  const bandFillTailProgress = active
+    ? [BAND_FILL_FEATHER, 1 + BAND_FILL_FEATHER]
+    : BAND_FILL_FEATHER;
 
   return (
     <motion.svg
@@ -594,8 +620,8 @@ export function YTMarkIsometric() {
           />
         </pattern>
 
-        {/* Soft fade along each diagonal corridor — brightest at the centre,
-            falling off to transparent at both ends. */}
+        {/* Diagonal sweep fill: each corridor fills from the top-left with a
+            soft gradient edge and pulses while active. */}
         <motion.linearGradient
           id={bandId0}
           gradientUnits="userSpaceOnUse"
@@ -604,12 +630,25 @@ export function YTMarkIsometric() {
           x2={BAND_GRAD_0.x2}
           y2={BAND_GRAD_0.y2}
         >
-          <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0} />
           <motion.stop
-            offset="50%"
+            offset={0}
             stopColor="var(--foreground)"
-            animate={{ stopOpacity: bandStopOpacity }}
-            transition={bandTransition}
+            stopOpacity={0}
+            animate={{
+              stopOpacity: active ? BAND_FILL_OPACITY : 0,
+              offset: bandFillProgress,
+            }}
+            transition={{
+              stopOpacity: bandFillOpacityTransition,
+              offset: bandFillTransition,
+            }}
+          />
+          <motion.stop
+            offset={BAND_FILL_FEATHER}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{ offset: bandFillTailProgress }}
+            transition={bandFillTransition}
           />
           <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
         </motion.linearGradient>
@@ -621,12 +660,25 @@ export function YTMarkIsometric() {
           x2={BAND_GRAD_1.x2}
           y2={BAND_GRAD_1.y2}
         >
-          <stop offset="0%" stopColor="var(--foreground)" stopOpacity={0} />
           <motion.stop
-            offset="50%"
+            offset={0}
             stopColor="var(--foreground)"
-            animate={{ stopOpacity: bandStopOpacity }}
-            transition={bandTransition}
+            stopOpacity={0}
+            animate={{
+              stopOpacity: active ? BAND_FILL_OPACITY : 0,
+              offset: bandFillProgress,
+            }}
+            transition={{
+              stopOpacity: bandFillOpacityTransition,
+              offset: bandFillTransition,
+            }}
+          />
+          <motion.stop
+            offset={BAND_FILL_FEATHER}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{ offset: bandFillTailProgress }}
+            transition={bandFillTransition}
           />
           <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
         </motion.linearGradient>
