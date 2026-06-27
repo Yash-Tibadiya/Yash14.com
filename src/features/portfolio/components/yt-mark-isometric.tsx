@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 import type { Transition } from "motion/react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { metalClickSound } from "@/lib/soundcn/metal-click";
 import { useSound } from "@/hooks/soundcn/use-sound";
@@ -252,6 +252,9 @@ const BAND_1 = {
 } as const;
 const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 
+const BAND_FILL_OPACITY = 0.08;
+const BAND_FILL_FEATHER = 0.22; // length of the gradient leading edge
+
 // ----------------------------------------------------------------- traffic --
 // Cars and trucks ride the two corridors. They reuse the block projection so
 // each vehicle reads as a small isometric plate: forward (u) runs down the
@@ -408,6 +411,20 @@ function parseBandLine(d: string): [[number, number], [number, number]] {
   ];
 }
 
+function bandGradientAxis(top: string, bottom: string) {
+  const [t0, t1] = parseBandLine(top);
+  const [b0, b1] = parseBandLine(bottom);
+  return {
+    x1: (t0[0] + b0[0]) / 2,
+    y1: (t0[1] + b0[1]) / 2,
+    x2: (t1[0] + b1[0]) / 2,
+    y2: (t1[1] + b1[1]) / 2,
+  };
+}
+
+const BAND_GRAD_0 = bandGradientAxis(BAND_0.top, BAND_0.bottom);
+const BAND_GRAD_1 = bandGradientAxis(BAND_1.top, BAND_1.bottom);
+
 function bandTrafficPath(
   top: string,
   bottom: string,
@@ -450,12 +467,12 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 7 },
-  { kind: "car", band: 0, phase: 0.4, duration: 7 },
-  { kind: "car", band: 1, phase: 0.15, duration: 6 },
+  { kind: "car", band: 0, phase: 0.0, duration: 5 },
+  { kind: "car", band: 0, phase: 0.4, duration: 5 },
+  { kind: "car", band: 1, phase: 0.15, duration: 4.5 },
+  { kind: "car", band: 1, phase: 0.63, duration: 4.5 },
   // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
   // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 6 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -512,12 +529,19 @@ function Vehicle({
   );
 }
 
+const bandRevealTransition: Transition = {
+  duration: 0.45,
+  ease: [0.22, 1, 0.36, 1],
+};
+
 export function YTMarkIsometric() {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
-  const bandId = `yt-band${useId().replace(/:/g, "")}`;
+  const bandId0 = `yt-band-0${useId().replace(/:/g, "")}`;
+  const bandId1 = `yt-band-1${useId().replace(/:/g, "")}`;
+  const bandClipId = `yt-band-clip${useId().replace(/:/g, "")}`;
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
-  const [showTraffic, setShowTraffic] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -539,9 +563,23 @@ export function YTMarkIsometric() {
     pressed: { d: shape.pressed },
   });
 
+  const bandTransition = reduceMotion ? { duration: 0 } : bandRevealTransition;
+
+  const bandFillSweepDuration = 4;
+  const bandFillSweepEase = [0.22, 1, 0.36, 1] as const;
+
+  const bandFillSweepTransition: Transition = reduceMotion
+    ? { duration: 0 }
+    : { duration: bandFillSweepDuration, ease: bandFillSweepEase };
+
+  const bandFillProgress = active ? [0, 1] : [1, 0];
+  const bandFillTailProgress = active
+    ? [BAND_FILL_FEATHER, 1 + BAND_FILL_FEATHER]
+    : [1 + BAND_FILL_FEATHER, BAND_FILL_FEATHER];
+
   return (
     <motion.svg
-      className="relative isolate h-auto w-full touch-manipulation overflow-visible [--band:color-mix(in_oklab,var(--foreground)_7%,transparent)] [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
+      className="relative isolate h-auto w-full touch-manipulation overflow-visible [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
       viewBox="-31 -20 617 315"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -550,7 +588,7 @@ export function YTMarkIsometric() {
       whileTap="pressed"
       onTap={() => {
         play();
-        setShowTraffic((visible) => !visible);
+        setActive((on) => !on);
       }}
     >
       <defs>
@@ -570,34 +608,128 @@ export function YTMarkIsometric() {
           />
         </pattern>
 
-        {/* Soft fade along the diagonal corridor — light in the middle,
-            falling off to transparent at both ends. */}
-        <linearGradient id={bandId} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="var(--band)" stopOpacity="0" />
-          <stop offset="50%" stopColor="var(--band)" stopOpacity="1" />
-          <stop offset="100%" stopColor="var(--band)" stopOpacity="0" />
-        </linearGradient>
+        {/* Diagonal sweep fill: each corridor fills from the top-left on tap and
+            reverses on the next tap, matching the traffic toggle. */}
+        <motion.linearGradient
+          id={bandId0}
+          gradientUnits="userSpaceOnUse"
+          x1={BAND_GRAD_0.x1}
+          y1={BAND_GRAD_0.y1}
+          x2={BAND_GRAD_0.x2}
+          y2={BAND_GRAD_0.y2}
+        >
+          <motion.stop
+            offset={0}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{
+              stopOpacity: active
+                ? [0, BAND_FILL_OPACITY]
+                : [BAND_FILL_OPACITY, 0],
+              offset: bandFillProgress,
+            }}
+            transition={{
+              stopOpacity: bandFillSweepTransition,
+              offset: bandFillSweepTransition,
+            }}
+          />
+          <motion.stop
+            offset={BAND_FILL_FEATHER}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{ offset: bandFillTailProgress }}
+            transition={bandFillSweepTransition}
+          />
+          <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+        </motion.linearGradient>
+        <motion.linearGradient
+          id={bandId1}
+          gradientUnits="userSpaceOnUse"
+          x1={BAND_GRAD_1.x1}
+          y1={BAND_GRAD_1.y1}
+          x2={BAND_GRAD_1.x2}
+          y2={BAND_GRAD_1.y2}
+        >
+          <motion.stop
+            offset={0}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{
+              stopOpacity: active
+                ? [0, BAND_FILL_OPACITY]
+                : [BAND_FILL_OPACITY, 0],
+              offset: bandFillProgress,
+            }}
+            transition={{
+              stopOpacity: bandFillSweepTransition,
+              offset: bandFillSweepTransition,
+            }}
+          />
+          <motion.stop
+            offset={BAND_FILL_FEATHER}
+            stopColor="var(--foreground)"
+            stopOpacity={0}
+            animate={{ offset: bandFillTailProgress }}
+            transition={bandFillSweepTransition}
+          />
+          <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
+        </motion.linearGradient>
+
+        <clipPath id={bandClipId}>
+          <path d={BAND_FILL} />
+          <path d={BAND_FILL_2} />
+        </clipPath>
       </defs>
 
-      <path d={BAND_FILL} fill={`url(#${bandId})`} />
-      <path d={BAND_FILL_2} fill={`url(#${bandId})`} />
-
-      <g className="stroke-line">
-        {GUIDE_LINES.map((d) => (
+      <AnimatePresence>
+        <motion.g
+          key="corridors"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={bandTransition}
+        >
           <motion.path
-            key={d}
-            d={d}
-            stroke="var(--line)"
-            strokeWidth={1}
-            strokeDasharray={GUIDE_DASH}
-            initial={{ strokeDashoffset: 0 }}
-            animate={{
-              strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
-            }}
-            transition={reduceMotion ? undefined : guideLineTransition}
+            d={BAND_FILL}
+            fill={`url(#${bandId0})`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={bandTransition}
           />
-        ))}
-      </g>
+          <motion.path
+            d={BAND_FILL_2}
+            fill={`url(#${bandId1})`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={bandTransition}
+          />
+          <g className="stroke-line">
+            {GUIDE_LINES.map((d) => (
+              <motion.path
+                key={d}
+                d={d}
+                stroke="var(--line)"
+                strokeWidth={1}
+                strokeDasharray={GUIDE_DASH}
+                initial={{ strokeDashoffset: 0, opacity: 0 }}
+                animate={{
+                  strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+                  opacity: 1,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: bandTransition,
+                  strokeDashoffset: reduceMotion
+                    ? undefined
+                    : guideLineTransition,
+                }}
+              />
+            ))}
+          </g>
+        </motion.g>
+      </AnimatePresence>
 
       {/* Bottom south walls + their outlines — before traffic so cars pass in front */}
       {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
@@ -620,18 +752,27 @@ export function YTMarkIsometric() {
         />
       ))}
 
-      {showTraffic ? (
-        <g className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]">
-          {TRAFFIC.map((spec, i) => (
-            <Vehicle
-              // biome-ignore lint/suspicious/noArrayIndexKey: static config list
-              key={i}
-              spec={spec}
-              reduce={reduceMotion}
-              animateTraffic={animateTraffic}
-            />
-          ))}
-        </g>
+      {active ? (
+        <AnimatePresence>
+          <motion.g
+            key="traffic"
+            className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={bandTransition}
+          >
+            {TRAFFIC.map((spec, i) => (
+              <Vehicle
+                // biome-ignore lint/suspicious/noArrayIndexKey: static config list
+                key={i}
+                spec={spec}
+                reduce={reduceMotion}
+                animateTraffic={animateTraffic}
+              />
+            ))}
+          </motion.g>
+        </AnimatePresence>
       ) : null}
 
       {/* Recessed wall faces */}
