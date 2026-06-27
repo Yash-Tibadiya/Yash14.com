@@ -567,20 +567,19 @@ export function YTMarkIsometric() {
 
   const bandFillOpacityTransition: Transition = reduceMotion
     ? { duration: 0 }
-    : { duration: 0.35, ease: [0.22, 1, 0.36, 1] };
+    : active
+      ? { duration: 5, ease: [0.22, 1, 0.36, 1] }
+      : { duration: 0.7, ease: [0.22, 1, 0.36, 1] };
 
   const bandFillTransition: Transition = reduceMotion
     ? { duration: 0 }
     : active
       ? {
-          duration: 2,
+          duration: 4,
           ease: [0.22, 1, 0.36, 1],
-          repeat: Infinity,
-          repeatType: "mirror",
-          repeatDelay: 0.4,
         }
       : {
-          duration: 0.35,
+          duration: 0.56,
           ease: [0.22, 1, 0.36, 1],
         };
 
@@ -620,8 +619,8 @@ export function YTMarkIsometric() {
           />
         </pattern>
 
-        {/* Diagonal sweep fill: each corridor fills from the top-left with a
-            soft gradient edge and pulses while active. */}
+        {/* Diagonal sweep fill: each corridor fills from the top-left on tap and
+            reverses on the next tap, matching the traffic toggle. */}
         <motion.linearGradient
           id={bandId0}
           gradientUnits="userSpaceOnUse"
