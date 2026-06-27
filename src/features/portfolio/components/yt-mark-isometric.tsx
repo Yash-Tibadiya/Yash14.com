@@ -467,12 +467,12 @@ type VehicleSpec = {
   duration: number; // seconds for one full pass
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 7 },
-  { kind: "car", band: 0, phase: 0.4, duration: 7 },
-  { kind: "car", band: 1, phase: 0.15, duration: 5 },
+  { kind: "car", band: 0, phase: 0.0, duration: 5 },
+  { kind: "car", band: 0, phase: 0.4, duration: 5 },
+  { kind: "car", band: 1, phase: 0.15, duration: 4.5 },
+  { kind: "car", band: 1, phase: 0.63, duration: 4.5 },
   // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
   // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
-  { kind: "car", band: 1, phase: 0.55, duration: 5 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
