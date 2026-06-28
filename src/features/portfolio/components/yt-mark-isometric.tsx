@@ -7,18 +7,6 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { metalClickSound } from "@/lib/soundcn/metal-click";
 import { useSound } from "@/hooks/soundcn/use-sound";
 
-/**
- * "YT" monogram drawn in true isometric (30°). Each cell of the flat mark
- * (src/components/yt-mark.tsx) is extruded into a plate, projected onto the
- * isometric floor so the elevated edge sits top-left and the form reads from
- * top-left down to bottom-right. Only outer silhouette edges are stroked —
- * internal seams between adjacent blocks are omitted — and the whole monogram
- * presses in like a button on tap.
- */
-
-// Isometric floor layout: rows run toward the front-right, columns toward the
-// front-left. Derived from the flat YT mark, mirrored so the top is on the
-// left. true = a filled block.
 const GRID = [
   [true, true, true, true, false, true],
   [false, true, false, true, false, true],
@@ -30,19 +18,15 @@ const COLS = 6;
 const ROWS = 4;
 
 // True isometric (30°) projection constants.
-const COS = -55.4256; // 64 · cos30° — horizontal run of one tile edge
-const SIN = 32; //       64 · sin30° — vertical rise of one tile edge
-const ZUNIT = 64; //     vertical pixels per 1 unit of plate height
-// const OX = 320; //     shift so every projected x ≥ 0
-//TODO: Uncomment this when the design is finalized
-const OX = 360; //     shift so every projected x ≥ 0
-const OY = 10; //        shift so every projected y ≥ 0
+const COS = -55.4256;
+const SIN = 32;
+const ZUNIT = 64;
+const OX = 360;
+const OY = 10;
 
-const TOP_NORMAL = 0.5; //  resting plate thickness
-const TOP_PRESSED = 0.25; // pressed-in plate thickness
+const TOP_NORMAL = 0.5;
+const TOP_PRESSED = 0.25;
 
-// A point is [floorX, floorY, isTop]; isTop picks the animated top plane (z)
-// versus the fixed base plane (z = 0).
 type Point = [number, number, number];
 
 function projectPoint([fx, fy, isTop]: Point, topZ: number) {
@@ -78,7 +62,7 @@ function buildGeometry(): Geometry {
       if (GRID[r][c]) cells.push([c, r]);
     }
   }
-  // Back-to-front so nearer plates paint over farther ones.
+
   cells.sort((a, b) => a[0] + a[1] - (b[0] + b[1]));
 
   const topFills: Point[][] = [];
@@ -114,7 +98,6 @@ function buildGeometry(): Geometry {
     }
   }
 
-  // Outline = boundary edges only (omit seams between adjacent blocks).
   const wallEdgeMap = new Map<string, Point[]>();
   const wallEdgeBehindTrafficMap = new Map<string, Point[]>();
   const topEdgeMap = new Map<string, Point[]>();
@@ -136,7 +119,6 @@ function buildGeometry(): Geometry {
     if (!map.has(key)) map.set(key, [a, b]);
   };
 
-  // Top-plane edges where filled meets empty.
   for (let x = 0; x <= COLS; x++) {
     for (let y = 0; y < ROWS; y++) {
       if (filled(x - 1, y) !== filled(x, y))
@@ -150,8 +132,6 @@ function buildGeometry(): Geometry {
     }
   }
 
-  // Visible wall bottoms and their silhouette verticals (skip verticals shared
-  // with a coplanar neighbouring wall so stems read as one continuous face).
   for (const [c, r] of cells) {
     const southBehindTraffic = r === ROWS - 1;
     if (!filled(c + 1, r)) {
@@ -206,16 +186,6 @@ const TOP_EDGES = GEO.topEdges.map((e) => toShape(e, false));
 
 const SURFACE_FILL = "var(--background)";
 
-// const GUIDE_LINES = [
-//   "M-700 855L1230 -259",
-//   "M-700 727L1230 -387",
-//   "M-700 596L1230 -511",
-//   "M-700 -255.5L1300 892",
-//   "M-700 -322L1300 830",
-//   "M-700 -453L1300 706",
-//   "M-700 -520L1300 644",
-// ];
-
 const GUIDE_LINES = [
   "M-700 879L1230 -237",
   "M-700 751L1230 -365",
@@ -232,20 +202,14 @@ const GUIDE_DASH_PERIOD = 6;
 const guideLineTransition: Transition = {
   repeat: Infinity,
   duration: 0.7,
-  // duration: 1.4,
   ease: "linear",
 };
 
-// The diagonal corridor between two adjacent ascending guide lines.
-
-// 1st Background
-// Top edge: "M-700 -542L1300 619", bottom edge: "M-700 -474L1300 680.5".
 const BAND_0 = {
   top: "M-700 -542L1300 619",
   bottom: "M-700 -474L1300 680.5",
 } as const;
 const BAND_FILL = `${BAND_0.top}L1300 680.5L-700 -474Z`;
-// 2nd Background
 const BAND_1 = {
   top: "M-700 -348L1300 811",
   bottom: "M-700 -282L1300 873",
@@ -253,17 +217,11 @@ const BAND_1 = {
 const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 
 const BAND_FILL_OPACITY = 0.08;
-const BAND_FILL_FEATHER = 0.22; // length of the gradient leading edge
+const BAND_FILL_FEATHER = 0.22;
 
-// ----------------------------------------------------------------- traffic --
-// Cars and trucks ride the two corridors. They reuse the block projection so
-// each vehicle reads as a small isometric plate: forward (u) runs down the
-// corridor (the +fy axis), side (v) crosses it (+fx) and up (w) is +z. One
-// floor unit = 64px, matching the monogram. Vehicles are painted *before* the
-// blocks, so the "YT" occludes them like a tunnel mouth as they pass beneath.
-const FWD = { x: -COS, y: SIN }; //  ( 55.43,  32) — along the corridor
-const VSIDE = { x: COS, y: SIN }; // (-55.43,  32) — across the corridor
-const VUP = { x: 0, y: -ZUNIT }; //  (     0, -64) — vertical
+const FWD = { x: -COS, y: SIN };
+const VSIDE = { x: COS, y: SIN };
+const VUP = { x: 0, y: -ZUNIT };
 
 const vproj = (u: number, v: number, w: number): [number, number] => [
   u * FWD.x + v * VSIDE.x + w * VUP.x,
@@ -275,8 +233,6 @@ const poly = (corners: Array<[number, number]>) =>
 
 type Box = { u: [number, number]; v: [number, number]; w: [number, number] };
 
-// The three viewer-facing faces of a local box: the down-left side (v = max),
-// the down-right front (u = max) and the top (w = max).
 function boxFaces({ u: [u0, u1], v: [v0, v1], w: [w0, w1] }: Box) {
   return {
     side: poly([
@@ -311,8 +267,6 @@ const boxPrims = (b: Box): Prim[] => {
   ];
 };
 
-// A wheel patch sits on the visible side plane (v fixed) as a small rectangle
-// spanning the (u, w) plane.
 const wheelPrim = (
   u: [number, number],
   w: [number, number],
@@ -328,20 +282,6 @@ const wheelPrim = (
   stroked: false,
 });
 
-// Each vehicle is a back-to-front list of primitives: lower/farther boxes first
-// so nearer/upper boxes paint over them.
-
-// function buildCar(): Prim[] {
-//   const body: Box = { u: [-0.52, 0.52], v: [-0.26, 0.26], w: [0.05, 0.19] };
-//   const cabin: Box = { u: [-0.3, 0.18], v: [-0.2, 0.2], w: [0.19, 0.33] };
-//   return [
-//     ...boxPrims(body),
-//     wheelPrim([0.24, 0.42], [0, 0.11], 0.26),
-//     wheelPrim([-0.42, -0.24], [0, 0.11], 0.26),
-//     ...boxPrims(cabin),
-//   ];
-// }
-
 function buildCar(): Prim[] {
   const body: Box = { u: [-0.47, 0.47], v: [-0.23, 0.23], w: [0.05, 0.17] };
   const cabin: Box = { u: [-0.27, 0.16], v: [-0.18, 0.18], w: [0.17, 0.3] };
@@ -353,25 +293,10 @@ function buildCar(): Prim[] {
   ];
 }
 
-function buildTruck(): Prim[] {
-  const chassis: Box = { u: [-0.92, 0.92], v: [-0.27, 0.27], w: [0.04, 0.15] };
-  const cargo: Box = { u: [-0.9, 0.34], v: [-0.29, 0.29], w: [0.15, 0.5] };
-  const cab: Box = { u: [0.37, 0.9], v: [-0.26, 0.26], w: [0.15, 0.4] };
-  return [
-    ...boxPrims(chassis),
-    wheelPrim([0.54, 0.78], [0, 0.12], 0.29),
-    wheelPrim([-0.58, -0.34], [0, 0.12], 0.29),
-    wheelPrim([-0.88, -0.64], [0, 0.12], 0.29),
-    ...boxPrims(cargo),
-    ...boxPrims(cab),
-  ];
-}
-
 const CAR_PRIMS = buildCar();
-const TRUCK_PRIMS = buildTruck();
 
-function VehicleShape({ kind }: { kind: "car" | "truck" }) {
-  const prims = kind === "truck" ? TRUCK_PRIMS : CAR_PRIMS;
+function VehicleShape({ kind }: { kind: "car" }) {
+  const prims = CAR_PRIMS;
   return (
     <g strokeLinejoin="round">
       {prims.map((p, i) => (
@@ -388,13 +313,9 @@ function VehicleShape({ kind }: { kind: "car" | "truck" }) {
   );
 }
 
-// Centreline of each corridor in screen space: derived from the matching
-// BAND_* top/bottom edges, clipped to the svg viewBox. Extra runout at both
-// ends keeps the loop reset off-screen so vehicles exit naturally instead of
-// popping away at the bottom edge.
 const VIEWBOX = { x: -31, y: -20, w: 617, h: 315 };
 const PATH_PAD = 45;
-const PATH_RUNOUT = 240; // travel past the padded viewBox before looping
+const PATH_RUNOUT = 240;
 
 type BandPath = {
   start: [number, number];
@@ -461,18 +382,16 @@ const TRAFFIC_BANDS: BandPath[] = [
 ];
 
 type VehicleSpec = {
-  kind: "car" | "truck";
+  kind: "car";
   band: number;
-  phase: number; // 0..1 starting offset along the corridor
-  duration: number; // seconds for one full pass
+  phase: number;
+  duration: number;
 };
 const TRAFFIC: VehicleSpec[] = [
   { kind: "car", band: 0, phase: 0.0, duration: 5 },
   { kind: "car", band: 0, phase: 0.4, duration: 5 },
   { kind: "car", band: 1, phase: 0.15, duration: 4.5 },
   { kind: "car", band: 1, phase: 0.63, duration: 4.5 },
-  // { kind: "truck", band: 0, phase: 0.4, duration: 9 },
-  // { kind: "truck", band: 1, phase: 0.15, duration: 8 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -511,8 +430,7 @@ function Vehicle({
     ease: "linear" as const,
     repeat: Number.POSITIVE_INFINITY,
   };
-  // Negative delay starts the loop mid-cycle at `spec.phase`, matching the
-  // static fallback position so the handoff from SSR/hydration is seamless.
+
   const elapsed = spec.phase * spec.duration;
 
   return (
@@ -608,8 +526,6 @@ export function YTMarkIsometric() {
           />
         </pattern>
 
-        {/* Diagonal sweep fill: each corridor fills from the top-left on tap and
-            reverses on the next tap, matching the traffic toggle. */}
         <motion.linearGradient
           id={bandId0}
           gradientUnits="userSpaceOnUse"
@@ -731,7 +647,6 @@ export function YTMarkIsometric() {
         </motion.g>
       </AnimatePresence>
 
-      {/* Bottom south walls + their outlines — before traffic so cars pass in front */}
       {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
         <motion.path
           key={`side-behind-${i}`}
@@ -775,7 +690,6 @@ export function YTMarkIsometric() {
         </AnimatePresence>
       ) : null}
 
-      {/* Recessed wall faces */}
       {SIDE_FILLS.map((shape, i) => (
         <motion.path
           key={`side-${i}`}
@@ -786,7 +700,6 @@ export function YTMarkIsometric() {
         />
       ))}
 
-      {/* Wall outlines sit under the hatched top faces */}
       {WALL_EDGES.map((shape, i) => (
         <motion.path
           key={`wall-edge-${i}`}
@@ -798,7 +711,6 @@ export function YTMarkIsometric() {
         />
       ))}
 
-      {/* Hatched top faces */}
       {TOP_FILLS.map((shape, i) => (
         <motion.path
           key={`top-bg-${i}`}
@@ -818,7 +730,6 @@ export function YTMarkIsometric() {
         />
       ))}
 
-      {/* Top-plane silhouette outline */}
       {TOP_EDGES.map((shape, i) => (
         <motion.path
           key={`top-edge-${i}`}
