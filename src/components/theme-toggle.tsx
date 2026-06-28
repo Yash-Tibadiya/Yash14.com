@@ -20,14 +20,30 @@ export function ThemeToggle() {
 
   const [click] = useClickSound();
 
-  const switchTheme = () => {
-    click();
+  const applyTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
     setMetaColor(
       resolvedTheme === "dark"
         ? META_THEME_COLORS.light
         : META_THEME_COLORS.dark,
     );
+  };
+
+  const switchTheme = () => {
+    click();
+
+    if (
+      typeof document === "undefined" ||
+      !document.startViewTransition ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      applyTheme();
+      return;
+    }
+
+    document.startViewTransition(() => {
+      applyTheme();
+    });
   };
 
   useHotkeys("d", () => switchTheme());

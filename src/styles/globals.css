@@ -675,3 +675,48 @@
     @apply data-[level=4]:fill-muted-foreground/80;
   }
 }
+
+/* Blur cross-fade when toggling the theme via the View Transitions API. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+  animation-timing-function: ease;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation-name: theme-blur-out;
+}
+
+::view-transition-new(root) {
+  animation-name: theme-blur-in;
+}
+
+@keyframes theme-blur-out {
+  from {
+    filter: blur(0);
+    opacity: 1;
+  }
+  to {
+    filter: blur(16px);
+    opacity: 0;
+  }
+}
+
+@keyframes theme-blur-in {
+  from {
+    filter: blur(16px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
