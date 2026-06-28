@@ -1,10 +1,10 @@
-import { LICENSE } from "@/config/site";
-import { cn } from "@/lib/utils";
-import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
 import { SiteFooterAttribution } from "@/components/site-footer-attribution";
+import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
 import { SiteFooterLinks } from "@/components/site-footer-links";
+import { LICENSE } from "@/config/site";
 import { getSocialLinkByName } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
+import { cn } from "@/lib/utils";
 
 export function SiteFooter() {
   const xLink = getSocialLinkByName("x");

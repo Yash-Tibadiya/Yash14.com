@@ -1,14 +1,13 @@
 "use client";
 
-import type { ComponentProps } from "react";
 import { CheckIcon, CircleXIcon, CopyIcon } from "lucide-react";
 import { motion } from "motion/react";
-
-import { cn } from "@/lib/utils";
+import type { ComponentProps } from "react";
+import { IconSwap, IconSwapItem } from "@/components/icon-swap";
+import { Button } from "@/components/ui/button";
 import type { CopyState } from "@/hooks/use-copy-to-clipboard";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
-import { Button } from "@/components/ui/button";
-import { IconSwap, IconSwapItem } from "@/components/icon-swap";
+import { cn } from "@/lib/utils";
 
 export type CopyStateIconProps = {
   state: CopyState;

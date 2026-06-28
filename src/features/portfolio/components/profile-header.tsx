@@ -1,9 +1,9 @@
-import { USER } from "@/features/portfolio/data/user";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { USER } from "@/features/portfolio/data/user";
 
 import { FlipSentences } from "./flip-sentences";
 import { PronounceMyName } from "./pronounce-my-name";

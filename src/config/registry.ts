@@ -15,7 +15,7 @@ export const registryConfig = {
   namespaceUrl:
     process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE_URL ||
     "https://yash14.com/r/{name}.json",
-}
+};
 
 export const componentCategories = [
   {
@@ -72,7 +72,7 @@ export const componentCategories = [
     description:
       "Functional helpers and often invisible wrappers that provide underlying system capabilities, sensory user feedback, or abstract business logic.",
   },
-]
+];
 
 export const blockCategories = [
   {
@@ -93,4 +93,4 @@ export const blockCategories = [
     description:
       "Product grids, shopping carts, filters, and streamlined checkout components.",
   },
-]
+];

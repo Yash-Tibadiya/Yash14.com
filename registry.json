@@ -8,9 +8,7 @@
       "type": "registry:component",
       "title": "Icon Swap",
       "description": "Animate icon swaps with scale, blur, and fade transitions.",
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "src/registry/components/icon-swap/icon-swap.tsx",
@@ -18,9 +16,7 @@
           "target": "@components/icon-swap.tsx"
         }
       ],
-      "categories": [
-        "effects"
-      ],
+      "categories": ["effects"],
       "docs": "https://yash14.com/components/icon-swap",
       "author": "yash14 <hello@yash14.com>"
     }

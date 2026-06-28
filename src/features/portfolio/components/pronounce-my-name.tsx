@@ -2,11 +2,10 @@
 
 import { useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-
-import { trackEvent } from "@/lib/events";
-import { cn } from "@/lib/utils";
 import type { VolumeIconHandle } from "@/components/animated-icons/volume-icon";
 import { VolumeIcon } from "@/components/animated-icons/volume-icon";
+import { trackEvent } from "@/lib/events";
+import { cn } from "@/lib/utils";
 import { useSound } from "@/registry/hooks/sound/use-sound";
 
 export function PronounceMyName({

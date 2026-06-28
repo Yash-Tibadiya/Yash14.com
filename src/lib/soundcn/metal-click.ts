@@ -1,4 +1,4 @@
-import type { SoundAsset } from "@/lib/soundcn/sound-types"
+import type { SoundAsset } from "@/lib/soundcn/sound-types";
 
 export const metalClickSound: SoundAsset = {
   name: "metal-click",
@@ -8,4 +8,4 @@ export const metalClickSound: SoundAsset = {
   format: "mp3",
   license: "CC0",
   author: "Kenney",
-}
+};

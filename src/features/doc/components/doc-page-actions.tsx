@@ -2,12 +2,12 @@
 
 "use client";
 
-import { useMemo, useRef, useState } from "react";
 import { useTiks } from "@rexa-developer/tiks/react";
 import { IconCheck, IconCopy, IconX } from "@tabler/icons-react";
 import { ChevronDownIcon } from "lucide-react";
-
-import type { CopyState } from "@/hooks/use-copy-to-clipboard";
+import { useMemo, useRef, useState } from "react";
+import { CopyStateIcon } from "@/components/copy-button";
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   ButtonGroup,
@@ -19,8 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CopyStateIcon } from "@/components/copy-button";
-import { Icons } from "@/components/icons";
+import type { CopyState } from "@/hooks/use-copy-to-clipboard";
 
 const cache = new Map<string, string>();
 

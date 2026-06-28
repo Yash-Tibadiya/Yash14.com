@@ -1,15 +1,14 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-
-import { MAIN_NAV } from "@/config/site";
-import { Separator } from "@/components/ui/separator";
-import { YTMark } from "@/components/yt-mark";
 import { NavDesktop } from "@/components/nav-desktop";
 import { NavItemGitHub } from "@/components/nav-item-github";
 import { ThemeToggle } from "@/components/theme-toggle";
-import blocks from "@/registry/__blocks__.json";
+import { Separator } from "@/components/ui/separator";
+import { YTMark } from "@/components/yt-mark";
+import { MAIN_NAV } from "@/config/site";
 import { getAllDocs } from "@/features/doc/data/documents";
 import type { DocPreview } from "@/features/doc/types/document";
+import blocks from "@/registry/__blocks__.json";
 
 const BrandContextMenu = dynamic(
   () => import("@/components/brand-context-menu"),
