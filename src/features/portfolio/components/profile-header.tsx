@@ -1,4 +1,9 @@
 import { USER } from "@/features/portfolio/data/user";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import { FlipSentences } from "./flip-sentences";
 import { PronounceMyName } from "./pronounce-my-name";
@@ -10,8 +15,16 @@ export function ProfileHeader() {
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x border-line">
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
         <YTMarkIsometric />
-        <figcaption className="pointer-events-none absolute right-2 bottom-2 font-mono text-xs leading-none text-zinc-400 select-none sm:right-4 dark:text-zinc-700">
-          FIG_001
+        <figcaption className="absolute right-2 bottom-2 sm:right-4">
+          <Tooltip>
+            <TooltipTrigger asChild={true}>
+              <span className="group text-zinc-400 select-none dark:text-zinc-700 hover:text-zinc-600 dark:hover:text-zinc-500">
+                <span className="font-mono text-xs leading-none">FIG_001</span>
+                <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-zinc-400 dark:bg-zinc-700"></span>
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>Click YT mark</TooltipContent>
+          </Tooltip>
         </figcaption>
       </figure>
 
