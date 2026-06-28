@@ -1,6 +1,6 @@
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 import matter from "gray-matter";
-import path from "path";
 import { cache } from "react";
 
 import type { Doc, DocMetadata } from "@/features/doc/types/document";

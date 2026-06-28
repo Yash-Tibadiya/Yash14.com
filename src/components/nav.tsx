@@ -29,20 +29,20 @@ export function Nav({
               : activeId?.startsWith(href));
 
         return (
-          <NavItem
+          <NavLink
             key={href}
             href={href}
             aria-current={isActive ? "page" : undefined}
           >
             {title}
-          </NavItem>
+          </NavLink>
         );
       })}
     </nav>
   );
 }
 
-export function NavItem({
+export function NavLink({
   className,
   ...props
 }: React.ComponentProps<typeof Link>) {

@@ -1,7 +1,6 @@
 "use client";
 
 import { LinkPreview } from "@/components/link-preview";
-import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { getSocialLinkByName } from "@/features/portfolio/data/social-links";
 
 export function SiteFooterAttribution() {

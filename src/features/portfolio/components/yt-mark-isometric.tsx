@@ -294,13 +294,12 @@ function buildCar(): Prim[] {
 
 const CAR_PRIMS = buildCar();
 
-function VehicleShape({ kind }: { kind: "car" }) {
+function VehicleShape({ kind: _kind }: { kind: "car" }) {
   const prims = CAR_PRIMS;
   return (
     <g strokeLinejoin="round">
       {prims.map((p, i) => (
         <path
-          // biome-ignore lint/suspicious/noArrayIndexKey: static, ordered list
           key={i}
           d={p.d}
           fill={p.fill}
@@ -678,7 +677,6 @@ export function YTMarkIsometric() {
           >
             {TRAFFIC.map((spec, i) => (
               <Vehicle
-                // biome-ignore lint/suspicious/noArrayIndexKey: static config list
                 key={i}
                 spec={spec}
                 reduce={reduceMotion}

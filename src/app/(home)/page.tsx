@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import type { ProfilePage, WithContext } from "schema-dts";
 
 import { JSON_LD_ID } from "@/config/json-ld";

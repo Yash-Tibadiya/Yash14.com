@@ -103,7 +103,7 @@ function useUncontrolledState<T>({
       onChangeRef.current?.(value);
       prevValueRef.current = value;
     }
-  }, [value, prevValueRef]);
+  }, [value]);
 
   return [value, setValue, onChangeRef];
 }

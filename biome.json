@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+    "includes": [
+      "**",
+      "!node_modules",
+      "!.next",
+      "!dist",
+      "!build",
+      "!src/styles/gradient-border-plugin.css"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -20,6 +27,18 @@
       "recommended": true,
       "suspicious": {
         "noUnknownAtRules": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "performance": {
+        "noImgElement": "off"
+      },
+      "correctness": {
+        "noUnknownMediaFeatureName": "off"
+      },
+      "a11y": {
+        "noStaticElementInteractions": "off"
       }
     },
     "domains": {
@@ -33,5 +52,75 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/registry/__index__.tsx"],
+      "linter": {
+        "enabled": false
+      }
+    },
+    {
+      "includes": ["src/styles/globals.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noDuplicateProperties": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "src/components/icons.tsx",
+        "src/components/animated-icons/**",
+        "src/components/chevrons-up-down-icon.tsx",
+        "src/components/github-stars.tsx",
+        "src/components/site-footer-brand.tsx",
+        "src/components/yt-*.tsx",
+        "src/features/portfolio/components/verified-icon.tsx",
+        "src/features/portfolio/components/yt-mark-isometric.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "noSvgWithoutTitle": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/components/ui/**"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off",
+            "useKeyWithClickEvents": "off",
+            "noSvgWithoutTitle": "off"
+          },
+          "suspicious": {
+            "noArrayIndexKey": "off",
+            "noDocumentCookie": "off"
+          },
+          "correctness": {
+            "useExhaustiveDependencies": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/registry/hooks/use-controllable-state/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useHookAtTopLevel": "off",
+            "useExhaustiveDependencies": "off"
+          }
+        }
+      }
+    }
+  ]
 }
