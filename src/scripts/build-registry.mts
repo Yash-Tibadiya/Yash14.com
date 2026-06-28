@@ -6,24 +6,26 @@
 //
 // Adapted (and trimmed) from yash14.com's build-registry pipeline (MIT).
 
-import { promises as fs } from "node:fs"
-import path from "node:path"
+import { promises as fs } from "node:fs";
+import path from "node:path";
 
-import { registrySchema, type Registry } from "shadcn/schema"
+import { type Registry, registrySchema } from "shadcn/schema";
 
-import { registry } from "@/registry/index"
+import { registry } from "@/registry/index";
 
-const REGISTRY_PATH = path.join(process.cwd(), "src/registry")
+const REGISTRY_PATH = path.join(process.cwd(), "src/registry");
 
 // Default author stamped onto every registry item that doesn't set its own.
 // 👉 Edit this to your real name/email.
-const DEFAULT_AUTHOR = "yash14 <hello@yash14.com>"
+const DEFAULT_AUTHOR = "yash14 <hello@yash14.com>";
 
 /**
  * Generate registry.json (consumed by `shadcn build`) and
  * src/registry/__index__.tsx (used by the site to render live previews).
  */
-async function buildRegistry(reg: Registry & { name: string; homepage: string }) {
+async function buildRegistry(
+  reg: Registry & { name: string; homepage: string },
+) {
   let index = `/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // @ts-nocheck
@@ -32,17 +34,17 @@ async function buildRegistry(reg: Registry & { name: string; homepage: string })
 
 import * as React from "react";
 
-export const Index: Record<string, any> = {`
+export const Index: Record<string, any> = {`;
 
   for (const item of reg.items) {
     if (!Array.isArray(item.files) || !item.files?.length) {
-      continue
+      continue;
     }
 
-    const componentFilePath = item.files[0].path
+    const componentFilePath = item.files[0].path;
     const componentPath = componentFilePath.startsWith("src/")
       ? componentFilePath.replace("src/", "@/")
-      : `@/registry/${componentFilePath}`
+      : `@/registry/${componentFilePath}`;
 
     index += `
   "${item.name}": {
@@ -52,12 +54,12 @@ export const Index: Record<string, any> = {`
     files: [${item.files.map((file) => {
       const filePath = file.path.startsWith("src/")
         ? file.path
-        : `src/registry/${file.path}`
+        : `src/registry/${file.path}`;
       return `{
         path: "${filePath}",
         type: "${file.type}",
         target: "${file.target ?? ""}",
-      }`
+      }`;
     })}],
     component: React.lazy(async () => {
       const mod = await import("${componentPath}");
@@ -70,12 +72,12 @@ export const Index: Record<string, any> = {`
     }),
     categories: ${JSON.stringify(item.categories)},
     meta: ${JSON.stringify(item.meta)},
-  },`
+  },`;
   }
 
   index += `
 };
-`
+`;
 
   const registryJSON = JSON.stringify(
     {
@@ -91,37 +93,37 @@ export const Index: Record<string, any> = {`
             item.files?.map((file) =>
               file.path.startsWith("src/")
                 ? file
-                : { ...file, path: `src/registry/${file.path}` }
+                : { ...file, path: `src/registry/${file.path}` },
             ) ?? [],
         })),
     },
     null,
-    2
-  )
+    2,
+  );
 
-  console.log("📦 Building registry.json...")
+  console.log("📦 Building registry.json...");
   await fs.writeFile(
     path.join(process.cwd(), "registry.json"),
     registryJSON,
-    "utf8"
-  )
+    "utf8",
+  );
 
-  console.log("📦 Building src/registry/__index__.tsx...")
-  await fs.writeFile(path.join(REGISTRY_PATH, "__index__.tsx"), index, "utf8")
+  console.log("📦 Building src/registry/__index__.tsx...");
+  await fs.writeFile(path.join(REGISTRY_PATH, "__index__.tsx"), index, "utf8");
 }
 
 try {
-  const result = registrySchema.safeParse(registry)
+  const result = registrySchema.safeParse(registry);
 
   if (!result.success) {
-    console.error(result.error)
-    process.exit(1)
+    console.error(result.error);
+    process.exit(1);
   }
 
-  await buildRegistry(registry)
+  await buildRegistry(registry);
 
-  console.log("✅ Registry build complete!")
+  console.log("✅ Registry build complete!");
 } catch (error) {
-  console.error(error)
-  process.exit(1)
+  console.error(error);
+  process.exit(1);
 }

@@ -1,4 +1,4 @@
-import type { SoundAsset } from "@/lib/soundcn/sound-types"
+import type { SoundAsset } from "@/lib/soundcn/sound-types";
 
 export const uMiniMapOpenSound: SoundAsset = {
   name: "u-mini-map-open",
@@ -8,4 +8,4 @@ export const uMiniMapOpenSound: SoundAsset = {
   format: "mp3",
   license: "CC0",
   author: "Kenney",
-}
+};

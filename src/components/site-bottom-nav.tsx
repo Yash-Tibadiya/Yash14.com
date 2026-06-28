@@ -1,11 +1,10 @@
 import dynamic from "next/dynamic";
-
-import { MOBILE_NAV } from "@/config/site";
-import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import blocks from "@/registry/__blocks__.json";
+import { MOBILE_NAV } from "@/config/site";
 import { getAllDocs } from "@/features/doc/data/documents";
 import type { DocPreview } from "@/features/doc/types/document";
+import { cn } from "@/lib/utils";
+import blocks from "@/registry/__blocks__.json";
 
 const CommandMenu = dynamic(() => import("@/components/command-menu"));
 const NavMobile = dynamic(() => import("@/components/nav-mobile"));

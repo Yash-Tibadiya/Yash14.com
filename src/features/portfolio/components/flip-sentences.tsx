@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
 import { useInView, usePageInView } from "motion/react";
+import { useRef } from "react";
 
 import { TextFlip } from "@/components/text-flip";
 

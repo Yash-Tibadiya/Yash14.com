@@ -2,11 +2,10 @@
 
 import { useRef } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-
-import { trackEvent } from "@/lib/events";
-import { cn } from "@/lib/utils";
 import type { VolumeIconHandle } from "@/components/animated-icons/volume-icon";
 import { VolumeIcon } from "@/components/animated-icons/volume-icon";
+import { trackEvent } from "@/lib/events";
+import { cn } from "@/lib/utils";
 import { useSound } from "@/registry/hooks/sound/use-sound";
 
 export function PronounceMyName({
@@ -32,6 +31,7 @@ export function PronounceMyName({
 
   return (
     <button
+      type="button"
       className={cn(
         "relative flex touch-manipulation items-center justify-center text-muted-foreground transition-[color,scale] will-change-[scale] select-none hover:text-foreground active:scale-[0.9]",
         className,

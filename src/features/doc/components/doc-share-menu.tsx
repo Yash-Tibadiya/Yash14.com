@@ -2,7 +2,7 @@
 
 import { EllipsisIcon, LinkIcon, ShareIcon } from "lucide-react";
 import { toast } from "sonner";
-
+import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Icons } from "@/components/icons";
 import { copyText } from "@/utils/copy";
 
 export function DocShareMenu({ title, url }: { title: string; url: string }) {

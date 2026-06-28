@@ -1,7 +1,6 @@
 "use client";
 
 import { LinkPreview } from "@/components/link-preview";
-import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { getSocialLinkByName } from "@/features/portfolio/data/social-links";
 
 export function SiteFooterAttribution() {
@@ -13,14 +12,16 @@ export function SiteFooterAttribution() {
       Built by{" "}
       <LinkPreview
         url={xLink?.href ?? "https://x.com/Yash_Tibadiya"}
-        className="link-underline transition-colors hover:text-white"
+        side="top"
+        className="link-underline transition-colors hover:text-foreground"
       >
         Yash_Tibadiya
       </LinkPreview>
       . The source code is available on{" "}
       <LinkPreview
         url={githubLink?.href ?? "https://github.com/Yash-Tibadiya"}
-        className="link-underline transition-colors hover:text-white"
+        side="top"
+        className="link-underline transition-colors hover:text-foreground"
       >
         GitHub
       </LinkPreview>

@@ -1,11 +1,7 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import type { ProfilePage, WithContext } from "schema-dts";
 
 import { JSON_LD_ID } from "@/config/json-ld";
-import { JsonLdScript } from "@/lib/json-ld";
-import { absoluteUrl, cn } from "@/lib/utils";
-
 // import { About } from "@/features/portfolio/components/about"
 // import { Bookmarks } from "@/features/portfolio/components/bookmarks"
 // import { Certifications } from "@/features/portfolio/components/certifications"
@@ -21,6 +17,8 @@ import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 // import { SocialLinks } from "@/features/portfolio/components/social-links-v2"
 // import { TechStack } from "@/features/portfolio/components/tech-stack"
 import { USER } from "@/features/portfolio/data/user";
+import { JsonLdScript } from "@/lib/json-ld";
+import { absoluteUrl, cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   alternates: {

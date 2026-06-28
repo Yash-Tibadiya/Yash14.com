@@ -1,13 +1,13 @@
 "use client";
 
-import { encode } from "qss";
-import * as React from "react";
 import {
   AnimatePresence,
   motion,
   useMotionValue,
   useSpring,
 } from "motion/react";
+import { encode } from "qss";
+import * as React from "react";
 
 import {
   HoverCard,
@@ -26,6 +26,7 @@ type LinkPreviewProps = {
   layout?: string;
   target?: string;
   rel?: string;
+  side?: "top" | "bottom" | "left" | "right";
 } & (
   | { isStatic: true; imageSrc: string }
   | { isStatic?: false; imageSrc?: never }
@@ -37,12 +38,13 @@ export function LinkPreview({
   className,
   width = 200,
   height = 125,
-  quality = 50,
-  layout = "fixed",
+  quality: _quality = 50,
+  layout: _layout = "fixed",
   isStatic = false,
   imageSrc = "",
   target = "_blank",
   rel = "noopener",
+  side = "top",
 }: LinkPreviewProps) {
   let src: string;
   if (!isStatic) {
@@ -96,9 +98,11 @@ export function LinkPreview({
 
       <HoverCardContent
         className="w-auto border-0 bg-transparent p-0 shadow-none ring-0"
-        side="top"
+        side={side}
         align="center"
         sideOffset={10}
+        avoidCollisions
+        collisionPadding={16}
       >
         <AnimatePresence>
           {isOpen ? (
@@ -122,7 +126,7 @@ export function LinkPreview({
                 href={url}
                 target={target}
                 rel={rel}
-                className="block rounded-xl border-2 border-transparent bg-background p-1 shadow hover:border-border"
+                className="block rounded-xl border-2 border-transparent bg-neutral-300 dark:bg-zinc-800 p-1 shadow hover:border-border"
                 style={{ fontSize: 0 }}
               >
                 <img

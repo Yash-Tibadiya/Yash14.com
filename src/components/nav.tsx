@@ -1,9 +1,8 @@
-import React from "react";
 import type { Route } from "next";
 import Link from "next/link";
-
-import type { NavItem } from "@/types/nav";
+import type React from "react";
 import { cn } from "@/lib/utils";
+import type { NavItem } from "@/types/nav";
 
 export function Nav({
   items,
@@ -30,20 +29,20 @@ export function Nav({
               : activeId?.startsWith(href));
 
         return (
-          <NavItem
+          <NavLink
             key={href}
             href={href}
             aria-current={isActive ? "page" : undefined}
           >
             {title}
-          </NavItem>
+          </NavLink>
         );
       })}
     </nav>
   );
 }
 
-export function NavItem({
+export function NavLink({
   className,
   ...props
 }: React.ComponentProps<typeof Link>) {

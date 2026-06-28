@@ -1,7 +1,5 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { copyToClipboardWithEvent } from "@/utils/copy";
 import { useRouter } from "@bprogress/next/app";
 import { useTiks } from "@rexa-developer/tiks/react";
 import {
@@ -22,13 +20,9 @@ import {
 } from "lucide-react";
 import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { useTheme } from "next-themes";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { toast } from "sonner";
-
-import { trackEvent } from "@/lib/events";
-import { BRAND_ASSETS } from "@/config/site";
-import { useClickSound } from "@/hooks/soundcn/use-click-sound";
-import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import {
   CommandDialog,
   CommandEmpty,
@@ -38,21 +32,25 @@ import {
   CommandList,
   CommandShortcut,
 } from "@/components/ui/command";
+import { BRAND_ASSETS } from "@/config/site";
 import type { DocPreview } from "@/features/doc/types/document";
-import { USER } from "@/features/portfolio/data/user";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import { USER } from "@/features/portfolio/data/user";
+import { useClickSound } from "@/hooks/soundcn/use-click-sound";
+import { useMutationObserver } from "@/hooks/use-mutation-observer";
+import { trackEvent } from "@/lib/events";
+import { copyToClipboardWithEvent } from "@/utils/copy";
 import {
   decodeEmail,
   decodePhoneNumber,
   formatPhoneNumber,
 } from "@/utils/string";
-
-import { YTMark, getMarkSVG } from "./yt-mark";
-import { getWordmarkSVG } from "./yt-wordmark";
-import { ComponentIcon, Icons } from "./icons";
 import { CopyButton } from "./copy-button";
+import { ComponentIcon, Icons } from "./icons";
 import { Button } from "./ui/button";
 import { Kbd, KbdGroup } from "./ui/kbd";
+import { getMarkSVG, YTMark } from "./yt-mark";
+import { getWordmarkSVG } from "./yt-wordmark";
 
 type CommandKind = "command" | "page" | "link" | "component" | "block";
 

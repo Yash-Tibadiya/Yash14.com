@@ -6,7 +6,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 export function KeyboardShortcuts() {
   const router = useRouter();
 
-  const navigate = (path: string, keys: string) => {
+  const navigate = (path: string, _keys: string) => {
     router.push(path);
   };
 

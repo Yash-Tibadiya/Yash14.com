@@ -1,7 +1,7 @@
-import fs from "fs";
-import path from "path";
-import { cache } from "react";
+import fs from "node:fs";
+import path from "node:path";
 import matter from "gray-matter";
+import { cache } from "react";
 
 import type { Doc, DocMetadata } from "@/features/doc/types/document";
 
@@ -54,24 +54,24 @@ export const getAllDocs = cache(() => {
 });
 
 export function getDocBySlug(slug: string) {
-  return getAllDocs().find((doc) => doc.slug === slug)
+  return getAllDocs().find((doc) => doc.slug === slug);
 }
 
 export function getDocsByCategory(category: string) {
-  return getAllDocs().filter((doc) => doc.metadata?.category === category)
+  return getAllDocs().filter((doc) => doc.metadata?.category === category);
 }
 
 export function findNeighbour(docs: Doc[], slug: string) {
-  const len = docs.length
+  const len = docs.length;
 
   for (let i = 0; i < len; ++i) {
     if (docs[i].slug === slug) {
       return {
         previous: i > 0 ? docs[i - 1] : null,
         next: i < len - 1 ? docs[i + 1] : null,
-      }
+      };
     }
   }
 
-  return { previous: null, next: null }
+  return { previous: null, next: null };
 }

@@ -11,11 +11,13 @@ export const Index: Record<string, any> = {
     name: "icon-swap",
     description: "Animate icon swaps with scale, blur, and fade transitions.",
     type: "registry:component",
-    files: [{
+    files: [
+      {
         path: "src/registry/components/icon-swap/icon-swap.tsx",
         type: "registry:component",
         target: "@components/icon-swap.tsx",
-      }],
+      },
+    ],
     component: React.lazy(async () => {
       const mod = await import("@/registry/components/icon-swap/icon-swap.tsx");
       const exportName =

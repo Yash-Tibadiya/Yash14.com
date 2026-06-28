@@ -1,8 +1,8 @@
-import type { Person } from "schema-dts"
+import type { Person } from "schema-dts";
 
-import { SITE_INFO } from "@/config/site"
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links"
-import { USER } from "@/features/portfolio/data/user"
+import { SITE_INFO } from "@/config/site";
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import { USER } from "@/features/portfolio/data/user";
 
 /**
  * Stable @id anchors so Google can merge JSON-LD nodes across separate
@@ -12,7 +12,7 @@ import { USER } from "@/features/portfolio/data/user"
 export const JSON_LD_ID = {
   website: `${SITE_INFO.url}/#website`,
   person: `${SITE_INFO.url}/#person`,
-} as const
+} as const;
 
 export const personJsonLd: Person = {
   "@type": "Person",
@@ -24,4 +24,4 @@ export const personJsonLd: Person = {
   url: SITE_INFO.url,
   // Public profiles opt in via their `sameAs` flag (Knowledge Graph).
   sameAs: SOCIAL_LINKS.filter((link) => link.sameAs).map((link) => link.href),
-}
+};

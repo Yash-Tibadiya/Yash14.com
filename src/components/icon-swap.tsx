@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import type { AnimatePresenceProps, HTMLMotionProps } from "motion/react"
-import { AnimatePresence, motion } from "motion/react"
+import type { AnimatePresenceProps, HTMLMotionProps } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 export function IconSwap(props: React.PropsWithChildren<AnimatePresenceProps>) {
-  return <AnimatePresence mode="popLayout" initial={false} {...props} />
+  return <AnimatePresence mode="popLayout" initial={false} {...props} />;
 }
 
-type MotionElement = typeof motion.div | typeof motion.span
+type MotionElement = typeof motion.div | typeof motion.span;
 
 export function IconSwapItem({
   as: Component = motion.div,
   ...props
 }: HTMLMotionProps<"div"> & {
-  as?: MotionElement
+  as?: MotionElement;
 }) {
   return (
     <Component
@@ -27,5 +27,5 @@ export function IconSwapItem({
       }}
       {...props}
     />
-  )
+  );
 }

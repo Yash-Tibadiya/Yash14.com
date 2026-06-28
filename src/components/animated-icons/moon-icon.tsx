@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { useCallback, useImperativeHandle, useRef } from "react"
-import type { Transition, Variants } from "motion/react"
-import { motion, useAnimation } from "motion/react"
+import type { Transition, Variants } from "motion/react";
+import { motion, useAnimation } from "motion/react";
+import { useCallback, useImperativeHandle, useRef } from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export type MoonIconHandle = {
-  startAnimation: () => void
-  stopAnimation: () => void
-}
+  startAnimation: () => void;
+  stopAnimation: () => void;
+};
 
 export type MoonIconProps = React.ComponentPropsWithoutRef<"div"> & {
-  ref?: React.Ref<MoonIconHandle>
-  size?: number
-}
+  ref?: React.Ref<MoonIconHandle>;
+  size?: number;
+};
 
 const svgVariants: Variants = {
   normal: {
@@ -23,12 +23,12 @@ const svgVariants: Variants = {
   animate: {
     rotate: [0, -10, 10, -5, 5, 0],
   },
-}
+};
 
 const svgTransition: Transition = {
   duration: 1.2,
   ease: "easeInOut",
-}
+};
 
 export function MoonIcon({
   ref,
@@ -38,39 +38,39 @@ export function MoonIcon({
   size = 24,
   ...props
 }: MoonIconProps) {
-  const controls = useAnimation()
-  const isControlledRef = useRef(false)
+  const controls = useAnimation();
+  const isControlledRef = useRef(false);
 
   useImperativeHandle(ref, () => {
-    isControlledRef.current = true
+    isControlledRef.current = true;
 
     return {
       startAnimation: () => controls.start("animate"),
       stopAnimation: () => controls.start("normal"),
-    }
-  })
+    };
+  });
 
   const handleMouseEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start("animate")
+        controls.start("animate");
       } else {
-        onMouseEnter?.(e)
+        onMouseEnter?.(e);
       }
     },
-    [controls, onMouseEnter]
-  )
+    [controls, onMouseEnter],
+  );
 
   const handleMouseLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!isControlledRef.current) {
-        controls.start("normal")
+        controls.start("normal");
       } else {
-        onMouseLeave?.(e)
+        onMouseLeave?.(e);
       }
     },
-    [controls, onMouseLeave]
-  )
+    [controls, onMouseLeave],
+  );
   return (
     <div
       className={cn(className)}
@@ -95,5 +95,5 @@ export function MoonIcon({
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
       </motion.svg>
     </div>
-  )
+  );
 }

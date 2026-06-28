@@ -2,9 +2,8 @@
 
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
-
-import type { NavItem } from "@/types/nav";
 import { Nav } from "@/components/nav";
+import type { NavItem } from "@/types/nav";
 
 export function NavDesktop({ items }: { items: NavItem<Route>[] }) {
   const pathname = usePathname();

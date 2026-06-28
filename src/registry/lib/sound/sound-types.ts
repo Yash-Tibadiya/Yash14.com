@@ -1,37 +1,37 @@
 export interface UseSoundOptions {
   /** Volume level from 0 to 1. Default: 1 */
-  volume?: number
+  volume?: number;
   /** Playback speed multiplier. Default: 1 */
-  playbackRate?: number
+  playbackRate?: number;
   /** If true, calling play() stops current playback first. Default: false */
-  interrupt?: boolean
+  interrupt?: boolean;
   /** If false, play() does nothing. Useful for user preferences. Default: true */
-  soundEnabled?: boolean
+  soundEnabled?: boolean;
   /**
    * When true, audio is not fetched until the first play() call.
    * When false, audio is fetched immediately on mount.
    * Default: false
    */
-  lazy?: boolean
+  lazy?: boolean;
   /** Called when playback starts */
-  onPlay?: () => void
+  onPlay?: () => void;
   /** Called when playback ends naturally */
-  onEnd?: () => void
+  onEnd?: () => void;
   /** Called when pause() is called */
-  onPause?: () => void
+  onPause?: () => void;
   /** Called when stop() is called */
-  onStop?: () => void
+  onStop?: () => void;
 }
 
 export type PlayFunction = (overrides?: {
-  volume?: number
-  playbackRate?: number
-}) => void
+  volume?: number;
+  playbackRate?: number;
+}) => void;
 
 export interface SoundControls {
-  stop: () => void
-  pause: () => void
-  isPlaying: boolean
+  stop: () => void;
+  pause: () => void;
+  isPlaying: boolean;
 }
 
-export type UseSoundReturn = readonly [PlayFunction, SoundControls]
+export type UseSoundReturn = readonly [PlayFunction, SoundControls];
