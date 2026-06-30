@@ -257,38 +257,100 @@ function boxFaces({ u: [u0, u1], v: [v0, v1], w: [w0, w1] }: Box) {
 
 type Prim = { d: string; fill: string; stroked: boolean };
 
-const boxPrims = (b: Box): Prim[] => {
+const boxPrims = (b: Box, fills?: { side?: string; front?: string; top?: string }): Prim[] => {
   const f = boxFaces(b);
   return [
-    { d: f.side, fill: "var(--v-side)", stroked: true },
-    { d: f.front, fill: "var(--v-front)", stroked: true },
-    { d: f.top, fill: "var(--v-top)", stroked: true },
+    { d: f.side, fill: fills?.side || "var(--v-side)", stroked: true },
+    { d: f.front, fill: fills?.front || "var(--v-front)", stroked: true },
+    { d: f.top, fill: fills?.top || "var(--v-top)", stroked: true },
   ];
 };
 
-const wheelPrim = (
-  u: [number, number],
-  w: [number, number],
-  v: number,
-): Prim => ({
+const frontPoly = (u: number, v: [number, number], w: [number, number], fill: string): Prim => ({
+  d: poly([
+    vproj(u, v[0], w[0]),
+    vproj(u, v[1], w[0]),
+    vproj(u, v[1], w[1]),
+    vproj(u, v[0], w[1]),
+  ]),
+  fill,
+  stroked: false,
+});
+
+const sidePoly = (v: number, u: [number, number], w: [number, number], fill: string): Prim => ({
   d: poly([
     vproj(u[0], v, w[0]),
     vproj(u[1], v, w[0]),
     vproj(u[1], v, w[1]),
     vproj(u[0], v, w[1]),
   ]),
-  fill: "var(--v-wheel)",
+  fill,
   stroked: false,
 });
 
+const topPoly = (w: number, u: [number, number], v: [number, number], fill: string): Prim => ({
+  d: poly([
+    vproj(u[0], v[0], w),
+    vproj(u[1], v[0], w),
+    vproj(u[1], v[1], w),
+    vproj(u[0], v[1], w),
+  ]),
+  fill,
+  stroked: false,
+});
+
+const wheelPrims = (u: [number, number], v: [number, number], w: [number, number]): Prim[] => {
+  return boxPrims({ u, v, w }, {
+    side: "var(--v-wheel-side)",
+    front: "var(--v-wheel-front)",
+    top: "var(--v-wheel-top)",
+  });
+};
+
 function buildCar(): Prim[] {
-  const body: Box = { u: [-0.47, 0.47], v: [-0.23, 0.23], w: [0.05, 0.17] };
-  const cabin: Box = { u: [-0.27, 0.16], v: [-0.18, 0.18], w: [0.17, 0.3] };
+  const bodyBase: Box = { u: [-0.48, 0.48], v: [-0.24, 0.24], w: [0.06, 0.18] };
+  const cabin: Box = { u: [-0.22, 0.12], v: [-0.2, 0.2], w: [0.18, 0.32] };
+  const frontBumper: Box = { u: [0.48, 0.52], v: [-0.22, 0.22], w: [0.05, 0.12] };
+  const rearBumper: Box = { u: [-0.52, -0.48], v: [-0.22, 0.22], w: [0.05, 0.12] };
+
+  const spoilerL: Box = { u: [-0.44, -0.4], v: [-0.18, -0.14], w: [0.18, 0.24] };
+  const spoilerR: Box = { u: [-0.44, -0.4], v: [0.14, 0.18], w: [0.18, 0.24] };
+  const spoilerWing: Box = { u: [-0.46, -0.38], v: [-0.22, 0.22], w: [0.24, 0.26] };
+
+  const wheelRL = wheelPrims([-0.36, -0.2], [-0.26, -0.2], [0, 0.14]);
+  const wheelFL = wheelPrims([0.2, 0.36], [-0.26, -0.2], [0, 0.14]);
+  const wheelRR = wheelPrims([-0.36, -0.2], [0.2, 0.26], [0, 0.14]);
+  const wheelFR = wheelPrims([0.2, 0.36], [0.2, 0.26], [0, 0.14]);
+
   return [
-    ...boxPrims(body),
-    wheelPrim([0.22, 0.38], [0, 0.1], 0.23),
-    wheelPrim([-0.38, -0.22], [0, 0.1], 0.23),
+    ...wheelRL,
+    ...wheelFL,
+
+    ...boxPrims(rearBumper, { side: "var(--v-bumper)", front: "var(--v-bumper)", top: "var(--v-bumper)" }),
+
+    ...boxPrims(bodyBase),
+    sidePoly(0.24, [-0.48, 0.48], [0.12, 0.14], "var(--v-bumper)"),
+
+    frontPoly(0.48, [0.12, 0.22], [0.13, 0.17], "var(--v-light-front)"),
+    frontPoly(0.48, [-0.22, -0.12], [0.13, 0.17], "var(--v-light-front)"),
+
+    ...boxPrims(spoilerL, { side: "var(--v-bumper)", front: "var(--v-bumper)", top: "var(--v-bumper)" }),
+    ...boxPrims(spoilerR, { side: "var(--v-bumper)", front: "var(--v-bumper)", top: "var(--v-bumper)" }),
+    ...boxPrims(spoilerWing),
+
+    ...boxPrims(frontBumper, { side: "var(--v-bumper)", front: "var(--v-bumper)", top: "var(--v-bumper)" }),
+
+    frontPoly(0.52, [-0.12, 0.12], [0.06, 0.11], "var(--v-window)"),
+    frontPoly(0.52, [-0.06, 0.06], [0.07, 0.10], "var(--v-wheel-side)"),
+
     ...boxPrims(cabin),
+
+    frontPoly(0.12, [-0.17, 0.17], [0.21, 0.3], "var(--v-window)"),
+    sidePoly(0.2, [-0.18, 0.08], [0.21, 0.3], "var(--v-window)"),
+    topPoly(0.32, [-0.15, 0.05], [-0.14, 0.14], "var(--v-window)"),
+
+    ...wheelRR,
+    ...wheelFR,
   ];
 }
 
@@ -669,7 +731,7 @@ export function YTMarkIsometric() {
         <AnimatePresence>
           <motion.g
             key="traffic"
-            className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
+            className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel-side:color-mix(in_oklab,var(--foreground)_40%,var(--background))] [--v-wheel-front:color-mix(in_oklab,var(--foreground)_45%,var(--background))] [--v-wheel-top:color-mix(in_oklab,var(--foreground)_50%,var(--background))] [--v-window:color-mix(in_oklab,var(--foreground)_60%,var(--background))] [--v-bumper:color-mix(in_oklab,var(--foreground)_25%,var(--background))] [--v-light-front:color-mix(in_oklab,var(--foreground)_85%,var(--background))]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
