@@ -66,6 +66,9 @@
         "rules": {
           "suspicious": {
             "noDuplicateProperties": "off"
+          },
+          "correctness": {
+            "noUnknownTypeSelector": "off"
           }
         }
       }

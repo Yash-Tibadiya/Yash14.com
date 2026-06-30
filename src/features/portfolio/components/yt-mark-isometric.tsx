@@ -3,14 +3,14 @@
 import type { Transition } from "motion/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useState } from "react";
-import { useSound } from "@/hooks/soundcn/use-sound";
-import { metalClickSound } from "@/lib/soundcn/metal-click";
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
+import { useSound } from "@/hooks/soundcn/use-sound";
+import { metalClickSound } from "@/lib/soundcn/metal-click";
 
 const GRID = [
   [true, true, true, true, false, true],
