@@ -333,35 +333,49 @@ const wheelPrims = (
 };
 
 function buildCar(): Prim[] {
-  const bodyBase: Box = { u: [-0.48, 0.48], v: [-0.24, 0.24], w: [0.06, 0.18] };
-  const cabin: Box = { u: [-0.22, 0.12], v: [-0.2, 0.2], w: [0.18, 0.32] };
+  const vOffset = 0.05;
+  const off = (arr: [number, number]): [number, number] => [
+    arr[0] + vOffset,
+    arr[1] + vOffset,
+  ];
+
+  const bodyBase: Box = {
+    u: [-0.48, 0.48],
+    v: off([-0.24, 0.24]),
+    w: [0.06, 0.18],
+  };
+  const cabin: Box = { u: [-0.22, 0.12], v: off([-0.2, 0.2]), w: [0.18, 0.32] };
   const frontBumper: Box = {
     u: [0.48, 0.52],
-    v: [-0.22, 0.22],
+    v: off([-0.22, 0.22]),
     w: [0.05, 0.12],
   };
   const rearBumper: Box = {
     u: [-0.52, -0.48],
-    v: [-0.22, 0.22],
+    v: off([-0.22, 0.22]),
     w: [0.05, 0.12],
   };
 
   const spoilerL: Box = {
     u: [-0.44, -0.4],
-    v: [-0.18, -0.14],
+    v: off([-0.18, -0.14]),
     w: [0.18, 0.24],
   };
-  const spoilerR: Box = { u: [-0.44, -0.4], v: [0.14, 0.18], w: [0.18, 0.24] };
+  const spoilerR: Box = {
+    u: [-0.44, -0.4],
+    v: off([0.14, 0.18]),
+    w: [0.18, 0.24],
+  };
   const spoilerWing: Box = {
     u: [-0.46, -0.38],
-    v: [-0.22, 0.22],
+    v: off([-0.22, 0.22]),
     w: [0.24, 0.26],
   };
 
-  const wheelRL = wheelPrims([-0.32, -0.2], [-0.26, -0.2], [0, 0.11]);
-  const wheelFL = wheelPrims([0.2, 0.32], [-0.26, -0.2], [0, 0.11]);
-  const wheelRR = wheelPrims([-0.32, -0.2], [0.2, 0.26], [0, 0.11]);
-  const wheelFR = wheelPrims([0.2, 0.32], [0.2, 0.26], [0, 0.11]);
+  const wheelRL = wheelPrims([-0.32, -0.2], off([-0.26, -0.2]), [0, 0.11]);
+  const wheelFL = wheelPrims([0.2, 0.32], off([-0.26, -0.2]), [0, 0.11]);
+  const wheelRR = wheelPrims([-0.32, -0.2], off([0.2, 0.26]), [0, 0.11]);
+  const wheelFR = wheelPrims([0.2, 0.32], off([0.2, 0.26]), [0, 0.11]);
 
   return [
     ...wheelRL,
@@ -374,10 +388,10 @@ function buildCar(): Prim[] {
     }),
 
     ...boxPrims(bodyBase),
-    sidePoly(0.24, [-0.48, 0.48], [0.12, 0.14], "var(--v-bumper)"),
+    sidePoly(0.24 + vOffset, [-0.48, 0.48], [0.12, 0.14], "var(--v-bumper)"),
 
-    frontPoly(0.48, [0.12, 0.22], [0.13, 0.17], "var(--v-light-front)"),
-    frontPoly(0.48, [-0.22, -0.12], [0.13, 0.17], "var(--v-light-front)"),
+    frontPoly(0.48, off([0.12, 0.22]), [0.13, 0.17], "var(--v-light-front)"),
+    frontPoly(0.48, off([-0.22, -0.12]), [0.13, 0.17], "var(--v-light-front)"),
 
     ...boxPrims(spoilerL, {
       side: "var(--v-bumper)",
@@ -397,14 +411,14 @@ function buildCar(): Prim[] {
       top: "var(--v-bumper)",
     }),
 
-    frontPoly(0.52, [-0.12, 0.12], [0.06, 0.11], "var(--v-window)"),
-    frontPoly(0.52, [-0.06, 0.06], [0.07, 0.1], "var(--v-wheel-side)"),
+    frontPoly(0.52, off([-0.12, 0.12]), [0.06, 0.11], "var(--v-window)"),
+    frontPoly(0.52, off([-0.06, 0.06]), [0.07, 0.1], "var(--v-wheel-side)"),
 
     ...boxPrims(cabin),
 
-    frontPoly(0.12, [-0.17, 0.17], [0.21, 0.3], "var(--v-window)"),
-    sidePoly(0.2, [-0.18, 0.08], [0.21, 0.3], "var(--v-window)"),
-    topPoly(0.32, [-0.15, 0.05], [-0.14, 0.14], "var(--v-window)"),
+    frontPoly(0.12, off([-0.17, 0.17]), [0.21, 0.3], "var(--v-window)"),
+    sidePoly(0.2 + vOffset, [-0.18, 0.08], [0.21, 0.3], "var(--v-window)"),
+    topPoly(0.32, [-0.15, 0.05], off([-0.14, 0.14]), "var(--v-window)"),
 
     ...wheelRR,
     ...wheelFR,
