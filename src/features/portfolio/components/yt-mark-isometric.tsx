@@ -961,14 +961,14 @@ export function YTMarkIsometric() {
           ))}
         </motion.svg>
       </ContextMenuTrigger>
-      <ContextMenuContent className="p-1.5 flex gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-600 dark:bg-neutral-800/90">
+      <ContextMenuContent className="p-1.5 flex gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
         <ContextMenuItem asChild onSelect={() => setCarModel("simple")}>
           <div
             className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
            ${
              carModel === "simple"
-               ? "bg-background border-neutral-400 dark:border-neutral-500 shadow-md pointer-events-none dark:bg-neutral-700"
-               : "bg-background/40 border-neutral-400/60 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 opacity-70 hover:opacity-90"
+               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
+               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
            }
            `}
           >
@@ -980,8 +980,8 @@ export function YTMarkIsometric() {
             className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
            ${
              carModel === "detailed"
-               ? "bg-background border-neutral-400 dark:border-neutral-500 shadow-md pointer-events-none dark:bg-neutral-700"
-               : "bg-background/40 border-neutral-400/60 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 opacity-70 hover:opacity-90"
+               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
+               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
            }
            `}
           >
