@@ -708,7 +708,7 @@ export function YTMarkIsometric() {
     <ContextMenu>
       <ContextMenuTrigger asChild>
         <motion.svg
-          className="relative isolate h-auto w-full touch-manipulation overflow-visible cursor-pointer transition-all duration-300 [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))] hover:[--stroke:color-mix(in_oklab,var(--foreground)_24%,var(--background))] hover:[--pattern:color-mix(in_oklab,var(--foreground)_18%,var(--background))]"
+          className="relative isolate h-auto w-full touch-manipulation overflow-visible cursor-pointer transition-all duration-300 [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
           viewBox="-31 -20 617 315"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -968,7 +968,7 @@ export function YTMarkIsometric() {
            ${
              carModel === "simple"
                ? "bg-background border-neutral-400 dark:border-neutral-500 shadow-md pointer-events-none dark:bg-neutral-700"
-               : "bg-background/40 border-neutral-300/80 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 hover:scale-[1.02] active:scale-[0.98] opacity-60 hover:opacity-90"
+               : "bg-background/40 border-neutral-400/60 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 opacity-70 hover:opacity-90"
            }
            `}
           >
@@ -981,7 +981,7 @@ export function YTMarkIsometric() {
            ${
              carModel === "detailed"
                ? "bg-background border-neutral-400 dark:border-neutral-500 shadow-md pointer-events-none dark:bg-neutral-700"
-               : "bg-background/40 border-neutral-300/80 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 hover:scale-[1.02] active:scale-[0.98] opacity-60 hover:opacity-90"
+               : "bg-background/40 border-neutral-400/60 dark:bg-neutral-900/50 dark:border-neutral-800/80 hover:bg-background/80 dark:hover:bg-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 opacity-70 hover:opacity-90"
            }
            `}
           >
