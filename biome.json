@@ -82,7 +82,7 @@
         "src/components/site-footer-brand.tsx",
         "src/components/yt-*.tsx",
         "src/features/portfolio/components/verified-icon.tsx",
-        "src/features/portfolio/components/yt-mark-isometric.tsx"
+        "src/features/portfolio/components/yt-mark-isometric/**"
       ],
       "linter": {
         "rules": {
