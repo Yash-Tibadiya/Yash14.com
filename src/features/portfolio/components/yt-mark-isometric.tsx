@@ -968,7 +968,7 @@ export function YTMarkIsometric() {
            ${
              carModel === "simple"
                ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
-               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
+               : "bg-background/40 border-neutral-400/60 hover:bg-background/55! hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
            }
            `}
           >
