@@ -22,7 +22,10 @@ const GRID = [
 const COLS = 6;
 const ROWS = 4;
 
-import { CarPreview, VehicleShape } from "./car-models";
+import { type CarModel, CarPreview, VehicleShape } from "./car-models";
+
+const CAR_MODELS: CarModel[] = ["detailed", "supercar", "f1", "truck"];
+
 import { COS, OX, OY, SIN, ZUNIT } from "./constants";
 
 // True isometric (30°) projection constants.
@@ -320,7 +323,7 @@ function Vehicle({
   spec: VehicleSpec;
   reduce: boolean | null;
   animateTraffic: boolean;
-  model: "detailed" | "simple";
+  model: CarModel;
 }) {
   const band = TRAFFIC_BANDS[spec.band];
   const [sx, sy] = band.start;
@@ -371,7 +374,7 @@ export function YTMarkIsometric() {
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
   const [active, setActive] = useState(false);
-  const [carModel, setCarModel] = useState<"detailed" | "simple">("detailed");
+  const [carModel, setCarModel] = useState<CarModel>("detailed");
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -664,33 +667,26 @@ export function YTMarkIsometric() {
           ))}
         </motion.svg>
       </ContextMenuTrigger>
-      <ContextMenuContent className="p-1.5 flex gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
-        <ContextMenuItem asChild onSelect={() => setCarModel("simple")}>
-          <div
-            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
-           ${
-             carModel === "simple"
-               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
-               : "bg-background/40 border-neutral-400/60 hover:bg-background/55! hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
-           }
-           `}
+      <ContextMenuContent className="p-1.5 grid grid-cols-2 gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
+        {CAR_MODELS.map((model) => (
+          <ContextMenuItem
+            key={model}
+            asChild
+            onSelect={() => setCarModel(model)}
           >
-            <CarPreview model="simple" selected={carModel === "simple"} />
-          </div>
-        </ContextMenuItem>
-        <ContextMenuItem asChild onSelect={() => setCarModel("detailed")}>
-          <div
-            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
+            <div
+              className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
            ${
-             carModel === "detailed"
+             carModel === model
                ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
                : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
            }
            `}
-          >
-            <CarPreview model="detailed" selected={carModel === "detailed"} />
-          </div>
-        </ContextMenuItem>
+            >
+              <CarPreview model={model} selected={carModel === model} />
+            </div>
+          </ContextMenuItem>
+        ))}
       </ContextMenuContent>
     </ContextMenu>
   );
