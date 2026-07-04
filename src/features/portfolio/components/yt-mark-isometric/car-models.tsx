@@ -610,6 +610,36 @@ export function buildSupercar(): Prim[] {
     top: "var(--v-wheel-top)",
   };
 
+  // free-form quads on a single front (u), top (w) or side (v) plane,
+  // for the angled Y-signature lights and sculpted creases
+  const frontQuad = (
+    u: number,
+    pts: Array<[number, number]>, // [v, w]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pv, pw]) => vproj(u, pv + vOffset, pw))),
+    fill,
+    stroked: false,
+  });
+  const topQuad = (
+    w: number,
+    pts: Array<[number, number]>, // [u, v]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pu, pv]) => vproj(pu, pv + vOffset, w))),
+    fill,
+    stroked: false,
+  });
+  const sideQuad = (
+    v: number,
+    pts: Array<[number, number]>, // [u, w]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pu, pw]) => vproj(pu, v, pw))),
+    fill,
+    stroked: false,
+  });
+
   // low wedge profile: tall mid-body, lower nose, lowest splitter
   const bodyMid: Box = {
     u: [-0.42, 0.24],
@@ -663,6 +693,73 @@ export function buildSupercar(): Prim[] {
     v: off([-0.05, 0.05]),
     w: [0.08, 0.11],
   };
+  // shoulder snorkel intakes flanking the engine deck
+  const scoopFar: Box = {
+    u: [-0.26, -0.14],
+    v: off([-0.2, -0.13]),
+    w: [0.16, 0.205],
+  };
+  const scoopNear: Box = {
+    u: [-0.26, -0.14],
+    v: off([0.13, 0.2]),
+    w: [0.16, 0.205],
+  };
+  const mirrorFar: Box = {
+    u: [0.1, 0.14],
+    v: off([-0.22, -0.17]),
+    w: [0.19, 0.225],
+  };
+  const mirrorNear: Box = {
+    u: [0.1, 0.14],
+    v: off([0.17, 0.22]),
+    w: [0.19, 0.225],
+  };
+
+  // Y-signature DRLs: twin chevrons opening toward the centre of the nose
+  const yLightNear = [
+    frontQuad(
+      0.52,
+      [
+        [0.19, 0.092],
+        [0.105, 0.106],
+        [0.105, 0.12],
+        [0.19, 0.106],
+      ],
+      "var(--v-light-front)",
+    ),
+    frontQuad(
+      0.52,
+      [
+        [0.19, 0.092],
+        [0.105, 0.064],
+        [0.105, 0.078],
+        [0.19, 0.106],
+      ],
+      "var(--v-light-front)",
+    ),
+  ];
+  const yLightFar = [
+    frontQuad(
+      0.52,
+      [
+        [-0.19, 0.092],
+        [-0.105, 0.106],
+        [-0.105, 0.12],
+        [-0.19, 0.106],
+      ],
+      "var(--v-light-front)",
+    ),
+    frontQuad(
+      0.52,
+      [
+        [-0.19, 0.092],
+        [-0.105, 0.064],
+        [-0.105, 0.078],
+        [-0.19, 0.106],
+      ],
+      "var(--v-light-front)",
+    ),
+  ];
 
   const wheelFrontFar = wheelPrims(
     [0.26, 0.38],
@@ -688,9 +785,11 @@ export function buildSupercar(): Prim[] {
   const rimOuterV = 0.25 + vOffset;
   const rims = [
     sidePoly(rimOuterV, [0.285, 0.355], [0.025, 0.09], "var(--v-wheel)"),
-    sidePoly(rimOuterV, [0.307, 0.333], [0.045, 0.07], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [0.313, 0.327], [0.032, 0.083], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [0.292, 0.348], [0.051, 0.064], "var(--v-stroke)"),
     sidePoly(rimOuterV, [-0.355, -0.285], [0.025, 0.09], "var(--v-wheel)"),
-    sidePoly(rimOuterV, [-0.333, -0.307], [0.045, 0.07], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [-0.327, -0.313], [0.032, 0.083], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [-0.348, -0.292], [0.051, 0.064], "var(--v-stroke)"),
   ];
 
   return [
@@ -704,27 +803,63 @@ export function buildSupercar(): Prim[] {
     ...boxPrims(exhaust, metal),
 
     ...boxPrims(bodyMid),
-    // side intake scoop on the visible flank
-    sidePoly(0.22 + vOffset, [-0.3, -0.12], [0.08, 0.15], "var(--v-window)"),
+    // angular side intake behind the door, rocker blade and character crease
+    sideQuad(
+      0.22 + vOffset,
+      [
+        [-0.12, 0.08],
+        [-0.12, 0.155],
+        [-0.28, 0.155],
+        [-0.33, 0.08],
+      ],
+      "var(--v-window)",
+    ),
     sidePoly(0.22 + vOffset, [-0.42, 0.24], [0.05, 0.07], "var(--v-bumper)"),
+    sideQuad(
+      0.22 + vOffset,
+      [
+        [0.24, 0.1],
+        [-0.12, 0.128],
+        [-0.12, 0.141],
+        [0.24, 0.113],
+      ],
+      "var(--v-bumper)",
+    ),
 
+    ...boxPrims(scoopFar, dark),
     ...boxPrims(engineDeck),
     // louvred engine cover glass
     topPoly(0.19, [-0.36, -0.3], off([-0.12, 0.12]), "var(--v-window)"),
     topPoly(0.19, [-0.28, -0.22], off([-0.12, 0.12]), "var(--v-window)"),
     topPoly(0.19, [-0.2, -0.16], off([-0.12, 0.12]), "var(--v-window)"),
+    ...boxPrims(scoopNear, dark),
 
+    ...boxPrims(mirrorFar, dark),
     ...boxPrims(cabin),
     frontPoly(0.16, off([-0.14, 0.14]), [0.18, 0.26], "var(--v-window)"),
     sidePoly(0.16 + vOffset, [-0.12, 0.1], [0.18, 0.255], "var(--v-window)"),
     topPoly(0.27, [-0.11, 0.11], off([-0.12, 0.12]), "var(--v-window)"),
+    ...boxPrims(mirrorNear, dark),
 
     ...boxPrims(noseLow),
-    // slim angry headlights + full-width front intake
-    frontPoly(0.52, off([0.1, 0.19]), [0.095, 0.115], "var(--v-light-front)"),
-    frontPoly(0.52, off([-0.19, -0.1]), [0.095, 0.115], "var(--v-light-front)"),
-    frontPoly(0.52, off([-0.16, 0.16]), [0.05, 0.08], "var(--v-window)"),
-    topPoly(0.12, [0.28, 0.48], off([-0.1, 0.1]), "var(--v-bumper)"),
+    // full-width lower intake with vertical fins + Y-signature DRLs
+    frontPoly(0.52, off([-0.17, 0.17]), [0.05, 0.082], "var(--v-window)"),
+    frontPoly(0.52, off([-0.062, -0.042]), [0.05, 0.082], "var(--v-front)"),
+    frontPoly(0.52, off([0.042, 0.062]), [0.05, 0.082], "var(--v-front)"),
+    ...yLightFar,
+    ...yLightNear,
+    // sculpted bonnet channel narrowing towards the badge
+    topQuad(
+      0.12,
+      [
+        [0.26, -0.14],
+        [0.5, -0.05],
+        [0.5, 0.05],
+        [0.26, 0.14],
+      ],
+      "var(--v-bumper)",
+    ),
+    topPoly(0.12, [0.455, 0.485], off([-0.015, 0.015]), "var(--v-light-front)"),
     ...boxPrims(splitter, dark),
 
     ...wheelFrontNear,
