@@ -3,6 +3,12 @@
 import type { Transition } from "motion/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useId, useState } from "react";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { useSound } from "@/hooks/soundcn/use-sound";
 import { metalClickSound } from "@/lib/soundcn/metal-click";
 
@@ -16,12 +22,13 @@ const GRID = [
 const COLS = 6;
 const ROWS = 4;
 
+import { type CarModel, CarPreview, VehicleShape } from "./car-models";
+
+const CAR_MODELS: CarModel[] = ["detailed", "supercar", "f1", "truck"];
+
+import { COS, OX, OY, SIN, ZUNIT } from "./constants";
+
 // True isometric (30°) projection constants.
-const COS = -55.4256;
-const SIN = 32;
-const ZUNIT = 64;
-const OX = 360;
-const OY = 10;
 
 const TOP_NORMAL = 0.5;
 const TOP_PRESSED = 0.25;
@@ -218,99 +225,6 @@ const BAND_FILL_2 = `${BAND_1.top}L1300 873L-700 -282Z`;
 const BAND_FILL_OPACITY = 0.08;
 const BAND_FILL_FEATHER = 0.22;
 
-const FWD = { x: -COS, y: SIN };
-const VSIDE = { x: COS, y: SIN };
-const VUP = { x: 0, y: -ZUNIT };
-
-const vproj = (u: number, v: number, w: number): [number, number] => [
-  u * FWD.x + v * VSIDE.x + w * VUP.x,
-  u * FWD.y + v * VSIDE.y + w * VUP.y,
-];
-
-const poly = (corners: Array<[number, number]>) =>
-  `M${corners.map(([x, y]) => `${x.toFixed(2)} ${y.toFixed(2)}`).join("L")}Z`;
-
-type Box = { u: [number, number]; v: [number, number]; w: [number, number] };
-
-function boxFaces({ u: [u0, u1], v: [v0, v1], w: [w0, w1] }: Box) {
-  return {
-    side: poly([
-      vproj(u0, v1, w0),
-      vproj(u1, v1, w0),
-      vproj(u1, v1, w1),
-      vproj(u0, v1, w1),
-    ]),
-    front: poly([
-      vproj(u1, v0, w0),
-      vproj(u1, v1, w0),
-      vproj(u1, v1, w1),
-      vproj(u1, v0, w1),
-    ]),
-    top: poly([
-      vproj(u0, v0, w1),
-      vproj(u1, v0, w1),
-      vproj(u1, v1, w1),
-      vproj(u0, v1, w1),
-    ]),
-  };
-}
-
-type Prim = { d: string; fill: string; stroked: boolean };
-
-const boxPrims = (b: Box): Prim[] => {
-  const f = boxFaces(b);
-  return [
-    { d: f.side, fill: "var(--v-side)", stroked: true },
-    { d: f.front, fill: "var(--v-front)", stroked: true },
-    { d: f.top, fill: "var(--v-top)", stroked: true },
-  ];
-};
-
-const wheelPrim = (
-  u: [number, number],
-  w: [number, number],
-  v: number,
-): Prim => ({
-  d: poly([
-    vproj(u[0], v, w[0]),
-    vproj(u[1], v, w[0]),
-    vproj(u[1], v, w[1]),
-    vproj(u[0], v, w[1]),
-  ]),
-  fill: "var(--v-wheel)",
-  stroked: false,
-});
-
-function buildCar(): Prim[] {
-  const body: Box = { u: [-0.47, 0.47], v: [-0.23, 0.23], w: [0.05, 0.17] };
-  const cabin: Box = { u: [-0.27, 0.16], v: [-0.18, 0.18], w: [0.17, 0.3] };
-  return [
-    ...boxPrims(body),
-    wheelPrim([0.22, 0.38], [0, 0.1], 0.23),
-    wheelPrim([-0.38, -0.22], [0, 0.1], 0.23),
-    ...boxPrims(cabin),
-  ];
-}
-
-const CAR_PRIMS = buildCar();
-
-function VehicleShape({ kind: _kind }: { kind: "car" }) {
-  const prims = CAR_PRIMS;
-  return (
-    <g strokeLinejoin="round">
-      {prims.map((p, i) => (
-        <path
-          key={i}
-          d={p.d}
-          fill={p.fill}
-          stroke={p.stroked ? "var(--v-stroke)" : "none"}
-          strokeWidth={p.stroked ? 0.9 : 0}
-        />
-      ))}
-    </g>
-  );
-}
-
 const VIEWBOX = { x: -31, y: -20, w: 617, h: 315 };
 const PATH_PAD = 45;
 const PATH_RUNOUT = 240;
@@ -404,10 +318,12 @@ function Vehicle({
   spec,
   reduce,
   animateTraffic,
+  model,
 }: {
   spec: VehicleSpec;
   reduce: boolean | null;
   animateTraffic: boolean;
+  model: CarModel;
 }) {
   const band = TRAFFIC_BANDS[spec.band];
   const [sx, sy] = band.start;
@@ -418,7 +334,7 @@ function Vehicle({
     const { x, y } = vehicleTranslate(band, spec.phase);
     return (
       <g transform={`translate(${x.toFixed(2)} ${y.toFixed(2)})`}>
-        <VehicleShape kind={spec.kind} />
+        <VehicleShape kind={spec.kind} model={model} />
       </g>
     );
   }
@@ -440,7 +356,7 @@ function Vehicle({
         y: { ...loop, delay: -elapsed },
       }}
     >
-      <VehicleShape kind={spec.kind} />
+      <VehicleShape kind={spec.kind} model={model} />
     </motion.g>
   );
 }
@@ -458,6 +374,7 @@ export function YTMarkIsometric() {
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
   const [active, setActive] = useState(false);
+  const [carModel, setCarModel] = useState<CarModel>("detailed");
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -494,249 +411,283 @@ export function YTMarkIsometric() {
     : [1 + BAND_FILL_FEATHER, BAND_FILL_FEATHER];
 
   return (
-    <motion.svg
-      className="relative isolate h-auto w-full touch-manipulation overflow-visible [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
-      viewBox="-31 -20 617 315"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-      initial="normal"
-      whileTap="pressed"
-      onTap={() => {
-        play();
-        setActive((on) => !on);
-      }}
-    >
-      <defs>
-        <pattern
-          id={patternId}
-          x="0"
-          y="0"
-          width="10"
-          height="10"
-          patternUnits="userSpaceOnUse"
+    <ContextMenu>
+      <ContextMenuTrigger asChild>
+        <motion.svg
+          className="relative isolate h-auto w-full touch-manipulation overflow-visible cursor-pointer transition-all duration-300 [--pattern:color-mix(in_oklab,var(--foreground)_12%,var(--background))] [--stroke:color-mix(in_oklab,var(--foreground)_16%,var(--background))]"
+          viewBox="-31 -20 617 315"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden
+          initial="normal"
+          whileTap="pressed"
+          onTap={() => {
+            play();
+            setActive((on) => !on);
+          }}
         >
-          <rect width="10" height="10" fill={SURFACE_FILL} />
-          <path
-            d="M-1 1l2 -2M0 10l10 -10M9 11l2 -2"
-            stroke="var(--pattern)"
-            strokeWidth="1"
-          />
-        </pattern>
+          <defs>
+            <pattern
+              id={patternId}
+              x="0"
+              y="0"
+              width="10"
+              height="10"
+              patternUnits="userSpaceOnUse"
+            >
+              <rect width="10" height="10" fill={SURFACE_FILL} />
+              <path
+                d="M-1 1l2 -2M0 10l10 -10M9 11l2 -2"
+                stroke="var(--pattern)"
+                strokeWidth="1"
+              />
+            </pattern>
 
-        <motion.linearGradient
-          id={bandId0}
-          gradientUnits="userSpaceOnUse"
-          x1={BAND_GRAD_0.x1}
-          y1={BAND_GRAD_0.y1}
-          x2={BAND_GRAD_0.x2}
-          y2={BAND_GRAD_0.y2}
-        >
-          <motion.stop
-            offset={0}
-            stopColor="var(--foreground)"
-            stopOpacity={0}
-            animate={{
-              stopOpacity: active
-                ? [0, BAND_FILL_OPACITY]
-                : [BAND_FILL_OPACITY, 0],
-              offset: bandFillProgress,
-            }}
-            transition={{
-              stopOpacity: bandFillSweepTransition,
-              offset: bandFillSweepTransition,
-            }}
-          />
-          <motion.stop
-            offset={BAND_FILL_FEATHER}
-            stopColor="var(--foreground)"
-            stopOpacity={0}
-            animate={{ offset: bandFillTailProgress }}
-            transition={bandFillSweepTransition}
-          />
-          <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
-        </motion.linearGradient>
-        <motion.linearGradient
-          id={bandId1}
-          gradientUnits="userSpaceOnUse"
-          x1={BAND_GRAD_1.x1}
-          y1={BAND_GRAD_1.y1}
-          x2={BAND_GRAD_1.x2}
-          y2={BAND_GRAD_1.y2}
-        >
-          <motion.stop
-            offset={0}
-            stopColor="var(--foreground)"
-            stopOpacity={0}
-            animate={{
-              stopOpacity: active
-                ? [0, BAND_FILL_OPACITY]
-                : [BAND_FILL_OPACITY, 0],
-              offset: bandFillProgress,
-            }}
-            transition={{
-              stopOpacity: bandFillSweepTransition,
-              offset: bandFillSweepTransition,
-            }}
-          />
-          <motion.stop
-            offset={BAND_FILL_FEATHER}
-            stopColor="var(--foreground)"
-            stopOpacity={0}
-            animate={{ offset: bandFillTailProgress }}
-            transition={bandFillSweepTransition}
-          />
-          <stop offset="100%" stopColor="var(--foreground)" stopOpacity={0} />
-        </motion.linearGradient>
-
-        <clipPath id={bandClipId}>
-          <path d={BAND_FILL} />
-          <path d={BAND_FILL_2} />
-        </clipPath>
-      </defs>
-
-      <AnimatePresence>
-        <motion.g
-          key="corridors"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={bandTransition}
-        >
-          <motion.path
-            d={BAND_FILL}
-            fill={`url(#${bandId0})`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={bandTransition}
-          />
-          <motion.path
-            d={BAND_FILL_2}
-            fill={`url(#${bandId1})`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={bandTransition}
-          />
-          <g className="stroke-line">
-            {GUIDE_LINES.map((d) => (
-              <motion.path
-                key={d}
-                d={d}
-                stroke="var(--line)"
-                strokeWidth={1}
-                strokeDasharray={GUIDE_DASH}
-                initial={{ strokeDashoffset: 0, opacity: 0 }}
+            <motion.linearGradient
+              id={bandId0}
+              gradientUnits="userSpaceOnUse"
+              x1={BAND_GRAD_0.x1}
+              y1={BAND_GRAD_0.y1}
+              x2={BAND_GRAD_0.x2}
+              y2={BAND_GRAD_0.y2}
+            >
+              <motion.stop
+                offset={0}
+                stopColor="var(--foreground)"
+                stopOpacity={0}
                 animate={{
-                  strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
-                  opacity: 1,
+                  stopOpacity: active
+                    ? [0, BAND_FILL_OPACITY]
+                    : [BAND_FILL_OPACITY, 0],
+                  offset: bandFillProgress,
                 }}
-                exit={{ opacity: 0 }}
                 transition={{
-                  opacity: bandTransition,
-                  strokeDashoffset: reduceMotion
-                    ? undefined
-                    : guideLineTransition,
+                  stopOpacity: bandFillSweepTransition,
+                  offset: bandFillSweepTransition,
                 }}
               />
-            ))}
-          </g>
-        </motion.g>
-      </AnimatePresence>
-
-      {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
-        <motion.path
-          key={`side-behind-${i}`}
-          d={shape.normal}
-          fill={SURFACE_FILL}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-      {WALL_EDGES_BEHIND_TRAFFIC.map((shape, i) => (
-        <motion.path
-          key={`wall-edge-behind-${i}`}
-          d={shape.normal}
-          stroke="var(--stroke)"
-          strokeWidth="1"
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-
-      {active ? (
-        <AnimatePresence>
-          <motion.g
-            key="traffic"
-            className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={bandTransition}
-          >
-            {TRAFFIC.map((spec, i) => (
-              <Vehicle
-                key={i}
-                spec={spec}
-                reduce={reduceMotion}
-                animateTraffic={animateTraffic}
+              <motion.stop
+                offset={BAND_FILL_FEATHER}
+                stopColor="var(--foreground)"
+                stopOpacity={0}
+                animate={{ offset: bandFillTailProgress }}
+                transition={bandFillSweepTransition}
               />
-            ))}
-          </motion.g>
-        </AnimatePresence>
-      ) : null}
+              <stop
+                offset="100%"
+                stopColor="var(--foreground)"
+                stopOpacity={0}
+              />
+            </motion.linearGradient>
+            <motion.linearGradient
+              id={bandId1}
+              gradientUnits="userSpaceOnUse"
+              x1={BAND_GRAD_1.x1}
+              y1={BAND_GRAD_1.y1}
+              x2={BAND_GRAD_1.x2}
+              y2={BAND_GRAD_1.y2}
+            >
+              <motion.stop
+                offset={0}
+                stopColor="var(--foreground)"
+                stopOpacity={0}
+                animate={{
+                  stopOpacity: active
+                    ? [0, BAND_FILL_OPACITY]
+                    : [BAND_FILL_OPACITY, 0],
+                  offset: bandFillProgress,
+                }}
+                transition={{
+                  stopOpacity: bandFillSweepTransition,
+                  offset: bandFillSweepTransition,
+                }}
+              />
+              <motion.stop
+                offset={BAND_FILL_FEATHER}
+                stopColor="var(--foreground)"
+                stopOpacity={0}
+                animate={{ offset: bandFillTailProgress }}
+                transition={bandFillSweepTransition}
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--foreground)"
+                stopOpacity={0}
+              />
+            </motion.linearGradient>
 
-      {SIDE_FILLS.map((shape, i) => (
-        <motion.path
-          key={`side-${i}`}
-          d={shape.normal}
-          fill={SURFACE_FILL}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
+            <clipPath id={bandClipId}>
+              <path d={BAND_FILL} />
+              <path d={BAND_FILL_2} />
+            </clipPath>
+          </defs>
 
-      {WALL_EDGES.map((shape, i) => (
-        <motion.path
-          key={`wall-edge-${i}`}
-          d={shape.normal}
-          stroke="var(--stroke)"
-          strokeWidth="1"
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
+          <AnimatePresence>
+            <motion.g
+              key="corridors"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={bandTransition}
+            >
+              <motion.path
+                d={BAND_FILL}
+                fill={`url(#${bandId0})`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={bandTransition}
+              />
+              <motion.path
+                d={BAND_FILL_2}
+                fill={`url(#${bandId1})`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={bandTransition}
+              />
+              <g className="stroke-line">
+                {GUIDE_LINES.map((d) => (
+                  <motion.path
+                    key={d}
+                    d={d}
+                    stroke="var(--line)"
+                    strokeWidth={1}
+                    strokeDasharray={GUIDE_DASH}
+                    initial={{ strokeDashoffset: 0, opacity: 0 }}
+                    animate={{
+                      strokeDashoffset: reduceMotion ? 0 : -GUIDE_DASH_PERIOD,
+                      opacity: 1,
+                    }}
+                    exit={{ opacity: 0 }}
+                    transition={{
+                      opacity: bandTransition,
+                      strokeDashoffset: reduceMotion
+                        ? undefined
+                        : guideLineTransition,
+                    }}
+                  />
+                ))}
+              </g>
+            </motion.g>
+          </AnimatePresence>
 
-      {TOP_FILLS.map((shape, i) => (
-        <motion.path
-          key={`top-bg-${i}`}
-          d={shape.normal}
-          fill={SURFACE_FILL}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-      {TOP_FILLS.map((shape, i) => (
-        <motion.path
-          key={`top-pattern-${i}`}
-          d={shape.normal}
-          fill={`url(#${patternId})`}
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
+          {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
+            <motion.path
+              key={`side-behind-${i}`}
+              d={shape.normal}
+              fill={SURFACE_FILL}
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+          {WALL_EDGES_BEHIND_TRAFFIC.map((shape, i) => (
+            <motion.path
+              key={`wall-edge-behind-${i}`}
+              d={shape.normal}
+              stroke="var(--stroke)"
+              strokeWidth="1"
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
 
-      {TOP_EDGES.map((shape, i) => (
-        <motion.path
-          key={`top-edge-${i}`}
-          d={shape.normal}
-          stroke="var(--stroke)"
-          strokeWidth="1"
-          variants={variantsFor(shape)}
-          transition={transition}
-        />
-      ))}
-    </motion.svg>
+          {active ? (
+            <AnimatePresence>
+              <motion.g
+                key="traffic"
+                className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))] [--v-wheel-side:color-mix(in_oklab,var(--foreground)_40%,var(--background))] [--v-wheel-front:color-mix(in_oklab,var(--foreground)_45%,var(--background))] [--v-wheel-top:color-mix(in_oklab,var(--foreground)_50%,var(--background))] [--v-window:color-mix(in_oklab,var(--foreground)_60%,var(--background))] [--v-bumper:color-mix(in_oklab,var(--foreground)_25%,var(--background))] [--v-light-front:color-mix(in_oklab,var(--foreground)_85%,var(--background))]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={bandTransition}
+              >
+                {TRAFFIC.map((spec, i) => (
+                  <Vehicle
+                    key={i}
+                    spec={spec}
+                    reduce={reduceMotion}
+                    animateTraffic={animateTraffic}
+                    model={carModel}
+                  />
+                ))}
+              </motion.g>
+            </AnimatePresence>
+          ) : null}
+
+          {SIDE_FILLS.map((shape, i) => (
+            <motion.path
+              key={`side-${i}`}
+              d={shape.normal}
+              fill={SURFACE_FILL}
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+
+          {WALL_EDGES.map((shape, i) => (
+            <motion.path
+              key={`wall-edge-${i}`}
+              d={shape.normal}
+              stroke="var(--stroke)"
+              strokeWidth="1"
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+
+          {TOP_FILLS.map((shape, i) => (
+            <motion.path
+              key={`top-bg-${i}`}
+              d={shape.normal}
+              fill={SURFACE_FILL}
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+          {TOP_FILLS.map((shape, i) => (
+            <motion.path
+              key={`top-pattern-${i}`}
+              d={shape.normal}
+              fill={`url(#${patternId})`}
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+
+          {TOP_EDGES.map((shape, i) => (
+            <motion.path
+              key={`top-edge-${i}`}
+              d={shape.normal}
+              stroke="var(--stroke)"
+              strokeWidth="1"
+              variants={variantsFor(shape)}
+              transition={transition}
+            />
+          ))}
+        </motion.svg>
+      </ContextMenuTrigger>
+      <ContextMenuContent className="p-1.5 grid grid-cols-2 gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
+        {CAR_MODELS.map((model) => (
+          <ContextMenuItem
+            key={model}
+            asChild
+            onSelect={() => setCarModel(model)}
+          >
+            <div
+              className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
+           ${
+             carModel === model
+               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
+               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
+           }
+           `}
+            >
+              <CarPreview model={model} selected={carModel === model} />
+            </div>
+          </ContextMenuItem>
+        ))}
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }
