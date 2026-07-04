@@ -355,6 +355,74 @@ export function buildF1Car(): Prim[] {
     w: [0.02, 0.09],
   };
 
+  const diffuser: Box = {
+    u: [-0.49, -0.4],
+    v: off([-0.13, 0.13]),
+    w: [0.02, 0.05],
+  };
+  const exhaust: Box = {
+    u: [-0.51, -0.48],
+    v: off([-0.02, 0.02]),
+    w: [0.06, 0.09],
+  };
+  const drsActuator: Box = {
+    u: [-0.56, -0.53],
+    v: off([-0.02, 0.02]),
+    w: [0.235, 0.245],
+  };
+  const airboxIntake = frontPoly(
+    0.02,
+    off([-0.03, 0.03]),
+    [0.16, 0.2],
+    "var(--v-window)",
+  );
+  const tCam: Box = {
+    u: [-0.06, -0.02],
+    v: off([-0.015, 0.015]),
+    w: [0.22, 0.245],
+  };
+  const mirrorFar: Box = {
+    u: [0.18, 0.21],
+    v: off([-0.13, -0.1]),
+    w: [0.13, 0.155],
+  };
+  const mirrorNear: Box = {
+    u: [0.18, 0.21],
+    v: off([0.1, 0.13]),
+    w: [0.13, 0.155],
+  };
+  const bargeboardFar: Box = {
+    u: [0.06, 0.16],
+    v: off([-0.185, -0.16]),
+    w: [0.05, 0.12],
+  };
+  const bargeboardNear: Box = {
+    u: [0.06, 0.16],
+    v: off([0.16, 0.185]),
+    w: [0.05, 0.12],
+  };
+
+  const armFrontFar: Box = {
+    u: [0.36, 0.39],
+    v: off([-0.19, -0.04]),
+    w: [0.09, 0.11],
+  };
+  const armFrontNear: Box = {
+    u: [0.36, 0.39],
+    v: off([0.04, 0.19]),
+    w: [0.09, 0.11],
+  };
+  const armRearFar: Box = {
+    u: [-0.4, -0.37],
+    v: off([-0.19, -0.05]),
+    w: [0.07, 0.09],
+  };
+  const armRearNear: Box = {
+    u: [-0.4, -0.37],
+    v: off([0.05, 0.19]),
+    w: [0.07, 0.09],
+  };
+
   const wheelFrontFar = wheelPrims([0.3, 0.46], off([-0.28, -0.19]), [0, 0.14]);
   const wheelRearFar = wheelPrims(
     [-0.46, -0.3],
@@ -364,29 +432,61 @@ export function buildF1Car(): Prim[] {
   const wheelFrontNear = wheelPrims([0.3, 0.46], off([0.19, 0.28]), [0, 0.14]);
   const wheelRearNear = wheelPrims([-0.46, -0.3], off([0.19, 0.28]), [0, 0.15]);
 
+  const rimOuterV = 0.28 + vOffset;
+  const rimFrontNear = [
+    sidePoly(rimOuterV, [0.335, 0.425], [0.035, 0.105], "var(--v-wheel)"),
+    sidePoly(rimOuterV, [0.365, 0.395], [0.055, 0.085], "var(--v-stroke)"),
+  ];
+  const rimRearNear = [
+    sidePoly(rimOuterV, [-0.425, -0.335], [0.04, 0.11], "var(--v-wheel)"),
+    sidePoly(rimOuterV, [-0.395, -0.365], [0.06, 0.09], "var(--v-stroke)"),
+  ];
+
   return [
     ...wheelFrontFar,
     ...wheelRearFar,
+    ...boxPrims(armFrontFar, dark),
+    ...boxPrims(armRearFar, dark),
 
     ...boxPrims(rearEndplateFar, dark),
     ...boxPrims(rearWingFlap, dark),
+    ...boxPrims(drsActuator, {
+      side: "var(--v-wheel-side)",
+      front: "var(--v-wheel-front)",
+      top: "var(--v-wheel-top)",
+    }),
     ...boxPrims(rearWingMain, dark),
     ...boxPrims(rearEndplateNear, dark),
 
+    ...boxPrims(diffuser, dark),
+    ...boxPrims(exhaust, {
+      side: "var(--v-wheel-side)",
+      front: "var(--v-wheel-front)",
+      top: "var(--v-wheel-top)",
+    }),
     ...boxPrims(gearbox, dark),
     ...boxPrims(floor, dark),
 
+    ...boxPrims(bargeboardFar, dark),
     ...boxPrims(sidepodFar),
     frontPoly(0.04, off([-0.16, -0.1]), [0.06, 0.12], "var(--v-window)"),
+    ...boxPrims(mirrorFar, dark),
 
     ...boxPrims(monocoque),
 
     ...boxPrims(sidepodNear),
     frontPoly(0.04, off([0.1, 0.16]), [0.06, 0.12], "var(--v-window)"),
     sidePoly(0.17 + vOffset, [-0.26, -0.04], [0.07, 0.115], "var(--v-window)"),
+    ...boxPrims(bargeboardNear, dark),
 
     ...boxPrims(engineCover),
+    airboxIntake,
     ...boxPrims(sharkFin),
+    ...boxPrims(tCam, {
+      side: "var(--v-wheel-side)",
+      front: "var(--v-wheel-front)",
+      top: "var(--v-wheel-top)",
+    }),
 
     topPoly(0.15, [0.04, 0.18], off([-0.05, 0.05]), "var(--v-window)"),
     ...boxPrims(halo, {
@@ -394,10 +494,13 @@ export function buildF1Car(): Prim[] {
       front: "var(--v-wheel-front)",
       top: "var(--v-wheel-top)",
     }),
+    ...boxPrims(mirrorNear, dark),
 
     ...boxPrims(nose),
     topPoly(0.125, [0.32, 0.48], off([-0.03, 0.03]), "var(--v-light-front)"),
     ...boxPrims(noseTip),
+    ...boxPrims(armFrontNear, dark),
+    ...boxPrims(armRearNear, dark),
 
     ...boxPrims(frontEndplateFar, dark),
     ...boxPrims(frontWingFlap, dark),
@@ -405,7 +508,9 @@ export function buildF1Car(): Prim[] {
     ...boxPrims(frontEndplateNear, dark),
 
     ...wheelFrontNear,
+    ...rimFrontNear,
     ...wheelRearNear,
+    ...rimRearNear,
   ];
 }
 
