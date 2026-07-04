@@ -23,6 +23,9 @@ const COLS = 6;
 const ROWS = 4;
 
 import { type CarModel, CarPreview, VehicleShape } from "./car-models";
+
+const CAR_MODELS: CarModel[] = ["detailed", "supercar", "f1", "truck"];
+
 import { COS, OX, OY, SIN, ZUNIT } from "./constants";
 
 // True isometric (30°) projection constants.
@@ -297,10 +300,10 @@ type VehicleSpec = {
   duration: number;
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 5 },
-  { kind: "car", band: 0, phase: 0.4, duration: 5 },
-  { kind: "car", band: 1, phase: 0.15, duration: 4.5 },
-  { kind: "car", band: 1, phase: 0.63, duration: 4.5 },
+  { kind: "car", band: 0, phase: 0.0, duration: 15 },
+  { kind: "car", band: 0, phase: 0.4, duration: 15 },
+  { kind: "car", band: 1, phase: 0.15, duration: 14.5 },
+  { kind: "car", band: 1, phase: 0.63, duration: 14.5 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -665,45 +668,25 @@ export function YTMarkIsometric() {
         </motion.svg>
       </ContextMenuTrigger>
       <ContextMenuContent className="p-1.5 flex gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
-        <ContextMenuItem asChild onSelect={() => setCarModel("simple")}>
-          <div
-            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
-           ${
-             carModel === "simple"
-               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
-               : "bg-background/40 border-neutral-400/60 hover:bg-background/55! hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
-           }
-           `}
+        {CAR_MODELS.map((model) => (
+          <ContextMenuItem
+            key={model}
+            asChild
+            onSelect={() => setCarModel(model)}
           >
-            <CarPreview model="simple" selected={carModel === "simple"} />
-          </div>
-        </ContextMenuItem>
-        <ContextMenuItem asChild onSelect={() => setCarModel("detailed")}>
-          <div
-            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
+            <div
+              className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
            ${
-             carModel === "detailed"
+             carModel === model
                ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
                : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
            }
            `}
-          >
-            <CarPreview model="detailed" selected={carModel === "detailed"} />
-          </div>
-        </ContextMenuItem>
-        <ContextMenuItem asChild onSelect={() => setCarModel("f1")}>
-          <div
-            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
-           ${
-             carModel === "f1"
-               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
-               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
-           }
-           `}
-          >
-            <CarPreview model="f1" selected={carModel === "f1"} />
-          </div>
-        </ContextMenuItem>
+            >
+              <CarPreview model={model} selected={carModel === model} />
+            </div>
+          </ContextMenuItem>
+        ))}
       </ContextMenuContent>
     </ContextMenu>
   );
