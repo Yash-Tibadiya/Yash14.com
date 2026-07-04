@@ -848,14 +848,34 @@ export function buildSupercar(): Prim[] {
     frontPoly(0.52, off([0.042, 0.062]), [0.05, 0.082], "var(--v-front)"),
     ...yLightFar,
     ...yLightNear,
-    // sculpted bonnet channel narrowing towards the badge
+    // sculpted bonnet: converging crease lines + slim centre channel + badge
     topQuad(
       0.12,
       [
-        [0.26, -0.14],
-        [0.5, -0.05],
-        [0.5, 0.05],
-        [0.26, 0.14],
+        [0.27, -0.17],
+        [0.5, -0.065],
+        [0.5, -0.045],
+        [0.27, -0.14],
+      ],
+      "var(--v-bumper)",
+    ),
+    topQuad(
+      0.12,
+      [
+        [0.27, 0.14],
+        [0.5, 0.045],
+        [0.5, 0.065],
+        [0.27, 0.17],
+      ],
+      "var(--v-bumper)",
+    ),
+    topQuad(
+      0.12,
+      [
+        [0.27, -0.055],
+        [0.5, -0.022],
+        [0.5, 0.022],
+        [0.27, 0.055],
       ],
       "var(--v-bumper)",
     ),
