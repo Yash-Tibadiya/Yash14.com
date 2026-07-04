@@ -300,10 +300,10 @@ type VehicleSpec = {
   duration: number;
 };
 const TRAFFIC: VehicleSpec[] = [
-  { kind: "car", band: 0, phase: 0.0, duration: 15 },
-  { kind: "car", band: 0, phase: 0.4, duration: 15 },
-  { kind: "car", band: 1, phase: 0.15, duration: 14.5 },
-  { kind: "car", band: 1, phase: 0.63, duration: 14.5 },
+  { kind: "car", band: 0, phase: 0.0, duration: 5 },
+  { kind: "car", band: 0, phase: 0.4, duration: 5 },
+  { kind: "car", band: 1, phase: 0.15, duration: 4.5 },
+  { kind: "car", band: 1, phase: 0.63, duration: 4.5 },
 ];
 
 function vehicleTranslate(band: BandPath, phase: number) {
@@ -667,7 +667,7 @@ export function YTMarkIsometric() {
           ))}
         </motion.svg>
       </ContextMenuTrigger>
-      <ContextMenuContent className="p-1.5 flex gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
+      <ContextMenuContent className="p-1.5 grid grid-cols-2 gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
         {CAR_MODELS.map((model) => (
           <ContextMenuItem
             key={model}

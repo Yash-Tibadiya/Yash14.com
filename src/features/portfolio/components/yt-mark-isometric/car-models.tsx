@@ -888,18 +888,265 @@ export function buildSupercar(): Prim[] {
   ];
 }
 
+export function buildGTCar(): Prim[] {
+  const vOffset = 0.05;
+  const off = (arr: [number, number]): [number, number] => [
+    arr[0] + vOffset,
+    arr[1] + vOffset,
+  ];
+  const dark = {
+    side: "var(--v-bumper)",
+    front: "var(--v-bumper)",
+    top: "var(--v-bumper)",
+  };
+
+  // free-form quads on a single front (u), top (w) or side (v) plane
+  const frontQuad = (
+    u: number,
+    pts: Array<[number, number]>, // [v, w]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pv, pw]) => vproj(u, pv + vOffset, pw))),
+    fill,
+    stroked: false,
+  });
+  const topQuad = (
+    w: number,
+    pts: Array<[number, number]>, // [u, v]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pu, pv]) => vproj(pu, pv + vOffset, w))),
+    fill,
+    stroked: false,
+  });
+  const sideQuad = (
+    v: number,
+    pts: Array<[number, number]>, // [u, w]
+    fill: string,
+  ): Prim => ({
+    d: poly(pts.map(([pu, pw]) => vproj(pu, v, pw))),
+    fill,
+    stroked: false,
+  });
+
+  // front-engine GT proportions: long bonnet, cabin pushed rearward
+  const bodyMain: Box = {
+    u: [-0.48, 0.06],
+    v: off([-0.22, 0.22]),
+    w: [0.05, 0.16],
+  };
+  const bonnet: Box = {
+    u: [0.06, 0.5],
+    v: off([-0.21, 0.21]),
+    w: [0.05, 0.135],
+  };
+  const splitter: Box = {
+    u: [0.48, 0.58],
+    v: off([-0.22, 0.22]),
+    w: [0.03, 0.055],
+  };
+  const cabin: Box = {
+    u: [-0.32, -0.02],
+    v: off([-0.15, 0.15]),
+    w: [0.16, 0.28],
+  };
+  // swan-neck rear wing: high main plane on centre struts + endplates
+  const wingMain: Box = {
+    u: [-0.54, -0.45],
+    v: off([-0.21, 0.21]),
+    w: [0.275, 0.3],
+  };
+  const wingStrutFar: Box = {
+    u: [-0.46, -0.43],
+    v: off([-0.06, -0.02]),
+    w: [0.16, 0.295],
+  };
+  const wingStrutNear: Box = {
+    u: [-0.46, -0.43],
+    v: off([0.02, 0.06]),
+    w: [0.16, 0.295],
+  };
+  const endplateFar: Box = {
+    u: [-0.56, -0.43],
+    v: off([-0.215, -0.185]),
+    w: [0.25, 0.315],
+  };
+  const endplateNear: Box = {
+    u: [-0.56, -0.43],
+    v: off([0.185, 0.215]),
+    w: [0.25, 0.315],
+  };
+  const diffuser: Box = {
+    u: [-0.53, -0.47],
+    v: off([-0.18, 0.18]),
+    w: [0.02, 0.06],
+  };
+  const aerial: Box = {
+    u: [-0.28, -0.25],
+    v: off([-0.015, 0.015]),
+    w: [0.28, 0.315],
+  };
+  const mirrorFar: Box = {
+    u: [-0.08, -0.04],
+    v: off([-0.22, -0.17]),
+    w: [0.2, 0.235],
+  };
+  const mirrorNear: Box = {
+    u: [-0.08, -0.04],
+    v: off([0.17, 0.22]),
+    w: [0.2, 0.235],
+  };
+
+  const wheelFrontFar = wheelPrims(
+    [0.26, 0.38],
+    off([-0.25, -0.18]),
+    [0, 0.12],
+  );
+  const wheelRearFar = wheelPrims(
+    [-0.38, -0.26],
+    off([-0.25, -0.18]),
+    [0, 0.12],
+  );
+  const wheelFrontNear = wheelPrims([0.26, 0.38], off([0.18, 0.25]), [0, 0.12]);
+  const wheelRearNear = wheelPrims(
+    [-0.38, -0.26],
+    off([0.18, 0.25]),
+    [0, 0.12],
+  );
+
+  const rimOuterV = 0.25 + vOffset;
+  const rims = [
+    sidePoly(rimOuterV, [0.285, 0.355], [0.025, 0.095], "var(--v-wheel)"),
+    sidePoly(rimOuterV, [0.313, 0.327], [0.033, 0.087], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [0.292, 0.348], [0.053, 0.067], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [-0.355, -0.285], [0.025, 0.095], "var(--v-wheel)"),
+    sidePoly(rimOuterV, [-0.327, -0.313], [0.033, 0.087], "var(--v-stroke)"),
+    sidePoly(rimOuterV, [-0.348, -0.292], [0.053, 0.067], "var(--v-stroke)"),
+  ];
+
+  return [
+    ...wheelFrontFar,
+    ...wheelRearFar,
+
+    ...boxPrims(diffuser, dark),
+    ...boxPrims(bodyMain),
+
+    // side skirt and door number panel
+    sidePoly(0.22 + vOffset, [-0.48, 0.06], [0.05, 0.07], "var(--v-bumper)"),
+    sidePoly(
+      0.22 + vOffset,
+      [-0.09, 0.03],
+      [0.085, 0.15],
+      "var(--v-light-front)",
+    ),
+    sidePoly(0.22 + vOffset, [-0.055, -0.041], [0.1, 0.135], "var(--v-bumper)"),
+    sidePoly(0.22 + vOffset, [-0.019, -0.005], [0.1, 0.135], "var(--v-bumper)"),
+
+    // rear wing assembly rises off the deck
+    ...boxPrims(endplateFar, dark),
+    ...boxPrims(wingStrutFar, dark),
+    ...boxPrims(wingStrutNear, dark),
+    ...boxPrims(wingMain, dark),
+    ...boxPrims(endplateNear, dark),
+
+    ...boxPrims(mirrorFar, dark),
+    ...boxPrims(cabin),
+    frontPoly(-0.02, off([-0.13, 0.13]), [0.18, 0.27], "var(--v-window)"),
+    frontPoly(-0.02, off([-0.13, 0.13]), [0.245, 0.27], "var(--v-bumper)"),
+    sidePoly(0.15 + vOffset, [-0.3, -0.06], [0.18, 0.265], "var(--v-window)"),
+    ...boxPrims(aerial, dark),
+    ...boxPrims(mirrorNear, dark),
+
+    ...boxPrims(bonnet),
+    // front-fender vent behind the wheel
+    sideQuad(
+      0.21 + vOffset,
+      [
+        [0.14, 0.08],
+        [0.17, 0.08],
+        [0.23, 0.13],
+        [0.2, 0.13],
+      ],
+      "var(--v-bumper)",
+    ),
+    // central bonnet vent + angled fender louvres
+    topPoly(0.135, [0.26, 0.38], off([-0.05, 0.05]), "var(--v-bumper)"),
+    topQuad(
+      0.135,
+      [
+        [0.18, -0.19],
+        [0.3, -0.13],
+        [0.3, -0.1],
+        [0.18, -0.16],
+      ],
+      "var(--v-bumper)",
+    ),
+    topQuad(
+      0.135,
+      [
+        [0.18, 0.16],
+        [0.3, 0.1],
+        [0.3, 0.13],
+        [0.18, 0.19],
+      ],
+      "var(--v-bumper)",
+    ),
+    // wide grille + slim headlights
+    frontQuad(
+      0.5,
+      [
+        [-0.14, 0.055],
+        [0.14, 0.055],
+        [0.1, 0.11],
+        [-0.1, 0.11],
+      ],
+      "var(--v-bumper)",
+    ),
+    frontPoly(0.5, off([0.13, 0.2]), [0.105, 0.12], "var(--v-light-front)"),
+    frontPoly(0.5, off([-0.2, -0.13]), [0.105, 0.12], "var(--v-light-front)"),
+    ...boxPrims(splitter, dark),
+    // stacked canards on the near front corner
+    sideQuad(
+      0.21 + vOffset,
+      [
+        [0.5, 0.065],
+        [0.41, 0.09],
+        [0.41, 0.1],
+        [0.5, 0.075],
+      ],
+      "var(--v-bumper)",
+    ),
+    sideQuad(
+      0.21 + vOffset,
+      [
+        [0.5, 0.09],
+        [0.41, 0.115],
+        [0.41, 0.125],
+        [0.5, 0.1],
+      ],
+      "var(--v-bumper)",
+    ),
+
+    ...wheelFrontNear,
+    ...wheelRearNear,
+    ...rims,
+  ];
+}
+
 export const DETAILED_CAR_PRIMS = buildDetailedCar();
 export const F1_CAR_PRIMS = buildF1Car();
 export const TRUCK_PRIMS = buildTruck();
 export const SUPERCAR_PRIMS = buildSupercar();
+export const GT_CAR_PRIMS = buildGTCar();
 
-export type CarModel = "detailed" | "f1" | "truck" | "supercar";
+export type CarModel = "detailed" | "f1" | "truck" | "supercar" | "gt";
 
 const MODEL_PRIMS: Record<CarModel, Prim[]> = {
   detailed: DETAILED_CAR_PRIMS,
   f1: F1_CAR_PRIMS,
   truck: TRUCK_PRIMS,
   supercar: SUPERCAR_PRIMS,
+  gt: GT_CAR_PRIMS,
 };
 
 export function VehicleShape({
