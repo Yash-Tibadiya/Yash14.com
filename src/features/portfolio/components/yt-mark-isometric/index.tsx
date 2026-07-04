@@ -22,7 +22,7 @@ const GRID = [
 const COLS = 6;
 const ROWS = 4;
 
-import { CarPreview, VehicleShape } from "./car-models";
+import { type CarModel, CarPreview, VehicleShape } from "./car-models";
 import { COS, OX, OY, SIN, ZUNIT } from "./constants";
 
 // True isometric (30°) projection constants.
@@ -320,7 +320,7 @@ function Vehicle({
   spec: VehicleSpec;
   reduce: boolean | null;
   animateTraffic: boolean;
-  model: "detailed" | "simple";
+  model: CarModel;
 }) {
   const band = TRAFFIC_BANDS[spec.band];
   const [sx, sy] = band.start;
@@ -371,7 +371,7 @@ export function YTMarkIsometric() {
   const reduceMotion = useReducedMotion();
   const [animateTraffic, setAnimateTraffic] = useState(false);
   const [active, setActive] = useState(false);
-  const [carModel, setCarModel] = useState<"detailed" | "simple">("detailed");
+  const [carModel, setCarModel] = useState<CarModel>("detailed");
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -689,6 +689,19 @@ export function YTMarkIsometric() {
            `}
           >
             <CarPreview model="detailed" selected={carModel === "detailed"} />
+          </div>
+        </ContextMenuItem>
+        <ContextMenuItem asChild onSelect={() => setCarModel("f1")}>
+          <div
+            className={`p-1.5 rounded-xl border-2 transition-all duration-200 cursor-default select-none shadow-[0px_-1px_0px_0px_var(--color-line)_inset] dark:shadow-[0px_-1px_0px_0px_var(--color-line)_inset]
+           ${
+             carModel === "f1"
+               ? "bg-background border-neutral-400 dark:border-neutral-700 shadow-md pointer-events-none dark:bg-background"
+               : "bg-background/40 border-neutral-400/60 hover:bg-background/80 hover:border-neutral-400 opacity-70 hover:opacity-90 dark:border-neutral-700/60 dark:hover:border-neutral-700"
+           }
+           `}
+          >
+            <CarPreview model="f1" selected={carModel === "f1"} />
           </div>
         </ContextMenuItem>
       </ContextMenuContent>
