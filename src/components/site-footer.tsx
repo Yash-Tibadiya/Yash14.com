@@ -1,13 +1,12 @@
-import { SiteFooterAttribution } from "@/components/site-footer-attribution";
 import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
 import { SiteFooterLinks } from "@/components/site-footer-links";
 import { LICENSE } from "@/config/site";
-import { getSocialLinkByName } from "@/features/portfolio/data/social-links";
+import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
 import { cn } from "@/lib/utils";
 
 export function SiteFooter() {
-  const xLink = getSocialLinkByName("x");
+  const xLink = SOCIAL.x;
 
   return (
     <footer className="max-w-screen overflow-x-clip px-2">
@@ -86,8 +85,6 @@ export function SiteFooter() {
             </figcaption>
           </figure>
         </div>
-
-        <SiteFooterAttribution />
 
         <div className="screen-line-top screen-line-bottom flex w-full before:z-1 after:z-1">
           <SiteFooterLinks />

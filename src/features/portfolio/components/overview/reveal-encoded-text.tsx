@@ -1,9 +1,9 @@
-import { InlineScript } from "@/components/inline-script"
+import { InlineScript } from "@/components/inline-script";
 
 type RevealEncodedTextScriptProps = {
-  id: string
-  textB64: string
-}
+  id: string;
+  textB64: string;
+};
 
 // Blocking inline script that decodes the base64 text and writes it into the
 // element *before* first paint (Next.js "prevent flash before hydration").
@@ -17,13 +17,13 @@ export function RevealEncodedTextScript({
     <InlineScript
       html={`(${revealEncodedText.toString()})(${JSON.stringify(id)},${JSON.stringify(textB64)})`}
     />
-  )
+  );
 }
 
 // Serialized via `.toString()` into the pre-hydration script, so it must stay
 // self-contained: globals and arguments only, no module-scope references.
 function revealEncodedText(id: string, textB64: string) {
-  const el = document.getElementById(id)
-  if (!el) return
-  el.textContent = atob(textB64)
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = atob(textB64);
 }

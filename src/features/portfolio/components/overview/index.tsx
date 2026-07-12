@@ -1,26 +1,25 @@
-import { urlToName } from "@/utils/url"
 import {
   LinkIcon,
   MapPinIcon,
   MarsIcon,
   NonBinaryIcon,
   VenusIcon,
-} from "lucide-react"
+} from "lucide-react";
+import { USER } from "@/features/portfolio/data/user";
+import type { User } from "@/features/portfolio/types/user";
+import { urlToName } from "@/utils/url";
 
-import { USER } from "@/features/portfolio/data/user"
-import type { User } from "@/features/portfolio/types/user"
-
-import { Panel, PanelContent } from "../panel"
-import { CurrentLocalTimeItem } from "./current-local-time-item"
-import { EmailItem } from "./email-item"
+import { Panel, PanelContent } from "../panel";
+import { CurrentLocalTimeItem } from "./current-local-time-item";
+import { EmailItem } from "./email-item";
 import {
   IntroItem,
   IntroItemContent,
   IntroItemIcon,
   IntroItemLink,
-} from "./intro-item"
-import { JobItem } from "./job-item"
-import { PhoneItem } from "./phone-item"
+} from "./intro-item";
+import { JobItem } from "./job-item";
+import { PhoneItem } from "./phone-item";
 
 export function Overview() {
   return (
@@ -28,16 +27,16 @@ export function Overview() {
       <h2 className="sr-only">Overview</h2>
 
       <PanelContent className="grid gap-x-4 gap-y-2.5 sm:grid-cols-2">
-        {USER.jobs.map((job, index) => {
+        {USER.jobs.map((job) => {
           return (
             <JobItem
-              key={index}
+              key={`${job.title}-${job.company}`}
               title={job.title}
               company={job.company}
               website={job.website}
               experienceId={job.experienceId}
             />
-          )
+          );
         })}
 
         <IntroItem>
@@ -84,16 +83,16 @@ export function Overview() {
 
       <div className="pointer-events-none absolute top-px bottom-0 left-1/2 -z-1 w-px -translate-x-2.25 bg-[linear-gradient(to_bottom,var(--line)_4px,transparent_2px)] bg-size-[1px_6px] bg-repeat-y max-sm:hidden" />
     </Panel>
-  )
+  );
 }
 
 function getGenderIcon(gender: User["gender"]) {
   switch (gender) {
     case "male":
-      return <MarsIcon />
+      return <MarsIcon />;
     case "female":
-      return <VenusIcon />
+      return <VenusIcon />;
     case "non-binary":
-      return <NonBinaryIcon />
+      return <NonBinaryIcon />;
   }
 }

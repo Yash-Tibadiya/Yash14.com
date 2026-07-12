@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 export function InlineScript({ html }: { html: string }) {
   return (
@@ -10,5 +10,5 @@ export function InlineScript({ html }: { html: string }) {
       suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: html }}
     />
-  )
+  );
 }
