@@ -5,7 +5,7 @@ import metadataJson from "@/assets/libphonenumber.metadata.json";
 const metadata = metadataJson as MetadataJson;
 
 /**
- * Formats an incomplete phone number string according to the metadata provided (currently IN and VN).
+ * Formats an incomplete phone number string according to the metadata provided (currently IN).
  *
  * Uses `libphonenumber-js`'s `formatIncompletePhoneNumber` function with custom metadata.
  *
@@ -13,7 +13,7 @@ const metadata = metadataJson as MetadataJson;
  * @returns The formatted phone number string.
  *
  * @remarks
- * - Only India (IN) and Viet Nam (VN) metadata are included. To add more countries, update the custom metadata file.
+ * - Only India (IN) metadata are included. To add more countries, update the custom metadata file.
  * - This function is useful for formatting user input as they type a phone number.
  *
  * @see https://www.npmjs.com/package/libphonenumber-js#customizing-metadata
