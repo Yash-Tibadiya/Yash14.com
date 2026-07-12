@@ -19,6 +19,7 @@ import { SocialLinks } from "@/features/portfolio/components/social-links";
 import { USER } from "@/features/portfolio/data/user";
 import { JsonLdScript } from "@/lib/json-ld";
 import { absoluteUrl, cn } from "@/lib/utils";
+import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
 
 export const metadata: Metadata = {
   alternates: {
@@ -38,6 +39,7 @@ export default function HomePage() {
 
           <Overview />
           <SocialLinks />
+          <GitHubContributions />
           <Separator />
 
           {/* <About /> */}
