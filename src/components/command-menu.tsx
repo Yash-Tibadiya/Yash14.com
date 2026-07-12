@@ -34,7 +34,9 @@ import {
 } from "@/components/ui/command";
 import { BRAND_ASSETS } from "@/config/site";
 import type { DocPreview } from "@/features/doc/types/document";
+import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+
 import { USER } from "@/features/portfolio/data/user";
 import { useClickSound } from "@/hooks/soundcn/use-click-sound";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
@@ -165,7 +167,7 @@ const SOCIAL_LINK_ITEMS: CommandLinkItem[] = SOCIAL_LINKS.map((item) => ({
   title: item.title,
   href: item.href,
   kind: "link",
-  icon: item.icon,
+  icon: SOCIAL_ICONS[item.name],
   openInNewTab: true,
 }));
 
