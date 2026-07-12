@@ -11,7 +11,7 @@ import { JSON_LD_ID } from "@/config/json-ld";
 //   Insights,
 //   InsightsSkeleton,
 // } from "@/features/portfolio/components/insights"
-// import { Overview } from "@/features/portfolio/components/overview"
+import { Overview } from "@/features/portfolio/components/overview";
 import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 // import { Projects } from "@/features/portfolio/components/projects"
 // import { SocialLinks } from "@/features/portfolio/components/social-links-v2"
@@ -36,7 +36,7 @@ export default function HomePage() {
           <ProfileHeader />
           <Separator />
 
-          {/* <Overview /> */}
+          <Overview />
           {/* <SocialLinks /> */}
           {/* <Separator /> */}
 
