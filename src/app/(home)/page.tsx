@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ProfilePage, WithContext } from "schema-dts";
 
 import { JSON_LD_ID } from "@/config/json-ld";
+import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
 // import { About } from "@/features/portfolio/components/about"
 // import { Bookmarks } from "@/features/portfolio/components/bookmarks"
 // import { Certifications } from "@/features/portfolio/components/certifications"
@@ -38,6 +39,7 @@ export default function HomePage() {
 
           <Overview />
           <SocialLinks />
+          <GitHubContributions />
           <Separator />
 
           {/* <About /> */}
