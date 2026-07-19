@@ -4,6 +4,7 @@ import { LICENSE } from "@/config/site";
 import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
 import { cn } from "@/lib/utils";
+import { CardSpotlight } from "./ui/card-spotlight";
 
 export function SiteFooter() {
   const xLink = SOCIAL.x;
@@ -13,61 +14,65 @@ export function SiteFooter() {
       <div className="screen-line-top mx-auto border-x border-line group-has-data-[slot=layout-wide]/layout:container md:max-w-4xl">
         <div className="screen-line-bottom h-1" />
 
-        <dl className="flex flex-col gap-4 py-8 font-mono [&_dd]:text-sm [&_dt]:text-right [&_dt]:text-sm [&_dt]:text-muted-foreground [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2">
-          <Item>
-            <dt>Crafted by</dt>
-            <dd>
-              <a
-                className="link-underline"
-                href={xLink?.href}
-                target="_blank"
-                rel="noopener"
-              >
-                {USER.displayName}
-              </a>
-            </dd>
-          </Item>
+        <CardSpotlight radius={350}>
+          <div className="relative z-10">
+            <dl className="flex flex-col gap-4 py-8 font-mono [&_dd]:text-sm [&_dt]:text-right [&_dt]:text-sm [&_dt]:text-muted-foreground [&_ul]:flex [&_ul]:flex-col [&_ul]:gap-2">
+              <Item>
+                <dt>Crafted by</dt>
+                <dd>
+                  <a
+                    className="link-underline"
+                    href={xLink?.href}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {USER.displayName}
+                  </a>
+                </dd>
+              </Item>
 
-          <Item>
-            <dt>Inspired by</dt>
-            <dd>
-              <ul>
-                <li>tailwindcss.com</li>
-                <li>ui.shadcn.com</li>
-                <li>vercel.com</li>
-                <li>devouringdetails.com</li>
-              </ul>
-            </dd>
-          </Item>
+              <Item>
+                <dt>Inspired by</dt>
+                <dd>
+                  <ul>
+                    <li>tailwindcss.com</li>
+                    <li>ui.shadcn.com</li>
+                    <li>vercel.com</li>
+                    <li>devouringdetails.com</li>
+                  </ul>
+                </dd>
+              </Item>
 
-          <Item>
-            <dt>Deployed on</dt>
-            <dd>Vercel</dd>
-          </Item>
+              <Item>
+                <dt>Deployed on</dt>
+                <dd>Vercel</dd>
+              </Item>
 
-          <Item>
-            <dt>Analytics</dt>
-            <dd>
-              <ul>
-                <li>PostHog</li>
-              </ul>
-            </dd>
-          </Item>
+              <Item>
+                <dt>Analytics</dt>
+                <dd>
+                  <ul>
+                    <li>PostHog</li>
+                  </ul>
+                </dd>
+              </Item>
 
-          <Item>
-            <dt>License</dt>
-            <dd>
-              <a
-                className="link-underline"
-                href={LICENSE.url}
-                target="_blank"
-                rel="noopener"
-              >
-                {LICENSE.name}
-              </a>
-            </dd>
-          </Item>
-        </dl>
+              <Item>
+                <dt>License</dt>
+                <dd>
+                  <a
+                    className="link-underline"
+                    href={LICENSE.url}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {LICENSE.name}
+                  </a>
+                </dd>
+              </Item>
+            </dl>
+          </div>
+        </CardSpotlight>
 
         <div className="screen-line-top pt-4">
           <figure className="relative mx-auto flex flex-col items-center px-4 text-center z-10 pb-3">
