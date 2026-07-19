@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/base/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -10,12 +11,20 @@ import { Panel, PanelContent } from "@/features/portfolio/components/panel";
 import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 import { addQueryParams } from "@/utils/url";
-import { Button } from "@/components/base/ui/button";
 
 const ASCII_ROWS = [
-  "░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██",
-  "▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░",
-  "░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██",
+  {
+    id: "row-1",
+    pattern: "░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██",
+  },
+  {
+    id: "row-2",
+    pattern: "▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░",
+  },
+  {
+    id: "row-3",
+    pattern: "░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██▓▓▒▒░░ ░▒▓█▓▒░ ░░▒▒▓▓██",
+  },
 ];
 
 export function SocialLinks() {
@@ -25,16 +34,16 @@ export function SocialLinks() {
 
       <PanelContent className="relative overflow-hidden">
         <div
-          className="pointer-events-none absolute inset-0 flex flex-col items-end justify-center overflow-hidden select-none [mask-image:linear-gradient(90deg,transparent_0%,black_35%)]"
+          className="pointer-events-none absolute inset-0 flex flex-col items-end justify-center overflow-hidden select-none mask-[linear-gradient(90deg,transparent_0%,black_35%)]"
           aria-hidden
         >
           {ASCII_ROWS.map((row, i) => (
             <pre
-              key={i}
+              key={row.id}
               className="bg-[linear-gradient(90deg,var(--color-muted-foreground)_0%,var(--color-foreground)_50%,var(--color-muted-foreground)_100%)] bg-size-[200%_100%] bg-clip-text font-mono text-[10px] leading-4 whitespace-nowrap text-transparent opacity-20 animate-[ascii-shimmer_6s_linear_infinite]"
               style={{ animationDelay: `${i * 0.6}s` }}
             >
-              {row.repeat(10)}
+              {row.pattern.repeat(10)}
             </pre>
           ))}
         </div>
