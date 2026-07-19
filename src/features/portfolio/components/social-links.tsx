@@ -25,16 +25,16 @@ export function SocialLinks() {
 
       <PanelContent className="relative overflow-hidden">
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 flex flex-col justify-center pr-4 select-none"
+          className="pointer-events-none absolute inset-0 flex flex-col items-end justify-center overflow-hidden select-none [mask-image:linear-gradient(90deg,transparent_0%,black_35%)]"
           aria-hidden
         >
           {ASCII_ROWS.map((row, i) => (
             <pre
               key={i}
-              className="bg-[linear-gradient(90deg,var(--color-muted-foreground)_0%,var(--color-foreground)_50%,var(--color-muted-foreground)_100%)] bg-size-[200%_100%] bg-clip-text font-mono text-[10px] leading-4 text-transparent opacity-20 animate-[ascii-shimmer_6s_linear_infinite]"
+              className="bg-[linear-gradient(90deg,var(--color-muted-foreground)_0%,var(--color-foreground)_50%,var(--color-muted-foreground)_100%)] bg-size-[200%_100%] bg-clip-text font-mono text-[10px] leading-4 whitespace-nowrap text-transparent opacity-20 animate-[ascii-shimmer_6s_linear_infinite]"
               style={{ animationDelay: `${i * 0.6}s` }}
             >
-              {row}
+              {row.repeat(10)}
             </pre>
           ))}
         </div>
