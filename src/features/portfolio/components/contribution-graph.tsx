@@ -74,7 +74,7 @@ const DEFAULT_LABELS: Labels = {
   },
 };
 
-const THEME = cn(
+export const THEME = cn(
   'data-[level="0"]:fill-muted-foreground/5',
   'data-[level="1"]:fill-muted-foreground/20',
   'data-[level="2"]:fill-muted-foreground/40',
@@ -384,7 +384,7 @@ export const ContributionGraphCalendar = ({
   return (
     <div
       className={cn(
-        "no-scrollbar max-w-full scroll-fade-x overflow-x-auto overflow-y-hidden",
+        "no-scrollbar max-w-full overflow-x-auto overflow-y-hidden supports-timeline-scroll:scroll-fade-effect-x",
         className,
       )}
       {...props}

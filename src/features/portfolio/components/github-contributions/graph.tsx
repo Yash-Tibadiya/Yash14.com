@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import { LoaderIcon } from "lucide-react";
-import { use } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 import {
   Tooltip,
@@ -17,7 +17,9 @@ import {
   ContributionGraphFooter,
   ContributionGraphLegend,
   ContributionGraphTotalCount,
+  THEME,
 } from "@/features/portfolio/components/contribution-graph";
+import { cn } from "@/lib/utils";
 
 export function GitHubContributionGraph({
   contributions,
@@ -25,6 +27,23 @@ export function GitHubContributionGraph({
   contributions: Promise<Activity[]>;
 }) {
   const data = use(contributions);
+  const [selectedLevel, setSelectedLevel] = useState<number | null>(null);
+  const legendRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedLevel === null) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!legendRef.current?.contains(event.target as Node)) {
+        setSelectedLevel(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [selectedLevel]);
 
   return (
     <ContributionGraph
@@ -36,6 +55,7 @@ export function GitHubContributionGraph({
       aria-label="GitHub Contributions Graph"
     >
       <ContributionGraphCalendar
+        key={selectedLevel ?? "all"}
         className="px-4 **:data-[slot=month-labels]:text-muted-foreground"
         title="GitHub Contributions"
         aria-hidden
@@ -49,6 +69,15 @@ export function GitHubContributionGraph({
                     activity={activity}
                     dayIndex={dayIndex}
                     weekIndex={weekIndex}
+                    className={cn(
+                      "origin-center transform-fill transition-opacity motion-safe:animate-contribution-in",
+                      selectedLevel !== null &&
+                        activity.level !== selectedLevel &&
+                        "opacity-15",
+                    )}
+                    style={{
+                      animationDelay: `${(weekIndex + dayIndex) * 20}ms`,
+                    }}
                   />
                 </g>
               }
@@ -73,7 +102,37 @@ export function GitHubContributionGraph({
           )}
         </ContributionGraphTotalCount>
 
-        <ContributionGraphLegend aria-hidden />
+        <div ref={legendRef} className="ml-auto">
+          <ContributionGraphLegend>
+            {({ level }) => (
+              <button
+                type="button"
+                key={`legend-${level}`}
+                aria-pressed={selectedLevel === level}
+                aria-label={`Highlight days with contribution level ${level}`}
+                className={cn(
+                  "block cursor-pointer",
+                  selectedLevel === level &&
+                    "outline-2 outline-offset-1 outline-ring",
+                )}
+                onClick={() =>
+                  setSelectedLevel((current) =>
+                    current === level ? null : level,
+                  )
+                }
+              >
+                <svg className="block" height={12} width={12}>
+                  <rect
+                    className={THEME}
+                    data-level={level}
+                    height={12}
+                    width={12}
+                  />
+                </svg>
+              </button>
+            )}
+          </ContributionGraphLegend>
+        </div>
       </ContributionGraphFooter>
     </ContributionGraph>
   );

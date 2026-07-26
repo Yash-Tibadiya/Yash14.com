@@ -158,6 +158,16 @@
       rotate: -360deg;
     }
   }
+
+  --animate-contribution-in: contribution-in
+    var(--tw-animation-duration, var(--tw-duration, 0.4s)) ease-out backwards;
+
+  @keyframes contribution-in {
+    from {
+      opacity: 0;
+      scale: 0.3;
+    }
+  }
 }
 
 @utility link {
