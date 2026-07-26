@@ -384,7 +384,7 @@ export const ContributionGraphCalendar = ({
   return (
     <div
       className={cn(
-        "no-scrollbar max-w-full scroll-fade-x overflow-x-auto overflow-y-hidden",
+        "no-scrollbar max-w-full overflow-x-auto overflow-y-hidden supports-timeline-scroll:scroll-fade-effect-x",
         className,
       )}
       {...props}

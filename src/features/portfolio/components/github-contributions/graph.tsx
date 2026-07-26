@@ -49,6 +49,10 @@ export function GitHubContributionGraph({
                     activity={activity}
                     dayIndex={dayIndex}
                     weekIndex={weekIndex}
+                    className="origin-center [transform-box:fill-box] motion-safe:animate-contribution-in"
+                    style={{
+                      animationDelay: `${(weekIndex + dayIndex) * 20}ms`,
+                    }}
                   />
                 </g>
               }
