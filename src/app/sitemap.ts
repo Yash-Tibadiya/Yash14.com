@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 
-import { blockCategories } from "@/config/registry";
 import { SITE_INFO } from "@/config/site";
-import { getDocsByCategory } from "@/features/doc/data/documents";
+import { blockCategories } from "@/config/registry";
 import { getAllBlockStaticParams } from "@/lib/blocks";
+import { getDocsByCategory } from "@/features/doc/data/documents";
 
 export const revalidate = false;
 export const dynamic = "force-static";

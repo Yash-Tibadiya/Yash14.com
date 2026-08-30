@@ -1,11 +1,11 @@
 import { Markdown } from "@/components/markdown";
+import { USER } from "@/features/portfolio/data/user";
 import { HelloTitle } from "@/features/portfolio/components/hello-title";
 import {
   Panel,
   PanelContent,
   PanelHeader,
 } from "@/features/portfolio/components/panel";
-import { USER } from "@/features/portfolio/data/user";
 
 const ID = "hello";
 

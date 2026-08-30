@@ -1,9 +1,8 @@
 "use client";
 
 import { toast } from "sonner";
-
-import { CopyButton } from "@/components/copy-button";
 import { getMarkSVG } from "@/components/yt-mark";
+import { CopyButton } from "@/components/copy-button";
 import { getWordmarkSVG } from "@/components/yt-wordmark";
 
 export function CopyBrandSvgButton({ type }: { type: "mark" | "logotype" }) {

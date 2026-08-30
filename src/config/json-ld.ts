@@ -1,8 +1,8 @@
 import type { Person } from "schema-dts";
 
 import { SITE_INFO } from "@/config/site";
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 
 /**
  * Stable @id anchors so Google can merge JSON-LD nodes across separate

@@ -1,7 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-
 import { InlineScript } from "@/components/inline-script";
 import { PanelTitle } from "@/features/portfolio/components/panel";
 

@@ -1,27 +1,30 @@
-import { ArrowLeftIcon, Download, LinkIcon } from "lucide-react";
-import type { Metadata } from "next";
-import dynamic from "next/dynamic";
-import Link from "next/link";
 import type React from "react";
+import type { Metadata } from "next";
 import type { TOCItemType } from "@/components/toc";
-import { TOCMinimap } from "@/components/toc-minimap";
+
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { YTMark } from "@/components/yt-mark";
 import { Button } from "@/components/ui/button";
+import { TOCMinimap } from "@/components/toc-minimap";
+import { YTWordmark } from "@/components/yt-wordmark";
+import { USER } from "@/features/portfolio/data/user";
+import { BRAND_ASSETS, SITE_INFO } from "@/config/site";
+import { CopyBrandSvgButton } from "./copy-brand-svg-button";
+import { ArrowLeftIcon, Download, LinkIcon } from "lucide-react";
+import { DocPageRoot } from "@/features/doc/components/doc-page-root";
+import { DocShareMenu } from "@/features/doc/components/doc-share-menu";
 import {
   YTMarkClearSpace,
   YTWordmarkClearSpace,
 } from "@/components/yt-clear-space";
-import { YTMark } from "@/components/yt-mark";
-import { YTWordmark } from "@/components/yt-wordmark";
-import { BRAND_ASSETS, SITE_INFO } from "@/config/site";
+import { LLMCopyButtonWithViewOptions } from "@/features/doc/components/doc-page-actions";
 import {
   DocContainer,
   DocGrid,
   DocLeftCol,
   DocRightCol,
 } from "@/features/doc/components/doc-layout";
-import { LLMCopyButtonWithViewOptions } from "@/features/doc/components/doc-page-actions";
-import { DocPageRoot } from "@/features/doc/components/doc-page-root";
-import { DocShareMenu } from "@/features/doc/components/doc-share-menu";
 import {
   Panel,
   PanelContent,
@@ -29,8 +32,6 @@ import {
   PanelHeader,
   PanelTitle,
 } from "@/features/portfolio/components/panel";
-import { USER } from "@/features/portfolio/data/user";
-import { CopyBrandSvgButton } from "./copy-brand-svg-button";
 
 const BrandContextMenu = dynamic(() =>
   import("@/components/brand-context-menu").then((mod) => mod.BrandContextMenu),

@@ -1,5 +1,6 @@
-import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
 import type { SocialName } from "@/features/portfolio/data/social-links";
+
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/icons";
 
 /**
  * Presentation binding for social profiles. Kept separate from the social

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-
 import { getAllDocs } from "@/features/doc/data/documents";
 
 export const revalidate = false;

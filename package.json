@@ -24,9 +24,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "biome check",
-    "lint:fix": "biome check --write",
-    "format": "biome format --write",
+    "lint": "eslint . && biome check",
+    "lint:fix": "eslint . --fix && biome check --write",
+    "format": "eslint . --fix && biome format --write",
     "prepare": "husky",
     "registry:build": "bun run ./src/scripts/build-registry.mts && shadcn build",
     "registry:validate": "shadcn registry validate ./registry.json"
@@ -81,8 +81,12 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^10.9.1",
+    "eslint-plugin-perfectionist": "^5.10.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.7",
     "tailwindcss": "^4.3.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.68.0"
   }
 }

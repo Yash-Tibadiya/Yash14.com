@@ -1,9 +1,9 @@
+import type { Doc, DocMetadata } from "@/features/doc/types/document";
+
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
 import { cache } from "react";
-
-import type { Doc, DocMetadata } from "@/features/doc/types/document";
+import matter from "gray-matter";
 
 function parseFrontmatter(fileContent: string) {
   const file = matter(fileContent);

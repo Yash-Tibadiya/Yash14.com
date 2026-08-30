@@ -1,3 +1,18 @@
+import type { User } from "@/features/portfolio/types/user";
+
+import { JobItem } from "./job-item";
+import { urlToName } from "@/utils/url";
+import { EmailItem } from "./email-item";
+import { PhoneItem } from "./phone-item";
+import { Panel, PanelContent } from "../panel";
+import { USER } from "@/features/portfolio/data/user";
+import { CurrentLocalTimeItem } from "./current-local-time-item";
+import {
+  IntroItem,
+  IntroItemContent,
+  IntroItemIcon,
+  IntroItemLink,
+} from "./intro-item";
 import {
   LinkIcon,
   MapPinIcon,
@@ -5,21 +20,6 @@ import {
   NonBinaryIcon,
   VenusIcon,
 } from "lucide-react";
-import { USER } from "@/features/portfolio/data/user";
-import type { User } from "@/features/portfolio/types/user";
-import { urlToName } from "@/utils/url";
-
-import { Panel, PanelContent } from "../panel";
-import { CurrentLocalTimeItem } from "./current-local-time-item";
-import { EmailItem } from "./email-item";
-import {
-  IntroItem,
-  IntroItemContent,
-  IntroItemIcon,
-  IntroItemLink,
-} from "./intro-item";
-import { JobItem } from "./job-item";
-import { PhoneItem } from "./phone-item";
 
 export function Overview() {
   return (

@@ -1,16 +1,17 @@
 "use client";
 
+import type { TOCItemType } from "./toc";
+
+import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/events";
+import { useSound } from "@/hooks/soundcn/use-sound";
+import { AnchorProvider, useActiveAnchor, useItems } from "./toc";
+import { uMiniMapOpenSound } from "@/lib/soundcn/u-mini-map-open";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/base/ui/hover-card";
-import { useSound } from "@/hooks/soundcn/use-sound";
-import { trackEvent } from "@/lib/events";
-import { uMiniMapOpenSound } from "@/lib/soundcn/u-mini-map-open";
-import { cn } from "@/lib/utils";
-import type { TOCItemType } from "./toc";
-import { AnchorProvider, useActiveAnchor, useItems } from "./toc";
 
 export function TOCMinimap({
   items,

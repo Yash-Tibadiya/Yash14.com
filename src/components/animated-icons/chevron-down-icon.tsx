@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useAnimation } from "motion/react";
 import { useImperativeHandle } from "react";
+import { motion, useAnimation } from "motion/react";
 
 export type ChevronDownIconHandle = {
   startAnimation: () => void;

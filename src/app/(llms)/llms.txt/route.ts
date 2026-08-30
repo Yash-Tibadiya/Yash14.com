@@ -1,7 +1,7 @@
 import { SITE_INFO } from "@/config/site";
+import { USER } from "@/features/portfolio/data/user";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
-import { USER } from "@/features/portfolio/data/user";
 
 const components = getDocsByCategory("components");
 

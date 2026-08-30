@@ -1,9 +1,13 @@
 "use client";
 
-import { useTiks } from "@rexa-developer/tiks/react";
-import { Download, SquareDashed, Type } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { copyText } from "@/utils/copy";
+import { BRAND_ASSETS } from "@/config/site";
+import { getMarkSVG, YTMark } from "./yt-mark";
+import { getWordmarkSVG } from "./yt-wordmark";
+import { useTiks } from "@rexa-developer/tiks/react";
+import { Download, SquareDashed, Type } from "lucide-react";
 import {
   ContextMenu,
   ContextMenuContent,
@@ -11,11 +15,6 @@ import {
   ContextMenuSeparator,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { BRAND_ASSETS } from "@/config/site";
-import { copyText } from "@/utils/copy";
-
-import { getMarkSVG, YTMark } from "./yt-mark";
-import { getWordmarkSVG } from "./yt-wordmark";
 
 export function BrandContextMenu({ children }: { children: React.ReactNode }) {
   const { success } = useTiks();

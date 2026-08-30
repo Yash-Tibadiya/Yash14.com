@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 import type React from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 
 import { cn } from "@/lib/utils";
+import { motion, useMotionTemplate, useMotionValue } from "motion/react";
 
 export function CardSpotlight({
   children,

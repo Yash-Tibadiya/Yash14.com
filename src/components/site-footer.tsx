@@ -1,10 +1,10 @@
-import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
-import { SiteFooterLinks } from "@/components/site-footer-links";
-import { LICENSE } from "@/config/site";
-import { SOCIAL } from "@/features/portfolio/data/social-links";
-import { USER } from "@/features/portfolio/data/user";
 import { cn } from "@/lib/utils";
+import { LICENSE } from "@/config/site";
 import { CardSpotlight } from "./ui/card-spotlight";
+import { USER } from "@/features/portfolio/data/user";
+import { SOCIAL } from "@/features/portfolio/data/social-links";
+import { SiteFooterLinks } from "@/components/site-footer-links";
+import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
 
 export function SiteFooter() {
   const xLink = SOCIAL.x;

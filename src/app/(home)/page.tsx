@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import type { ProfilePage, WithContext } from "schema-dts";
 
+import { JsonLdScript } from "@/lib/json-ld";
 import { JSON_LD_ID } from "@/config/json-ld";
-import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
+import { absoluteUrl, cn } from "@/lib/utils";
+import { USER } from "@/features/portfolio/data/user";
 import { Hello } from "@/features/portfolio/components/hello";
 import { Overview } from "@/features/portfolio/components/overview";
-import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 import { SocialLinks } from "@/features/portfolio/components/social-links";
-import { USER } from "@/features/portfolio/data/user";
-import { JsonLdScript } from "@/lib/json-ld";
-import { absoluteUrl, cn } from "@/lib/utils";
+import { ProfileHeader } from "@/features/portfolio/components/profile-header";
+import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
 
 export const metadata: Metadata = {
   alternates: {

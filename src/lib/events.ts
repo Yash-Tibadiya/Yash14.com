@@ -1,5 +1,5 @@
-import posthog from "posthog-js";
 import { z } from "zod";
+import posthog from "posthog-js";
 
 const eventSchema = z.object({
   name: z.enum([

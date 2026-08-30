@@ -1,20 +1,19 @@
 "use client";
 
+import { encode } from "qss";
+import * as React from "react";
+import { cn } from "@/lib/utils";
 import {
   AnimatePresence,
   motion,
   useMotionValue,
   useSpring,
 } from "motion/react";
-import { encode } from "qss";
-import * as React from "react";
-
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { cn } from "@/lib/utils";
 
 type LinkPreviewProps = {
   children: React.ReactNode;

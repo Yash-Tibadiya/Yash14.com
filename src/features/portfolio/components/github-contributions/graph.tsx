@@ -1,15 +1,16 @@
 "use client";
 
+import type { Activity } from "@/features/portfolio/components/contribution-graph";
+
+import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { LoaderIcon } from "lucide-react";
 import { use, useEffect, useRef, useState } from "react";
-
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/base/ui/tooltip";
-import type { Activity } from "@/features/portfolio/components/contribution-graph";
 import {
   ContributionGraph,
   ContributionGraphBlock,
@@ -19,7 +20,6 @@ import {
   ContributionGraphTotalCount,
   THEME,
 } from "@/features/portfolio/components/contribution-graph";
-import { cn } from "@/lib/utils";
 
 export function GitHubContributionGraph({
   contributions,
