@@ -22,7 +22,6 @@ export const config = {
     contributionsApiUrl:
       process.env.GITHUB_CONTRIBUTIONS_API_URL ||
       "https://github-contributions-api.jogruber.de",
-    actionsCommitSha: process.env.GITHUB_SHA,
   },
 
   dmca: {
@@ -34,13 +33,6 @@ export const config = {
   analytics: {
     posthogProjectToken: process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN,
     posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  },
-
-  build: {
-    timestamp: process.env.BUILD_TIMESTAMP,
-    vercelEnvironment: process.env.VERCEL_ENV,
-    vercelCommitSha: process.env.VERCEL_GIT_COMMIT_SHA,
-    deployedAt: process.env.VERCEL_DEPLOYMENT_CREATED_AT,
   },
 
   runtime: {
