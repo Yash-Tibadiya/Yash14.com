@@ -1,6 +1,7 @@
-import packageJson from "../../package.json";
-import { USER } from "@/features/portfolio/data/user";
 import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
+import { USER } from "@/features/portfolio/data/user";
+
+import packageJson from "../../package.json";
 
 /**
  * Reads the Vercel deployment environment variables, which are server-side

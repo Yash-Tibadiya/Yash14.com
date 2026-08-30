@@ -37,7 +37,6 @@ export const config = {
   },
 
   build: {
-    commitSha: process.env.BUILD_GIT_COMMIT_SHA,
     timestamp: process.env.BUILD_TIMESTAMP,
     vercelEnvironment: process.env.VERCEL_ENV,
     vercelCommitSha: process.env.VERCEL_GIT_COMMIT_SHA,
