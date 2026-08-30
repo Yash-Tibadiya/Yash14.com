@@ -33,7 +33,6 @@ export default function HomePage() {
           <Separator />
 
           <Hello />
-          <Separator />
 
           {/* <TechStack /> */}
           {/* <Separator /> */}
@@ -56,7 +55,7 @@ export default function HomePage() {
           {/* <Suspense fallback={<InsightsSkeleton />}> */}
           {/* <Insights /> */}
           {/* </Suspense> */}
-          {/* <Separator /> */}
+          <Separator />
         </div>
       </div>
     </>

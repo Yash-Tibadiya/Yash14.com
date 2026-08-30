@@ -1,8 +1,28 @@
 import type { NextConfig } from "next";
 
+import { execFileSync } from "node:child_process";
+
+function getGitCommitSha() {
+  const deploymentSha =
+    process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
+
+  if (deploymentSha) return deploymentSha;
+
+  try {
+    return execFileSync("git", ["rev-parse", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    return "";
+  }
+}
+
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
+  env: {
+    BUILD_GIT_COMMIT_SHA: getGitCommitSha(),
+  },
   images: {
     remotePatterns: [
       {
