@@ -13,7 +13,8 @@
       "!.next",
       "!dist",
       "!build",
-      "!src/styles/gradient-border-plugin.css"
+      "!src/styles/gradient-border-plugin.css",
+      "!src/styles/screen-line-color.css"
     ]
   },
   "formatter": {

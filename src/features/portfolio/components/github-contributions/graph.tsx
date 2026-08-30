@@ -121,7 +121,12 @@ export function GitHubContributionGraph({
                   )
                 }
               >
-                <svg className="block" height={12} width={12}>
+                <svg
+                  aria-hidden="true"
+                  className="block"
+                  height={12}
+                  width={12}
+                >
                   <rect
                     className={THEME}
                     data-level={level}

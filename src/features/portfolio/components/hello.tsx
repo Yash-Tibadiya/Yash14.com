@@ -1,13 +1,13 @@
-import { Markdown } from "@/components/markdown"
-import { HelloTitle } from "@/features/portfolio/components/hello-title"
+import { Markdown } from "@/components/markdown";
+import { HelloTitle } from "@/features/portfolio/components/hello-title";
 import {
   Panel,
   PanelContent,
   PanelHeader,
-} from "@/features/portfolio/components/panel"
-import { USER } from "@/features/portfolio/data/user"
+} from "@/features/portfolio/components/panel";
+import { USER } from "@/features/portfolio/data/user";
 
-const ID = "hello"
+const ID = "hello";
 
 export function Hello() {
   return (
@@ -24,5 +24,5 @@ export function Hello() {
 
       <div className="screen-line-top h-4" />
     </Panel>
-  )
+  );
 }

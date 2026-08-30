@@ -6,6 +6,7 @@
 @import "./scroll-fade-effect.css";
 @import "./style-preview.css";
 @import "./gradient-border-plugin.css";
+@import "./screen-line-color.css";
 
 @plugin "@tailwindcss/typography";
 
@@ -114,6 +115,16 @@
       opacity: 0.15;
     }
   }
+
+  --animate-contribution-in: contribution-in
+    var(--tw-animation-duration, var(--tw-duration, 0.4s)) ease-out backwards;
+
+  @keyframes contribution-in {
+    from {
+      opacity: 0;
+      scale: 0.3;
+    }
+  }
 }
 
 @utility link {
@@ -132,23 +143,11 @@
   }
 }
 
-@utility screen-line-top-* {
-  &:before {
-    background-color: --value(--color-*, [color]);
-  }
-}
-
 @utility screen-line-bottom {
   @apply relative;
   &:after {
     content: "";
     @apply absolute bottom-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
-  }
-}
-
-@utility screen-line-bottom-* {
-  &:after {
-    background-color: --value(--color-*, [color]);
   }
 }
 

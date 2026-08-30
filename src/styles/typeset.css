@@ -40,11 +40,11 @@
   .typeset
     *:not(
       :where(
-        .not-typeset,
-        [data-not-typeset],
-        .not-typeset *,
-        [data-not-typeset] *
-      )
+          .not-typeset,
+          [data-not-typeset],
+          .not-typeset *,
+          [data-not-typeset] *
+        )
     ) {
     /* Paragraphs. */
     &:where(p) {
@@ -288,6 +288,10 @@
       font-size: 0.85em;
       border-radius: min(calc(var(--radius, 0.5em) * 0.6), 0.35em);
       padding: 0.125em 0.3em;
+      /* Forced colors strips the code background, so give it a border. */
+      @media (forced-colors: active) {
+        border: 1px solid;
+      }
     }
 
     /* Code blocks. */
@@ -448,34 +452,27 @@
         break-after: avoid;
       }
     }
-
-    /* Forced colors strips the code background, so give it a border. */
-    @media (forced-colors: active) {
-      &:where(:not(pre) > code) {
-        border: 1px solid;
-      }
-    }
   }
 
   /* First child adds no space above. Last so it wins ties. */
   .typeset
-    > :where(:first-child):not(
-      :where(
+  > :where(:first-child):not(
+    :where(
         .not-typeset,
         [data-not-typeset],
         .not-typeset *,
         [data-not-typeset] *
       )
-    ),
+  ),
   .typeset
     > :where(:first-child)
     > :where(:first-child):not(
       :where(
-        .not-typeset,
-        [data-not-typeset],
-        .not-typeset *,
-        [data-not-typeset] *
-      )
+          .not-typeset,
+          [data-not-typeset],
+          .not-typeset *,
+          [data-not-typeset] *
+        )
     ),
   .typeset
     :where(
@@ -488,11 +485,11 @@
       figure > picture > img
     ):not(
       :where(
-        .not-typeset,
-        [data-not-typeset],
-        .not-typeset *,
-        [data-not-typeset] *
-      )
+          .not-typeset,
+          [data-not-typeset],
+          .not-typeset *,
+          [data-not-typeset] *
+        )
     ) {
     margin-block-start: 0;
   }
