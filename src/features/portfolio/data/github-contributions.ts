@@ -2,6 +2,7 @@ import "server-only";
 
 import type { Activity } from "@/features/portfolio/components/contribution-graph";
 
+import { config } from "@/config";
 import { unstable_cache } from "next/cache";
 import { GITHUB_USERNAME } from "@/config/site";
 
@@ -12,7 +13,7 @@ type GitHubContributionsResponse = {
 export const getGitHubContributions = unstable_cache(
   async () => {
     const res = await fetch(
-      `${process.env.GITHUB_CONTRIBUTIONS_API_URL || "https://github-contributions-api.jogruber.de"}/v4/${GITHUB_USERNAME}?y=last`,
+      `${config.github.contributionsApiUrl}/v4/${GITHUB_USERNAME}?y=last`,
     );
     if (!res.ok) {
       return [];

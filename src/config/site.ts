@@ -1,11 +1,12 @@
 import type { Route } from "next";
 import type { NavItem } from "@/types/nav";
 
+import { config } from "@/config";
 import { USER } from "@/features/portfolio/data/user";
 
 export const SITE_INFO = {
   name: USER.displayName,
-  url: process.env.NEXT_PUBLIC_APP_URL || "https://yash14.com",
+  url: config.app.url,
   ogImage: USER.ogImage,
   description: USER.bio,
   keywords: USER.keywords,
