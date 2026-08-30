@@ -36,15 +36,10 @@ export const config = {
     posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
 
-  openPanel: {
-    publicClientId: process.env.NEXT_PUBLIC_OPENPANEL_CLIENT_ID,
-    projectId: process.env.OPENPANEL_PROJECT_ID,
-    clientId: process.env.OPENPANEL_CLIENT_ID,
-    clientSecret: process.env.OPENPANEL_CLIENT_SECRET,
-  },
-
   build: {
     commitSha: process.env.BUILD_GIT_COMMIT_SHA,
+    timestamp: process.env.BUILD_TIMESTAMP,
+    vercelEnvironment: process.env.VERCEL_ENV,
     vercelCommitSha: process.env.VERCEL_GIT_COMMIT_SHA,
     deployedAt: process.env.VERCEL_DEPLOYMENT_CREATED_AT,
   },

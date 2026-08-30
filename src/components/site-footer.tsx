@@ -1,7 +1,9 @@
+import type { BuildInfo } from "@/lib/build-info";
+
 import { cn } from "@/lib/utils";
-import { config } from "@/config";
 import registry from "../../registry.json";
 import packageJson from "../../package.json";
+import { getBuildInfo } from "@/lib/build-info";
 import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { SiteFooterLinks } from "@/components/site-footer-links";
@@ -18,11 +20,8 @@ const INSPIRED_BY = [
   "shadcncraft",
 ];
 
-const BUILD_SHA = config.build.commitSha || null;
-
-const BUILD_DATE = new Date(config.build.deployedAt ?? Date.now())
-  .toISOString()
-  .slice(0, 10);
+const SITE_TITLE = "chanhdai.com";
+const SITE_SUBTITLE = packageJson.description;
 
 const STACK = [
   `next@${packageJson.dependencies.next.replace(/^\^/, "")}`,
@@ -33,6 +32,8 @@ const STACK = [
 export function SiteFooter() {
   const xLink = SOCIAL.x;
 
+  const build = getBuildInfo();
+
   return (
     <footer className="max-w-screen overflow-x-clip px-2">
       <div className="screen-line-top mx-auto border-x border-line group-has-data-[slot=layout-wide]/layout:container md:max-w-4xl">
@@ -40,9 +41,9 @@ export function SiteFooter() {
 
         <div className="relative">
           <div className="screen-line-bottom flex flex-col items-start gap-x-4 gap-y-1 px-4 py-3 font-mono text-sm sm:flex-row sm:items-baseline sm:justify-between">
-            <span className="font-medium">yash14.com</span>
+            <span className="font-medium">{SITE_TITLE}</span>
             <span className="font-sans text-muted-foreground">
-              {packageJson.description}
+              {SITE_SUBTITLE}
             </span>
           </div>
 
@@ -59,22 +60,11 @@ export function SiteFooter() {
             </Field>
 
             <Field label="Build">
-              {BUILD_SHA ? (
-                <a
-                  className="link-underline"
-                  href={`${SOURCE_CODE_GITHUB_URL}/commit/${BUILD_SHA}`}
-                  target="_blank"
-                  rel="noopener"
-                >
-                  {BUILD_SHA.slice(0, 7)}
-                </a>
-              ) : (
-                <span className="text-muted-foreground">local</span>
-              )}
+              <BuildValue build={build} />
             </Field>
 
             <Field label="Date">
-              <time dateTime={BUILD_DATE}>{BUILD_DATE}</time>
+              <time dateTime={build.date}>{build.date}</time>
             </Field>
 
             <Field label="Registry">
@@ -188,6 +178,36 @@ export function SiteFooter() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function BuildValue({ build }: { build: BuildInfo }) {
+  if (!build.commitShortSha) {
+    return <span className="text-muted-foreground">unavailable</span>;
+  }
+
+  return (
+    <>
+      {build.commitUrl ? (
+        <a
+          className="link-underline"
+          href={build.commitUrl}
+          target="_blank"
+          rel="noopener"
+        >
+          {build.commitShortSha}
+        </a>
+      ) : (
+        build.commitShortSha
+      )}
+
+      {build.environment !== "production" && (
+        <span className="text-muted-foreground">
+          {" "}
+          ({build.environment === "development" ? "local" : build.environment})
+        </span>
+      )}
+    </>
   );
 }
 
