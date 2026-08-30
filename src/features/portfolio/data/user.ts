@@ -29,7 +29,8 @@ export const USER: User = {
   ],
   about: `
 - I'm Yash Timbadiya (call me Yash) — a Full Stack Developer with 2+ years of experience, known for pixel-perfect execution and an obsessive attention to detail.
-- Passionate about exploring new technologies and turning ideas into reality through polished, thoughtfully crafted projects.
+- Focused on transforming complex ideas into seamless, production-ready digital solutions. I deliver polished, thoughtfully crafted projects that prioritize clean code, performance, and user experience.
+- Creator of [yash14.com](https://github.com/Yash-Tibadiya/Yash14.com)
 `,
   //TODO: Add name pronunciation url
   avatar: "/assets/yash.jpg",

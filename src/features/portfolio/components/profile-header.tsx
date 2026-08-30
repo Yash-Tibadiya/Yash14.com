@@ -1,14 +1,13 @@
+import { VerifiedIcon } from "./verified-icon";
+import { FlipSentences } from "./flip-sentences";
+import { PronounceMyName } from "./pronounce-my-name";
+import { YTMarkIsometric } from "./yt-mark-isometric";
+import { USER } from "@/features/portfolio/data/user";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { USER } from "@/features/portfolio/data/user";
-
-import { FlipSentences } from "./flip-sentences";
-import { PronounceMyName } from "./pronounce-my-name";
-import { VerifiedIcon } from "./verified-icon";
-import { YTMarkIsometric } from "./yt-mark-isometric";
 
 export function ProfileHeader() {
   return (

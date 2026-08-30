@@ -1,5 +1,5 @@
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 import { USER } from "@/features/portfolio/data/user";
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
 
 const content = `# About
 

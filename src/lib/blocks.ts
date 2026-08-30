@@ -1,8 +1,8 @@
 "use server";
 
-import { registryItemSchema } from "shadcn/schema";
 import type { z } from "zod";
 
+import { registryItemSchema } from "shadcn/schema";
 import { blockCategories } from "@/config/registry";
 
 export async function getAllBlockStaticParams(): Promise<

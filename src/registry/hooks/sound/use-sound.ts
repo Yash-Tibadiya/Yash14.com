@@ -1,17 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import {
-  fetchAndDecodeAudio,
-  getAudioContext,
-} from "@/registry/lib/sound/sound-engine";
 import type {
   PlayFunction,
   SoundControls,
   UseSoundOptions,
   UseSoundReturn,
 } from "@/registry/lib/sound/sound-types";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  fetchAndDecodeAudio,
+  getAudioContext,
+} from "@/registry/lib/sound/sound-engine";
 
 export function useSound(
   url: string,

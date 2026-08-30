@@ -1,14 +1,14 @@
 "use client";
 
-import { useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
-
-import { decodeAudioData, getAudioContext } from "@/lib/soundcn/sound-engine";
 import type {
   SoundAsset,
   UseSoundOptions,
   UseSoundReturn,
 } from "@/lib/soundcn/sound-types";
+
+import { useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { decodeAudioData, getAudioContext } from "@/lib/soundcn/sound-engine";
 
 export function useSound(
   sound: SoundAsset,

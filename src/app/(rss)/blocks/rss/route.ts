@@ -1,5 +1,5 @@
-import { blockCategories } from "@/config/registry";
 import { SITE_INFO } from "@/config/site";
+import { blockCategories } from "@/config/registry";
 
 export const revalidate = false;
 export const dynamic = "force-static";

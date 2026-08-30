@@ -6,12 +6,10 @@
 //
 // Adapted (and trimmed) from yash14.com's build-registry pipeline (MIT).
 
-import { promises as fs } from "node:fs";
 import path from "node:path";
-
-import { type Registry, registrySchema } from "shadcn/schema";
-
+import { promises as fs } from "node:fs";
 import { registry } from "@/registry/index";
+import { type Registry, registrySchema } from "shadcn/schema";
 
 const REGISTRY_PATH = path.join(process.cwd(), "src/registry");
 

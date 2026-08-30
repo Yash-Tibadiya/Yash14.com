@@ -1,4 +1,5 @@
 import type { Event } from "@/lib/events";
+
 import { trackEvent } from "@/lib/events";
 
 export const copyText = async (text: string) => {

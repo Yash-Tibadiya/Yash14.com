@@ -1,9 +1,8 @@
 "use client";
 
-import { useInView, usePageInView } from "motion/react";
 import { useRef } from "react";
-
 import { TextFlip } from "@/components/text-flip";
+import { useInView, usePageInView } from "motion/react";
 
 export function FlipSentences({
   children,

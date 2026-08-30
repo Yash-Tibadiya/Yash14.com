@@ -4,6 +4,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+
 import {
   createContext,
   use,
@@ -52,7 +53,6 @@ export function AnchorProvider({
 }: AnchorProviderProps) {
   const observer = useMemo(() => new Observer(), []);
 
-  // eslint-disable-next-line react-hooks/immutability
   observer.single = single;
 
   useEffect(() => {

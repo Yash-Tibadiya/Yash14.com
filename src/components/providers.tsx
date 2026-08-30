@@ -1,12 +1,12 @@
 "use client";
 
-import { ProgressProvider } from "@bprogress/next/app";
-import { Provider as JotaiProvider } from "jotai";
 import { ThemeProvider } from "next-themes";
-import { TooltipProvider as BaseTooltipProvider } from "@/components/base/ui/tooltip";
-import { KeyboardShortcuts } from "@/components/keyboard-shortcuts";
 import { Toaster } from "@/components/ui/sonner";
+import { Provider as JotaiProvider } from "jotai";
+import { ProgressProvider } from "@bprogress/next/app";
+import { KeyboardShortcuts } from "@/components/keyboard-shortcuts";
 import { TooltipProvider as RadixTooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider as BaseTooltipProvider } from "@/components/base/ui/tooltip";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

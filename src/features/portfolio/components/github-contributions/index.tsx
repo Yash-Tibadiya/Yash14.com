@@ -1,9 +1,7 @@
-import { Suspense } from "react";
-
-import { getGitHubContributions } from "@/features/portfolio/data/github-contributions";
-
 import { Panel } from "../panel";
+import { Suspense } from "react";
 import { GitHubContributionFallback, GitHubContributionGraph } from "./graph";
+import { getGitHubContributions } from "@/features/portfolio/data/github-contributions";
 
 export function GitHubContributions() {
   const contributions = getGitHubContributions();

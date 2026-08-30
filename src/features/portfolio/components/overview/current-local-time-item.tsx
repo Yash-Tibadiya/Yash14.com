@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
-
 import { InlineScript } from "@/components/inline-script";
-
 import { IntroItem, IntroItemContent, IntroItemIcon } from "./intro-item";
 
 export function CurrentLocalTimeItem({ timeZone }: CurrentLocalTimeItemProps) {

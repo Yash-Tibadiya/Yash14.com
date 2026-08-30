@@ -1,8 +1,8 @@
 "use client";
 
+import { useWebHaptics } from "web-haptics/react";
 import { useTiks } from "@rexa-developer/tiks/react";
 import { useCallback, useRef, useState } from "react";
-import { useWebHaptics } from "web-haptics/react";
 
 export type CopyState = "idle" | "done" | "error";
 

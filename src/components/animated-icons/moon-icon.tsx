@@ -1,10 +1,10 @@
 "use client";
 
 import type { Transition, Variants } from "motion/react";
-import { motion, useAnimation } from "motion/react";
-import { useCallback, useImperativeHandle, useRef } from "react";
 
 import { cn } from "@/lib/utils";
+import { motion, useAnimation } from "motion/react";
+import { useCallback, useImperativeHandle, useRef } from "react";
 
 export type MoonIconHandle = {
   startAnimation: () => void;

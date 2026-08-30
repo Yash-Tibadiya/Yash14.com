@@ -1,7 +1,42 @@
 "use client";
 
+import type { DocPreview } from "@/features/doc/types/document";
+
+import { toast } from "sonner";
+import { Button } from "./ui/button";
+import { useTheme } from "next-themes";
+import { Kbd, KbdGroup } from "./ui/kbd";
+import { trackEvent } from "@/lib/events";
+import { CopyButton } from "./copy-button";
+import { BRAND_ASSETS } from "@/config/site";
+import { ComponentIcon, Icons } from "./icons";
+import { getMarkSVG, YTMark } from "./yt-mark";
+import { getWordmarkSVG } from "./yt-wordmark";
 import { useRouter } from "@bprogress/next/app";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useTiks } from "@rexa-developer/tiks/react";
+import { USER } from "@/features/portfolio/data/user";
+import { copyToClipboardWithEvent } from "@/utils/copy";
+import { useClickSound } from "@/hooks/soundcn/use-click-sound";
+import { useMutationObserver } from "@/hooks/use-mutation-observer";
+import { LayoutGroup, motion, useReducedMotion } from "motion/react";
+import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
+import {
+  decodeEmail,
+  decodePhoneNumber,
+  formatPhoneNumber,
+} from "@/utils/string";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandShortcut,
+} from "@/components/ui/command";
 import {
   BookmarkIcon,
   BoxIcon,
@@ -18,41 +53,6 @@ import {
   TextInitialIcon,
   TypeIcon,
 } from "lucide-react";
-import { LayoutGroup, motion, useReducedMotion } from "motion/react";
-import { useTheme } from "next-themes";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
-import { toast } from "sonner";
-import {
-  CommandDialog,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandShortcut,
-} from "@/components/ui/command";
-import { BRAND_ASSETS } from "@/config/site";
-import type { DocPreview } from "@/features/doc/types/document";
-import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
-import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
-
-import { USER } from "@/features/portfolio/data/user";
-import { useClickSound } from "@/hooks/soundcn/use-click-sound";
-import { useMutationObserver } from "@/hooks/use-mutation-observer";
-import { trackEvent } from "@/lib/events";
-import { copyToClipboardWithEvent } from "@/utils/copy";
-import {
-  decodeEmail,
-  decodePhoneNumber,
-  formatPhoneNumber,
-} from "@/utils/string";
-import { CopyButton } from "./copy-button";
-import { ComponentIcon, Icons } from "./icons";
-import { Button } from "./ui/button";
-import { Kbd, KbdGroup } from "./ui/kbd";
-import { getMarkSVG, YTMark } from "./yt-mark";
-import { getWordmarkSVG } from "./yt-wordmark";
 
 type CommandKind = "command" | "page" | "link" | "component" | "block";
 

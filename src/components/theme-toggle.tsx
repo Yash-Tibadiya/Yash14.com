@@ -1,17 +1,15 @@
 "use client";
 
+import { Kbd } from "./ui/kbd";
+import { Button } from "./ui/button";
 import { useTheme } from "next-themes";
 import { useHotkeys } from "react-hotkeys-hook";
-
 import { META_THEME_COLORS } from "@/config/site";
-import { useClickSound } from "@/hooks/soundcn/use-click-sound";
-import { useMetaColor } from "@/hooks/use-meta-color";
-
 import { MoonIcon } from "./animated-icons/moon-icon";
+import { useMetaColor } from "@/hooks/use-meta-color";
+import { useClickSound } from "@/hooks/soundcn/use-click-sound";
 import { SunMediumIcon } from "./animated-icons/sun-medium-icon";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./base/ui/tooltip";
-import { Button } from "./ui/button";
-import { Kbd } from "./ui/kbd";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();

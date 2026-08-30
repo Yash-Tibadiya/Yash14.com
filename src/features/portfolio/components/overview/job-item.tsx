@@ -1,11 +1,10 @@
+import { UTM_PARAMS } from "@/config/site";
+import { addQueryParams } from "@/utils/url";
 import {
   BriefcaseBusinessIcon,
   CodeXmlIcon,
   LightbulbIcon,
 } from "lucide-react";
-import { UTM_PARAMS } from "@/config/site";
-import { addQueryParams } from "@/utils/url";
-
 import {
   IntroItem,
   IntroItemContent,

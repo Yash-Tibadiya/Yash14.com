@@ -1,7 +1,8 @@
 "use client";
-import { motion } from "motion/react";
 import type React from "react";
+
 import { useState } from "react";
+import { motion } from "motion/react";
 
 export const SiteFooterInteractiveLogotype = ({
   text,

@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 import type { VolumeIconHandle } from "@/components/animated-icons/volume-icon";
-import { VolumeIcon } from "@/components/animated-icons/volume-icon";
-import { trackEvent } from "@/lib/events";
+
+import { useRef } from "react";
 import { cn } from "@/lib/utils";
+import { trackEvent } from "@/lib/events";
+import { useHotkeys } from "react-hotkeys-hook";
 import { useSound } from "@/registry/hooks/sound/use-sound";
+import { VolumeIcon } from "@/components/animated-icons/volume-icon";
 
 export function PronounceMyName({
   className,

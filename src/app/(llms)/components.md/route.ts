@@ -1,5 +1,5 @@
-import { registryConfig } from "@/config/registry";
 import { SITE_INFO } from "@/config/site";
+import { registryConfig } from "@/config/registry";
 import { getDocsByCategory } from "@/features/doc/data/documents";
 
 const components = getDocsByCategory("components");

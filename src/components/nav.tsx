@@ -1,8 +1,9 @@
-import type { Route } from "next";
-import Link from "next/link";
 import type React from "react";
-import { cn } from "@/lib/utils";
+import type { Route } from "next";
 import type { NavItem } from "@/types/nav";
+
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export function Nav({
   items,

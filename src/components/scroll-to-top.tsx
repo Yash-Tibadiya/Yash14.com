@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowUpIcon } from "lucide-react";
-import { useMotionValueEvent, useScroll } from "motion/react";
-import { useState } from "react";
-import { Button } from "@/components/base/ui/button";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { ArrowUpIcon } from "lucide-react";
+import { Button } from "@/components/base/ui/button";
+import { useMotionValueEvent, useScroll } from "motion/react";
 
 export function ScrollToTop({
   className,

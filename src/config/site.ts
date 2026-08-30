@@ -1,6 +1,7 @@
 import type { Route } from "next";
-import { USER } from "@/features/portfolio/data/user";
 import type { NavItem } from "@/types/nav";
+
+import { USER } from "@/features/portfolio/data/user";
 
 export const SITE_INFO = {
   name: USER.displayName,

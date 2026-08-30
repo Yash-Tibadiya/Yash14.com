@@ -1,24 +1,22 @@
 "use client";
 
-import { useTiks } from "@rexa-developer/tiks/react";
-import { MailIcon } from "lucide-react";
 import { useId } from "react";
-import { useHotkeys } from "react-hotkeys-hook";
 import { toast } from "sonner";
-import { CopyButton } from "@/components/copy-button";
-import { useIsClient } from "@/hooks/use-is-client";
-
+import { MailIcon } from "lucide-react";
 import { trackEvent } from "@/lib/events";
-import { copyToClipboardWithEvent } from "@/utils/copy";
 import { decodeEmail } from "@/utils/string";
-
+import { useHotkeys } from "react-hotkeys-hook";
+import { useIsClient } from "@/hooks/use-is-client";
+import { useTiks } from "@rexa-developer/tiks/react";
+import { CopyButton } from "@/components/copy-button";
+import { copyToClipboardWithEvent } from "@/utils/copy";
+import { RevealEncodedTextScript } from "./reveal-encoded-text";
 import {
   IntroItem,
   IntroItemContent,
   IntroItemIcon,
   IntroItemLink,
 } from "./intro-item";
-import { RevealEncodedTextScript } from "./reveal-encoded-text";
 
 type EmailItemProps = {
   emailB64: string;
