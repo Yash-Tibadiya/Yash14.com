@@ -1,7 +1,10 @@
 @import "tailwindcss";
+@import "shadcn/tailwind.css";
 @import "tw-animate-css";
-@import "./style-preview.css";
+
+@import "./typeset.css";
 @import "./scroll-fade-effect.css";
+@import "./style-preview.css";
 @import "./gradient-border-plugin.css";
 
 @plugin "@tailwindcss/typography";
@@ -10,66 +13,6 @@
 
 @custom-variant supports-timeline-scroll {
   @supports (animation-timeline: scroll()) {
-    @slot;
-  }
-}
-
-@custom-variant data-open {
-  &:where([data-state="open"]),
-  &:where([data-open]:not([data-open="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-closed {
-  &:where([data-state="closed"]),
-  &:where([data-closed]:not([data-closed="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-checked {
-  &:where([data-state="checked"]),
-  &:where([data-checked]:not([data-checked="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-unchecked {
-  &:where([data-state="unchecked"]),
-  &:where([data-unchecked]:not([data-unchecked="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-selected {
-  &:where([data-selected="true"]) {
-    @slot;
-  }
-}
-
-@custom-variant data-disabled {
-  &:where([data-disabled="true"]),
-  &:where([data-disabled]:not([data-disabled="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-active {
-  &:where([data-state="active"]),
-  &:where([data-active]:not([data-active="false"])) {
-    @slot;
-  }
-}
-
-@custom-variant data-horizontal {
-  &:where([data-orientation="horizontal"]) {
-    @slot;
-  }
-}
-
-@custom-variant data-vertical {
-  &:where([data-orientation="vertical"]) {
     @slot;
   }
 }
@@ -116,6 +59,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
+  --font-handwritten: var(--font-handwritten);
   --font-heading: var(--font-sans);
 
   --default-mono-font-feature-settings: "ss11" 1, "zero" 1, "tnum" 1;
@@ -159,13 +103,15 @@
     }
   }
 
-  --animate-contribution-in: contribution-in
-    var(--tw-animation-duration, var(--tw-duration, 0.4s)) ease-out backwards;
+  --animate-spinner-opacity: spinner-opacity
+    var(--tw-animation-duration, var(--tw-duration, 1s)) linear infinite;
 
-  @keyframes contribution-in {
+  @keyframes spinner-opacity {
     from {
-      opacity: 0;
-      scale: 0.3;
+      opacity: 1;
+    }
+    to {
+      opacity: 0.15;
     }
   }
 }
@@ -186,11 +132,23 @@
   }
 }
 
+@utility screen-line-top-* {
+  &:before {
+    background-color: --value(--color-*, [color]);
+  }
+}
+
 @utility screen-line-bottom {
   @apply relative;
   &:after {
     content: "";
     @apply absolute bottom-0 left-[-100vw] -z-1 h-px w-[200vw] bg-line;
+  }
+}
+
+@utility screen-line-bottom-* {
+  &:after {
+    background-color: --value(--color-*, [color]);
   }
 }
 
@@ -273,15 +231,6 @@
 @utility extend-touch-target {
   @media (pointer: coarse) {
     @apply relative touch-manipulation after:absolute after:-inset-2;
-  }
-}
-
-@utility no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
   }
 }
 
@@ -419,6 +368,14 @@
   --chart-ring-background: oklch(0.9 0.005 260 / 0.25);
   --chart-label: oklch(0.45 0.01 260);
 
+  /* Daikanoid — hex because p5 1.x cannot parse oklch() */
+  --dk-background: #ffffff;
+  --dk-foreground: #09090b;
+  --dk-muted-foreground: #a1a1aa;
+  --dk-brick: #a1a1aa;
+  --dk-brick-highlight: rgba(255, 255, 255, 0.5);
+  --dk-brick-shadow: #71717a;
+
   /* Layout */
   --header-height: --spacing(14);
   --fade-bottom-height: --spacing(24);
@@ -531,6 +488,14 @@
   --chart-marker-foreground: oklch(0.9 0 0);
   --chart-ring-background: oklch(0.35 0.01 260 / 0.25);
   --chart-label: oklch(0.75 0.01 260);
+
+  /* Daikanoid — hex because p5 1.x cannot parse oklch() */
+  --dk-background: #09090b;
+  --dk-foreground: #fafafa;
+  --dk-muted-foreground: #71717a;
+  --dk-brick: #71717a;
+  --dk-brick-highlight: rgba(255, 255, 255, 0.3);
+  --dk-brick-shadow: #3f3f46;
 }
 
 @layer base {
@@ -654,7 +619,7 @@
     background: var(--fade-background, var(--fade-linear-gradient));
   }
 
-  .duck-follower {
+  /* .duck-follower {
     position: fixed;
     top: 0;
     left: 0;
@@ -667,7 +632,7 @@
 
     will-change: transform;
     transition: none;
-  }
+  } */
 
   .twemoji {
     display: inline-block;
@@ -676,57 +641,20 @@
     margin: 0 0.05em 0 0.1em;
     vertical-align: -0.1em;
   }
-
-  .activity-mosaic-cell {
-    @apply data-[level=0]:fill-muted-foreground/10;
-    @apply data-[level=1]:fill-muted-foreground/20;
-    @apply data-[level=2]:fill-muted-foreground/40;
-    @apply data-[level=3]:fill-muted-foreground/60;
-    @apply data-[level=4]:fill-muted-foreground/80;
-  }
 }
 
-/* Blur cross-fade when toggling the theme via the View Transitions API. */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.4s;
-  animation-timing-function: ease;
-  mix-blend-mode: normal;
+.typeset-description {
+  --typeset-size: 15px;
+  --typeset-leading: 1.6;
+  --typeset-flow: 1em;
+
+  font-size: var(--typeset-size);
 }
 
-::view-transition-old(root) {
-  animation-name: theme-blur-out;
-}
+.typeset-timescale {
+  --typeset-size: 0.875rem;
+  --typeset-leading: 1.5;
+  --typeset-flow: 1em;
 
-::view-transition-new(root) {
-  animation-name: theme-blur-in;
-}
-
-@keyframes theme-blur-out {
-  from {
-    filter: blur(0);
-    opacity: 1;
-  }
-  to {
-    filter: blur(16px);
-    opacity: 0;
-  }
-}
-
-@keyframes theme-blur-in {
-  from {
-    filter: blur(16px);
-    opacity: 0;
-  }
-  to {
-    filter: blur(0);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: none;
-  }
+  font-size: var(--typeset-size);
 }

@@ -3,20 +3,10 @@ import type { ProfilePage, WithContext } from "schema-dts";
 
 import { JSON_LD_ID } from "@/config/json-ld";
 import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
-// import { About } from "@/features/portfolio/components/about"
-// import { Bookmarks } from "@/features/portfolio/components/bookmarks"
-// import { Certifications } from "@/features/portfolio/components/certifications"
-// import { Components } from "@/features/portfolio/components/components"
-// import { Experiences } from "@/features/portfolio/components/experiences"
-// import {
-//   Insights,
-//   InsightsSkeleton,
-// } from "@/features/portfolio/components/insights"
 import { Overview } from "@/features/portfolio/components/overview";
 import { ProfileHeader } from "@/features/portfolio/components/profile-header";
-// import { Projects } from "@/features/portfolio/components/projects"
 import { SocialLinks } from "@/features/portfolio/components/social-links";
-// import { TechStack } from "@/features/portfolio/components/tech-stack"
+import { Hello } from "@/features/portfolio/components/hello";
 import { USER } from "@/features/portfolio/data/user";
 import { JsonLdScript } from "@/lib/json-ld";
 import { absoluteUrl, cn } from "@/lib/utils";
@@ -42,8 +32,9 @@ export default function HomePage() {
           <GitHubContributions />
           <Separator />
 
-          {/* <About /> */}
-          {/* <Separator /> */}
+          <Hello />
+          {/* <SponsorsCarousel /> */}
+          <Separator />
 
           {/* <TechStack /> */}
           {/* <Separator /> */}
