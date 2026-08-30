@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
+import { config } from "./src/config";
 import { execFileSync } from "node:child_process";
 
 function getGitCommitSha() {
   const deploymentSha =
-    process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.GITHUB_SHA;
+    config.build.vercelCommitSha ?? config.github.actionsCommitSha;
 
   if (deploymentSha) return deploymentSha;
 

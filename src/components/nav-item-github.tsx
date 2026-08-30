@@ -1,3 +1,4 @@
+import { config } from "@/config";
 import { unstable_cache } from "next/cache";
 import { GitHubStars } from "@/components/github-stars";
 import { SOURCE_CODE_GITHUB_REPO } from "@/config/site";
@@ -10,7 +11,9 @@ const getStargazerCount = unstable_cache(
         {
           headers: {
             Accept: "application/vnd.github+json",
-            Authorization: `Bearer ${process.env.GITHUB_API_TOKEN}`,
+            ...(config.github.apiToken
+              ? { Authorization: `Bearer ${config.github.apiToken}` }
+              : {}),
             "X-GitHub-Api-Version": "2022-11-28",
           },
         },

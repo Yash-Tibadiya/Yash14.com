@@ -1,6 +1,7 @@
 // Thanks @radix-ui
 
 import * as React from "react";
+import { config } from "@/config";
 
 // use-layout-effect.tsx
 // https://github.com/radix-ui/primitives/blob/main/packages/react/use-layout-effect/src/use-layout-effect.tsx
@@ -49,7 +50,7 @@ export function useControllableState<T>({
   // consistently in the same environment. Bundlers should be able to remove the
   // code block entirely in production.
 
-  if (process.env.NODE_ENV !== "production") {
+  if (!config.runtime.isProduction) {
     const isControlledRef = React.useRef(prop !== undefined);
     React.useEffect(() => {
       const wasControlled = isControlledRef.current;

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { config } from "@/config";
 import { copyText } from "@/utils/copy";
 import { SITE_INFO } from "@/config/site";
 import { Icons } from "@/components/icons";
@@ -14,8 +15,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 
-const DMCA_URL =
-  process.env.NEXT_PUBLIC_DMCA_URL || "https://www.dmca.com/ProtectionPro.aspx";
+const DMCA_URL = config.dmca.url;
 
 const FOOTER_LINKS = [
   {

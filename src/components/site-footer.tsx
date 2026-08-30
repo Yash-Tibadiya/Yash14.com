@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { config } from "@/config";
 import registry from "../../registry.json";
 import packageJson from "../../package.json";
 import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
@@ -17,11 +18,9 @@ const INSPIRED_BY = [
   "shadcncraft",
 ];
 
-const BUILD_SHA = process.env.BUILD_GIT_COMMIT_SHA || null;
+const BUILD_SHA = config.build.commitSha || null;
 
-const BUILD_DATE = new Date(
-  process.env.VERCEL_DEPLOYMENT_CREATED_AT ?? Date.now(),
-)
+const BUILD_DATE = new Date(config.build.deployedAt ?? Date.now())
   .toISOString()
   .slice(0, 10);
 
