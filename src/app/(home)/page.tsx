@@ -7,6 +7,7 @@ import { absoluteUrl, cn } from "@/lib/utils";
 import { USER } from "@/features/portfolio/data/user";
 import { Hello } from "@/features/portfolio/components/hello";
 import { Overview } from "@/features/portfolio/components/overview";
+import { Education } from "@/features/portfolio/components/education";
 import { TechStack } from "@/features/portfolio/components/tech-stack";
 import { Experiences } from "@/features/portfolio/components/experiences";
 import { SocialLinks } from "@/features/portfolio/components/social-links";
@@ -43,8 +44,8 @@ export default function HomePage() {
           <Experiences />
           <Separator />
 
-          {/* <Education />
-          <Separator /> */}
+          <Education />
+          <Separator />
         </div>
       </div>
     </>
