@@ -1,23 +1,23 @@
-import { GraduationCapIcon, InfinityIcon } from "lucide-react"
+import type { Education } from "@/features/portfolio/types/education";
 
-import { cn } from "@/lib/utils"
-import { IconTile } from "@/components/ui/icon-tile"
-import { Tag } from "@/components/ui/tag"
-import {
-  Collapsible,
-  CollapsibleChevronsUpDownIcon,
-} from "@/components/base/collapsible-animated"
+import { cn } from "@/lib/utils";
+import { Tag } from "@/components/ui/tag";
+import { Markdown } from "@/components/markdown";
+import { IconTile } from "@/components/ui/icon-tile";
+import { Separator } from "@/components/base/ui/separator";
+import { GraduationCapIcon, InfinityIcon } from "lucide-react";
 import {
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
-import { Separator } from "@/components/base/ui/separator"
-import { Markdown } from "@/components/markdown"
-import type { Education } from "@/features/portfolio/types/education"
+} from "@/components/base/ui/collapsible";
+import {
+  Collapsible,
+  CollapsibleChevronsUpDownIcon,
+} from "@/components/base/collapsible-animated";
 
 export function EducationItem({ item }: { item: Education }) {
-  const { start, end } = item.period
-  const isOngoing = !end
+  const { start, end } = item.period;
+  const isOngoing = !end;
 
   return (
     <div className="group/education-item relative before:absolute before:left-3 before:h-full before:w-px before:bg-border">
@@ -34,7 +34,7 @@ export function EducationItem({ item }: { item: Education }) {
             "group block w-full text-left",
             "relative before:absolute before:-top-1 before:-right-1 before:-bottom-1.5 before:left-7 before:-z-1 before:rounded-lg before:transition-[background-color] before:ease-out hover:before:bg-accent-muted",
             "outline-none focus-visible:before:inset-ring-2 focus-visible:before:inset-ring-ring/50",
-            "data-disabled:before:content-none"
+            "data-disabled:before:content-none",
           )}
         >
           <div className="relative z-1 mb-1 flex items-start gap-3 text-base">
@@ -109,8 +109,8 @@ export function EducationItem({ item }: { item: Education }) {
 
         {Array.isArray(item.skills) && item.skills.length > 0 && (
           <ul className="flex flex-wrap gap-1.5 pt-3 pl-9">
-            {item.skills.map((skill, index) => (
-              <li key={index} className="flex">
+            {item.skills.map((skill) => (
+              <li key={skill} className="flex">
                 <Tag>{skill}</Tag>
               </li>
             ))}
@@ -118,5 +118,5 @@ export function EducationItem({ item }: { item: Education }) {
         )}
       </Collapsible>
     </div>
-  )
+  );
 }
