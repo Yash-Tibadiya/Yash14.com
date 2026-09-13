@@ -45,9 +45,7 @@ function AsciiWall({ side }: { side: "left" | "right" }) {
         shouldReduceMotion
           ? false
           : {
-              clipPath: isLeft
-                ? "inset(0 0 0 100%)"
-                : "inset(0 100% 0 0)",
+              clipPath: isLeft ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
             }
       }
       animate={{ clipPath: "inset(0 0 0 0)" }}
