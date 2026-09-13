@@ -1,6 +1,7 @@
 import type { Experience } from "../../types/experiences";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { UTM_PARAMS } from "@/config/site";
 import { addQueryParams } from "@/utils/url";
 import { ExperiencePositionItem } from "./experience-position-item";
@@ -19,8 +20,10 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
               alt={`${experience.companyName} logo`}
               width={24}
               height={24}
-              quality={100}
-              className="rounded-full grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/experience:grayscale-0"
+              className={cn(
+                "size-6 rounded-full object-cover grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/experience:grayscale-0",
+                experience.invertLogoInDark && "dark:invert",
+              )}
               unoptimized
               aria-hidden
             />
