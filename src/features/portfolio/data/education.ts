@@ -42,7 +42,6 @@ Achievements:
       "Blockchain",
       "Smart Contracts",
     ],
-    isExpanded: true,
   },
   {
     id: "ashadeep-higher-secondary",
