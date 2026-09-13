@@ -1,16 +1,15 @@
 import type { Experience } from "@/features/portfolio/types/experiences";
 
-import {
-  BriefcaseBusinessIcon,
-  CodeXmlIcon,
-} from "lucide-react";
+import { BriefcaseBusinessIcon, CodeXmlIcon } from "lucide-react";
 
 export const EXPERIENCES: Experience[] = [
   {
     id: "cross-even",
     companyName: "Cross Even",
     companyLogo: "/logo/crosseven.png",
-    invertLogoInDark: true,
+    companyWebsite: "https://crosseven.com",
+    largeLogo: true,
+    invertLogoInLight: true,
     location: "United States",
     locationType: "Remote",
     positions: [

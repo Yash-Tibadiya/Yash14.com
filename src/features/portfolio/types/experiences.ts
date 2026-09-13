@@ -26,8 +26,10 @@ export type Experience = {
   companyName: string;
   /** URL to the company logo (absolute URL or path under /public). */
   companyLogo?: string;
-  /** Invert a black-on-transparent logo so it stays visible in dark mode. */
-  invertLogoInDark?: boolean;
+  /** Render the company logo a bit larger than the default 24px tile. */
+  largeLogo?: boolean;
+  /** Invert a light-on-transparent logo so it stays visible in light mode. */
+  invertLogoInLight?: boolean;
   /** UI icon to represent the company; used if `companyLogo` is not provided. */
   companyIcon?: React.ReactElement;
   /** URL to the company's website. */
