@@ -8,6 +8,7 @@ import { USER } from "@/features/portfolio/data/user";
 import { Hello } from "@/features/portfolio/components/hello";
 import { Overview } from "@/features/portfolio/components/overview";
 import { TechStack } from "@/features/portfolio/components/tech-stack";
+import { Experiences } from "@/features/portfolio/components/experiences";
 import { SocialLinks } from "@/features/portfolio/components/social-links";
 import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
@@ -34,29 +35,16 @@ export default function HomePage() {
           <Separator />
 
           <Hello />
+          <Separator />
 
           <TechStack />
           <Separator />
 
-          {/* <Components /> */}
-          {/* <Separator /> */}
-
-          {/* <Experiences /> */}
-          {/* <Separator /> */}
-
-          {/* <Projects /> */}
-          {/* <Separator /> */}
-
-          {/* <Certifications /> */}
-          {/* <Separator /> */}
-
-          {/* <Bookmarks /> */}
-          {/* <Separator /> */}
-
-          {/* <Suspense fallback={<InsightsSkeleton />}> */}
-          {/* <Insights /> */}
-          {/* </Suspense> */}
+          <Experiences />
           <Separator />
+
+          {/* <Education />
+          <Separator /> */}
         </div>
       </div>
     </>
