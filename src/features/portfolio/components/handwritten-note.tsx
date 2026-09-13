@@ -47,9 +47,10 @@ function HandwrittenArrow({
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden
+      aria-hidden="true"
       {...props}
     >
+      <title>Decorative pointer arrow</title>
       <defs>
         <mask id={maskId}>
           <motion.path
@@ -68,11 +69,7 @@ function HandwrittenArrow({
         </mask>
       </defs>
 
-      <path
-        d={tailPath}
-        strokeDasharray="5 4"
-        mask={`url(#${maskId})`}
-      />
+      <path d={tailPath} strokeDasharray="5 4" mask={`url(#${maskId})`} />
       <motion.path
         d="m68 29 11 8-12 6"
         initial={shouldReduceMotion ? false : { opacity: 0 }}
