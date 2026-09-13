@@ -9,7 +9,6 @@ import { Kbd, KbdGroup } from "./ui/kbd";
 import { trackEvent } from "@/lib/events";
 import { CopyButton } from "./copy-button";
 import { BRAND_ASSETS } from "@/config/site";
-import { ComponentIcon, Icons } from "./icons";
 import { getMarkSVG, YTMark } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
 import { useRouter } from "@bprogress/next/app";
@@ -21,6 +20,7 @@ import { useClickSound } from "@/hooks/soundcn/use-click-sound";
 import { useMutationObserver } from "@/hooks/use-mutation-observer";
 import { LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import { ComponentIcon } from "@/features/doc/components/component-icon";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
 import {
@@ -28,6 +28,13 @@ import {
   decodePhoneNumber,
   formatPhoneNumber,
 } from "@/utils/string";
+import {
+  EmailIcon,
+  GridViewIcon,
+  PhoneIcon,
+  ReactIcon,
+  SearchIcon,
+} from "./icons";
 import {
   CommandDialog,
   CommandEmpty,
@@ -94,14 +101,14 @@ const MENU_LINKS: CommandLinkItem[] = [
     title: "Components",
     href: "/components",
     kind: "page",
-    icon: <Icons.react />,
+    icon: <ReactIcon />,
     shortcut: "GC",
   },
   {
     title: "Blocks",
     href: "/blocks",
     kind: "page",
-    icon: <Icons.gridView />,
+    icon: <GridViewIcon />,
     shortcut: "GB",
   },
 ];
@@ -147,7 +154,7 @@ const CONTACT_LINKS: CommandLinkItem[] = [
     title: CONTACT_EMAIL,
     href: `mailto:${CONTACT_EMAIL}`,
     kind: "link",
-    icon: <Icons.email />,
+    icon: <EmailIcon />,
     keywords: ["email", "contact", "mail"],
     copyText: CONTACT_EMAIL,
     copyEvent: "copy_email",
@@ -156,7 +163,7 @@ const CONTACT_LINKS: CommandLinkItem[] = [
     title: formatPhoneNumber(CONTACT_PHONE),
     href: `tel:${CONTACT_PHONE}`,
     kind: "link",
-    icon: <Icons.phone />,
+    icon: <PhoneIcon />,
     keywords: ["phone", "contact", "number", "call"],
     copyText: CONTACT_PHONE,
     copyEvent: "copy_phone_number",
@@ -334,7 +341,7 @@ export function CommandMenu({
                 handleOpenLink(`/components/${component.slug}`);
               }}
             >
-              <ComponentIcon variant={component.slug} />
+              <ComponentIcon slug={component.slug} />
               <p className="line-clamp-1">{component.title}</p>
             </CommandMenuItem>
           );
@@ -362,7 +369,7 @@ export function CommandMenu({
                 handleOpenLink(`/blocks/${block.categories[0]}/${block.name}`);
               }}
             >
-              <Icons.gridView />
+              <GridViewIcon />
               <p className="line-clamp-1">{block.description}</p>
               <span className="ml-auto font-mono text-xs font-normal text-muted-foreground tabular-nums max-sm:hidden">
                 {block.name}
@@ -525,7 +532,7 @@ function CommandMenuTrigger({ ...props }: React.ComponentProps<typeof Button>) {
       size="sm"
       {...props}
     >
-      <Icons.search />
+      <SearchIcon />
 
       <span className="font-sans text-sm/4 font-medium sm:hidden">Search…</span>
 
