@@ -14,6 +14,5 @@ export const lib: Registry["items"] = [
       },
     ],
     categories: ["utilities"],
-    docs: "https://chanhdai.com/components/haptic-feedback",
   },
 ];
