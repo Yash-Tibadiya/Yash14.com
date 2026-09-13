@@ -367,7 +367,11 @@ const bandRevealTransition: Transition = {
   ease: [0.22, 1, 0.36, 1],
 };
 
-export function YTMarkIsometric() {
+type YTMarkIsometricProps = {
+  onActivate?: () => void;
+};
+
+export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
   const bandId0 = `yt-band-0${useId().replace(/:/g, "")}`;
   const bandId1 = `yt-band-1${useId().replace(/:/g, "")}`;
@@ -425,6 +429,7 @@ export function YTMarkIsometric() {
           onTap={() => {
             play();
             setActive((on) => !on);
+            onActivate?.();
           }}
         >
           <defs>
