@@ -7,6 +7,7 @@ import { absoluteUrl, cn } from "@/lib/utils";
 import { USER } from "@/features/portfolio/data/user";
 import { Hello } from "@/features/portfolio/components/hello";
 import { Overview } from "@/features/portfolio/components/overview";
+import { TechStack } from "@/features/portfolio/components/tech-stack";
 import { SocialLinks } from "@/features/portfolio/components/social-links";
 import { ProfileHeader } from "@/features/portfolio/components/profile-header";
 import { GitHubContributions } from "@/features/portfolio/components/github-contributions";
@@ -34,8 +35,8 @@ export default function HomePage() {
 
           <Hello />
 
-          {/* <TechStack /> */}
-          {/* <Separator /> */}
+          <TechStack />
+          <Separator />
 
           {/* <Components /> */}
           {/* <Separator /> */}

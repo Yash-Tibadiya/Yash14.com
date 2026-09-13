@@ -4,7 +4,6 @@
 
 import type { CopyState } from "@/hooks/use-copy-to-clipboard";
 
-import { Icons } from "@/components/icons";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useMemo, useRef, useState } from "react";
@@ -21,6 +20,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  ClaudeIcon,
+  CursorIcon,
+  GitHubIcon,
+  GrokIcon,
+  MarkdownIcon,
+  OpenAIIcon,
+  SciraIcon,
+} from "@/components/icons";
 
 const cache = new Map<string, string>();
 
@@ -113,14 +121,14 @@ export function ViewOptions({
       {
         title: "View as Markdown",
         href: fullMarkdownUrl,
-        icon: Icons.markdown,
+        icon: MarkdownIcon,
       },
       ...(githubUrl
         ? [
             {
               title: "Open in GitHub",
               href: githubUrl,
-              icon: Icons.github,
+              icon: GitHubIcon,
             },
           ]
         : []),
@@ -130,35 +138,35 @@ export function ViewOptions({
           hints: "search",
           q,
         })}`,
-        icon: Icons.openai,
+        icon: OpenAIIcon,
       },
       {
         title: "Open in Claude",
         href: `https://claude.ai/new?${new URLSearchParams({
           q,
         })}`,
-        icon: Icons.claude,
+        icon: ClaudeIcon,
       },
       {
         title: "Open in Cursor",
         href: `https://cursor.com/link/prompt?${new URLSearchParams({
           text: q,
         })}`,
-        icon: Icons.cursor,
+        icon: CursorIcon,
       },
       {
         title: "Open in Grok",
         href: `https://grok.com/?${new URLSearchParams({
           q,
         })}`,
-        icon: Icons.grok,
+        icon: GrokIcon,
       },
       {
         title: "Open in Scira AI",
         href: `https://scira.ai/?${new URLSearchParams({
           q,
         })}`,
-        icon: Icons.scira,
+        icon: SciraIcon,
       },
     ];
 

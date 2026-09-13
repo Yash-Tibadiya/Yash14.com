@@ -2,15 +2,15 @@
 
 import { toast } from "sonner";
 import { copyText } from "@/utils/copy";
-import { Icons } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/base/ui/button";
+import { LinkedInIcon, XIcon } from "@/components/icons";
 import { EllipsisIcon, LinkIcon, ShareIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/base/ui/dropdown-menu";
 
 export function DocShareMenu({ title, url }: { title: string; url: string }) {
   const absoluteUrl = url.startsWith("http")
@@ -23,23 +23,24 @@ export function DocShareMenu({ title, url }: { title: string; url: string }) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          className="size-7 border-none active:scale-none"
-          variant="secondary"
-          size="icon-sm"
-          aria-label="Share"
-        >
-          <ShareIcon />
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            className="size-7 border-none active:scale-none"
+            variant="secondary"
+            size="icon-sm"
+          >
+            <ShareIcon />
+          </Button>
+        }
+      />
 
       <DropdownMenuContent
         className="w-fit"
         align="start"
         alignOffset={-6}
         collisionPadding={16}
-        onCloseAutoFocus={(e) => e.preventDefault()}
+        finalFocus={false}
       >
         <DropdownMenuItem
           onClick={() => {
@@ -51,32 +52,36 @@ export function DocShareMenu({ title, url }: { title: string; url: string }) {
           Copy link
         </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <a
-            href={`https://x.com/intent/tweet?url=${urlEncoded}`}
-            target="_blank"
-            rel="noopener"
-          >
-            <Icons.x />
-            Share on X
-          </a>
-        </DropdownMenuItem>
+        <DropdownMenuItem
+          render={
+            <a
+              href={`https://x.com/intent/tweet?url=${urlEncoded}`}
+              target="_blank"
+              rel="noopener"
+            >
+              <XIcon />
+              Share on X
+            </a>
+          }
+        />
 
-        <DropdownMenuItem asChild>
-          <a
-            href={`https://www.linkedin.com/sharing/share-offsite?url=${urlEncoded}`}
-            target="_blank"
-            rel="noopener"
-          >
-            <Icons.linkedin />
-            Share on LinkedIn
-          </a>
-        </DropdownMenuItem>
+        <DropdownMenuItem
+          render={
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite?url=${urlEncoded}`}
+              target="_blank"
+              rel="noopener"
+            >
+              <LinkedInIcon />
+              Share on LinkedIn
+            </a>
+          }
+        />
 
         {typeof navigator !== "undefined" && "share" in navigator && (
           <DropdownMenuItem
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the menu from closing
+            closeOnClick={false}
+            onClick={() => {
               navigator.share({ title, url: absoluteUrl }).catch(() => {});
             }}
           >

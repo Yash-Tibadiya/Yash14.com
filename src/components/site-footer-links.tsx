@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { config } from "@/config";
 import { copyText } from "@/utils/copy";
 import { SITE_INFO } from "@/config/site";
-import { Icons } from "@/components/icons";
+import { DmcaIcon } from "@/components/icons";
 import { BotIcon, LinkIcon, RssIcon } from "lucide-react";
 import {
   ContextMenu,
@@ -54,7 +54,7 @@ export function SiteFooterLinks() {
         ariaLabel="DMCA.com Protection Status"
         className="font-sans"
       >
-        <Icons.dmca className="h-4.5 w-auto" />
+        <DmcaIcon className="h-4.5 w-auto" />
       </FooterLink>
     </div>
   );

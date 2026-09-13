@@ -20,7 +20,7 @@ const INSPIRED_BY = [
   "shadcncraft",
 ];
 
-const SITE_TITLE = "chanhdai.com";
+const SITE_TITLE = "YASH14.COM";
 const SITE_SUBTITLE = packageJson.description;
 
 const STACK = [
