@@ -1,11 +1,10 @@
+import type { Experience } from "@/features/portfolio/types/experiences";
+
 import {
   BriefcaseBusinessIcon,
   Building2Icon,
   CodeXmlIcon,
-  DraftingCompassIcon,
 } from "lucide-react";
-
-import type { Experience } from "@/features/portfolio/types/experiences";
 
 export const EXPERIENCES: Experience[] = [
   {

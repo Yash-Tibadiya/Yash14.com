@@ -1,9 +1,8 @@
-import Image from "next/image";
-import { addQueryParams } from "@/utils/url";
-
-import { UTM_PARAMS } from "@/config/site";
-
 import type { Experience } from "../../types/experiences";
+
+import Image from "next/image";
+import { UTM_PARAMS } from "@/config/site";
+import { addQueryParams } from "@/utils/url";
 import { ExperiencePositionItem } from "./experience-position-item";
 
 export function ExperienceItem({ experience }: { experience: Experience }) {

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 /**
  * Small square chip that frames a leading icon in list items and metadata rows.
@@ -14,9 +14,9 @@ export function IconTile({ className, ...props }: React.ComponentProps<"div">) {
         "border border-muted-foreground/15 bg-muted text-muted-foreground",
         "ring-1 ring-border/50 ring-offset-1 ring-offset-background dark:ring-line",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }

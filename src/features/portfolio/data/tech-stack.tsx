@@ -8,7 +8,6 @@ import {
   ShieldCheckIcon,
   TrendingUpIcon,
 } from "lucide-react";
-
 import {
   AwsIcon,
   BaseUiIcon,

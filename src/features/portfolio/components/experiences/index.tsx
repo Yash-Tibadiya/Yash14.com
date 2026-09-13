@@ -1,24 +1,23 @@
-import { ChevronDownIcon } from "lucide-react"
+import type { Experience } from "@/features/portfolio/types/experiences";
 
-import { Button } from "@/components/base/ui/button"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible"
+import { ChevronDownIcon } from "lucide-react";
+import { ExperienceItem } from "./experience-item";
+import { Button } from "@/components/base/ui/button";
+import { EXPERIENCES } from "@/features/portfolio/data/experiences";
+import { PanelTitleCopy } from "@/features/portfolio/components/panel-title-copy";
 import {
   Panel,
   PanelHeader,
   PanelTitle,
-} from "@/features/portfolio/components/panel"
-import { PanelTitleCopy } from "@/features/portfolio/components/panel-title-copy"
-import { EXPERIENCES } from "@/features/portfolio/data/experiences"
-import type { Experience } from "@/features/portfolio/types/experiences"
+} from "@/features/portfolio/components/panel";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/base/ui/collapsible";
 
-import { ExperienceItem } from "./experience-item"
-
-const ID = "experience"
-const MAX = 3
+const ID = "experience";
+const MAX = 3;
 
 export function Experiences() {
   return (
@@ -64,7 +63,7 @@ export function Experiences() {
         </Collapsible>
       )}
     </Panel>
-  )
+  );
 }
 
 function ExperienceList({ experiences }: { experiences: Experience[] }) {
@@ -74,5 +73,5 @@ function ExperienceList({ experiences }: { experiences: Experience[] }) {
         <ExperienceItem key={experience.id} experience={experience} />
       ))}
     </>
-  )
+  );
 }
