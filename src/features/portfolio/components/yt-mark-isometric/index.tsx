@@ -380,6 +380,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
   const [animateTraffic, setAnimateTraffic] = useState(false);
   const [active, setActive] = useState(false);
   const [carModel, setCarModel] = useState<CarModel>("detailed");
+  const [introReady, setIntroReady] = useState(false);
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -387,12 +388,25 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
     }
   }, [reduceMotion]);
 
-  const transition: Transition = {
-    type: "spring",
-    mass: 0.5,
-    damping: 18,
-    stiffness: 200,
-  };
+  useEffect(() => {
+    if (reduceMotion) {
+      setIntroReady(true);
+      return;
+    }
+
+    const markTimer = window.setTimeout(() => setIntroReady(true), 450);
+
+    return () => window.clearTimeout(markTimer);
+  }, [reduceMotion]);
+
+  const transition: Transition = reduceMotion
+    ? { duration: 0 }
+    : {
+        type: "spring",
+        mass: 0.5,
+        damping: 18,
+        stiffness: 200,
+      };
 
   const [play] = useSound(metalClickSound);
 
@@ -424,7 +438,8 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden
-          initial="normal"
+          initial="pressed"
+          animate={introReady ? "normal" : "pressed"}
           whileTap="pressed"
           onTap={() => {
             play();
@@ -578,6 +593,11 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
             </motion.g>
           </AnimatePresence>
 
+          <g
+            className={`transition-opacity duration-200 motion-reduce:transition-none ${
+              introReady ? "opacity-100" : "opacity-0"
+            }`}
+          >
           {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
             <motion.path
               key={`side-behind-${i}`}
@@ -671,6 +691,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
               transition={transition}
             />
           ))}
+          </g>
         </motion.svg>
       </ContextMenuTrigger>
       <ContextMenuContent className="p-1.5 grid grid-cols-2 gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">

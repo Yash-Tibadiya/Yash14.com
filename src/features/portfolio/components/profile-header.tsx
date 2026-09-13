@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VerifiedIcon } from "./verified-icon";
 import { FlipSentences } from "./flip-sentences";
 import { PronounceMyName } from "./pronounce-my-name";
 import { YTMarkIsometric } from "./yt-mark-isometric";
 import { USER } from "@/features/portfolio/data/user";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { HandwrittenArrow, HandwrittenNote } from "./handwritten-note";
 import {
   Tooltip,
@@ -14,26 +15,48 @@ import {
 } from "@/components/ui/tooltip";
 
 export function ProfileHeader() {
-  const [showMarkHint, setShowMarkHint] = useState(true);
+  const shouldReduceMotion = useReducedMotion();
+  const [showMarkHint, setShowMarkHint] = useState(false);
+  const [markHintDismissed, setMarkHintDismissed] = useState(false);
+
+  useEffect(() => {
+    if (markHintDismissed) return;
+
+    if (shouldReduceMotion) {
+      setShowMarkHint(true);
+      return;
+    }
+
+    const hintTimer = window.setTimeout(() => setShowMarkHint(true), 1500);
+
+    return () => window.clearTimeout(hintTimer);
+  }, [markHintDismissed, shouldReduceMotion]);
+
+  const dismissMarkHint = () => {
+    setMarkHintDismissed(true);
+    setShowMarkHint(false);
+  };
 
   return (
     <div className="screen-line-bottom grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x border-line">
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <YTMarkIsometric onActivate={() => setShowMarkHint(false)} />
+        <YTMarkIsometric onActivate={dismissMarkHint} />
 
-        {showMarkHint && (
-          <HandwrittenNote
-            className="top-16 left-7 hidden rotate-2 flex-col items-start pointer-fine:lg:flex xl:left-30"
-            aria-hidden
-          >
-            <span>
-              click this to
-              <span className="block" />
-              start the traffic
-            </span>
-            <HandwrittenArrow className="mt-0.5 ml-12 -rotate-2" />
-          </HandwrittenNote>
-        )}
+        <AnimatePresence>
+          {showMarkHint && (
+            <HandwrittenNote
+              className="top-16 left-7 hidden rotate-2 flex-col items-start pointer-fine:lg:flex xl:left-30"
+              aria-hidden
+            >
+              <span>
+                click this to
+                <span className="block" />
+                start the traffic
+              </span>
+              <HandwrittenArrow className="mt-0.5 ml-12 -rotate-2" />
+            </HandwrittenNote>
+          )}
+        </AnimatePresence>
 
         <figcaption className="absolute right-2 bottom-2 sm:right-4">
           <Tooltip>
