@@ -1,6 +1,7 @@
 import type { Experience } from "../../types/experiences";
 
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 import { UTM_PARAMS } from "@/config/site";
 import { addQueryParams } from "@/utils/url";
 import { ExperiencePositionItem } from "./experience-position-item";
@@ -12,15 +13,25 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
       className="group/experience screen-line-bottom scroll-mt-14 space-y-4 py-4"
     >
       <div className="flex items-start gap-3 sm:items-center">
-        <div className="flex size-6 shrink-0 items-center justify-center select-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:text-muted-foreground [&_svg:not([class*='size-'])]:size-5">
+        <div
+          className={cn(
+            "flex shrink-0 items-center justify-center select-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:text-muted-foreground [&_svg:not([class*='size-'])]:size-5",
+            experience.largeLogo ? "h-6 w-10" : "size-6",
+          )}
+        >
           {experience.companyLogo ? (
             <Image
               src={experience.companyLogo}
               alt={`${experience.companyName} logo`}
-              width={24}
-              height={24}
-              quality={100}
-              className="rounded-full grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/experience:grayscale-0"
+              width={experience.largeLogo ? 40 : 24}
+              height={experience.largeLogo ? 24 : 24}
+              className={cn(
+                "grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/experience:grayscale-0",
+                experience.largeLogo
+                  ? "h-10 w-16 object-contain"
+                  : "size-6 rounded-full object-cover",
+                experience.invertLogoInLight && "invert dark:invert-0",
+              )}
               unoptimized
               aria-hidden
             />

@@ -1,16 +1,15 @@
 import type { Experience } from "@/features/portfolio/types/experiences";
 
-import {
-  BriefcaseBusinessIcon,
-  Building2Icon,
-  CodeXmlIcon,
-} from "lucide-react";
+import { BriefcaseBusinessIcon, CodeXmlIcon } from "lucide-react";
 
 export const EXPERIENCES: Experience[] = [
   {
     id: "cross-even",
     companyName: "Cross Even",
-    companyIcon: <Building2Icon strokeWidth={1.8} />,
+    companyLogo: "/logo/crosseven.png",
+    companyWebsite: "https://crosseven.com",
+    largeLogo: true,
+    invertLogoInLight: true,
     location: "United States",
     locationType: "Remote",
     positions: [
@@ -72,7 +71,7 @@ Products I've built and maintain:
   {
     id: "enacton",
     companyName: "EnactOn Technologies",
-    companyIcon: <Building2Icon strokeWidth={1.8} />,
+    companyLogo: "/logo/enacton.png",
     companyWebsite: "https://www.enacton.com",
     location: "Gujarat, India",
     locationType: "Remote",
@@ -103,7 +102,6 @@ Products I've built and maintain:
           "TypeScript",
           "Next.js",
         ],
-        isExpanded: true,
       },
     ],
     isCurrentEmployer: true,
