@@ -28,10 +28,15 @@ export function ExperienceItem({ experience }: { experience: Experience }) {
               className={cn(
                 "grayscale transition-[filter] duration-300 ease-[cubic-bezier(0.42,0,0.58,1)] group-hover/experience:grayscale-0",
                 experience.largeLogo
-                  ? "h-10 w-16 object-contain"
+                  ? "max-h-6 max-w-10 object-contain"
                   : "size-6 rounded-full object-cover",
                 experience.invertLogoInLight && "invert dark:invert-0",
               )}
+              style={
+                experience.largeLogo
+                  ? { width: "auto", height: "auto" }
+                  : undefined
+              }
               unoptimized
               aria-hidden
             />

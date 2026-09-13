@@ -367,7 +367,11 @@ const bandRevealTransition: Transition = {
   ease: [0.22, 1, 0.36, 1],
 };
 
-export function YTMarkIsometric() {
+type YTMarkIsometricProps = {
+  onActivate?: () => void;
+};
+
+export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
   const patternId = `yt-hatch${useId().replace(/:/g, "")}`;
   const bandId0 = `yt-band-0${useId().replace(/:/g, "")}`;
   const bandId1 = `yt-band-1${useId().replace(/:/g, "")}`;
@@ -376,6 +380,7 @@ export function YTMarkIsometric() {
   const [animateTraffic, setAnimateTraffic] = useState(false);
   const [active, setActive] = useState(false);
   const [carModel, setCarModel] = useState<CarModel>("detailed");
+  const [introReady, setIntroReady] = useState(false);
 
   useEffect(() => {
     if (reduceMotion === false) {
@@ -383,12 +388,25 @@ export function YTMarkIsometric() {
     }
   }, [reduceMotion]);
 
-  const transition: Transition = {
-    type: "spring",
-    mass: 0.5,
-    damping: 18,
-    stiffness: 200,
-  };
+  useEffect(() => {
+    if (reduceMotion) {
+      setIntroReady(true);
+      return;
+    }
+
+    const markTimer = window.setTimeout(() => setIntroReady(true), 450);
+
+    return () => window.clearTimeout(markTimer);
+  }, [reduceMotion]);
+
+  const transition: Transition = reduceMotion
+    ? { duration: 0 }
+    : {
+        type: "spring",
+        mass: 0.5,
+        damping: 18,
+        stiffness: 200,
+      };
 
   const [play] = useSound(metalClickSound);
 
@@ -420,11 +438,13 @@ export function YTMarkIsometric() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden
-          initial="normal"
+          initial="pressed"
+          animate={introReady ? "normal" : "pressed"}
           whileTap="pressed"
           onTap={() => {
             play();
             setActive((on) => !on);
+            onActivate?.();
           }}
         >
           <defs>
@@ -573,99 +593,105 @@ export function YTMarkIsometric() {
             </motion.g>
           </AnimatePresence>
 
-          {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
-            <motion.path
-              key={`side-behind-${i}`}
-              d={shape.normal}
-              fill={SURFACE_FILL}
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
-          {WALL_EDGES_BEHIND_TRAFFIC.map((shape, i) => (
-            <motion.path
-              key={`wall-edge-behind-${i}`}
-              d={shape.normal}
-              stroke="var(--stroke)"
-              strokeWidth="1"
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
+          <g
+            className={`transition-opacity duration-200 motion-reduce:transition-none ${
+              introReady ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {SIDE_FILLS_BEHIND_TRAFFIC.map((shape, i) => (
+              <motion.path
+                key={`side-behind-${i}`}
+                d={shape.normal}
+                fill={SURFACE_FILL}
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
+            {WALL_EDGES_BEHIND_TRAFFIC.map((shape, i) => (
+              <motion.path
+                key={`wall-edge-behind-${i}`}
+                d={shape.normal}
+                stroke="var(--stroke)"
+                strokeWidth="1"
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
 
-          {active ? (
-            <AnimatePresence>
-              <motion.g
-                key="traffic"
-                className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))] [--v-wheel-side:color-mix(in_oklab,var(--foreground)_40%,var(--background))] [--v-wheel-front:color-mix(in_oklab,var(--foreground)_45%,var(--background))] [--v-wheel-top:color-mix(in_oklab,var(--foreground)_50%,var(--background))] [--v-window:color-mix(in_oklab,var(--foreground)_60%,var(--background))] [--v-bumper:color-mix(in_oklab,var(--foreground)_25%,var(--background))] [--v-light-front:color-mix(in_oklab,var(--foreground)_85%,var(--background))]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={bandTransition}
-              >
-                {TRAFFIC.map((spec, i) => (
-                  <Vehicle
-                    key={i}
-                    spec={spec}
-                    reduce={reduceMotion}
-                    animateTraffic={animateTraffic}
-                    model={carModel}
-                  />
-                ))}
-              </motion.g>
-            </AnimatePresence>
-          ) : null}
+            {active ? (
+              <AnimatePresence>
+                <motion.g
+                  key="traffic"
+                  className="[--v-front:color-mix(in_oklab,var(--foreground)_13%,var(--background))] [--v-side:color-mix(in_oklab,var(--foreground)_7%,var(--background))] [--v-stroke:color-mix(in_oklab,var(--foreground)_36%,var(--background))] [--v-top:color-mix(in_oklab,var(--foreground)_21%,var(--background))] [--v-wheel:color-mix(in_oklab,var(--foreground)_30%,var(--background))] [--v-wheel-side:color-mix(in_oklab,var(--foreground)_40%,var(--background))] [--v-wheel-front:color-mix(in_oklab,var(--foreground)_45%,var(--background))] [--v-wheel-top:color-mix(in_oklab,var(--foreground)_50%,var(--background))] [--v-window:color-mix(in_oklab,var(--foreground)_60%,var(--background))] [--v-bumper:color-mix(in_oklab,var(--foreground)_25%,var(--background))] [--v-light-front:color-mix(in_oklab,var(--foreground)_85%,var(--background))]"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={bandTransition}
+                >
+                  {TRAFFIC.map((spec, i) => (
+                    <Vehicle
+                      key={i}
+                      spec={spec}
+                      reduce={reduceMotion}
+                      animateTraffic={animateTraffic}
+                      model={carModel}
+                    />
+                  ))}
+                </motion.g>
+              </AnimatePresence>
+            ) : null}
 
-          {SIDE_FILLS.map((shape, i) => (
-            <motion.path
-              key={`side-${i}`}
-              d={shape.normal}
-              fill={SURFACE_FILL}
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
+            {SIDE_FILLS.map((shape, i) => (
+              <motion.path
+                key={`side-${i}`}
+                d={shape.normal}
+                fill={SURFACE_FILL}
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
 
-          {WALL_EDGES.map((shape, i) => (
-            <motion.path
-              key={`wall-edge-${i}`}
-              d={shape.normal}
-              stroke="var(--stroke)"
-              strokeWidth="1"
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
+            {WALL_EDGES.map((shape, i) => (
+              <motion.path
+                key={`wall-edge-${i}`}
+                d={shape.normal}
+                stroke="var(--stroke)"
+                strokeWidth="1"
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
 
-          {TOP_FILLS.map((shape, i) => (
-            <motion.path
-              key={`top-bg-${i}`}
-              d={shape.normal}
-              fill={SURFACE_FILL}
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
-          {TOP_FILLS.map((shape, i) => (
-            <motion.path
-              key={`top-pattern-${i}`}
-              d={shape.normal}
-              fill={`url(#${patternId})`}
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
+            {TOP_FILLS.map((shape, i) => (
+              <motion.path
+                key={`top-bg-${i}`}
+                d={shape.normal}
+                fill={SURFACE_FILL}
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
+            {TOP_FILLS.map((shape, i) => (
+              <motion.path
+                key={`top-pattern-${i}`}
+                d={shape.normal}
+                fill={`url(#${patternId})`}
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
 
-          {TOP_EDGES.map((shape, i) => (
-            <motion.path
-              key={`top-edge-${i}`}
-              d={shape.normal}
-              stroke="var(--stroke)"
-              strokeWidth="1"
-              variants={variantsFor(shape)}
-              transition={transition}
-            />
-          ))}
+            {TOP_EDGES.map((shape, i) => (
+              <motion.path
+                key={`top-edge-${i}`}
+                d={shape.normal}
+                stroke="var(--stroke)"
+                strokeWidth="1"
+                variants={variantsFor(shape)}
+                transition={transition}
+              />
+            ))}
+          </g>
         </motion.svg>
       </ContextMenuTrigger>
       <ContextMenuContent className="p-1.5 grid grid-cols-2 gap-1.5 rounded-xl border-dashed border-2 border-neutral-400 bg-neutral-200/90 backdrop-blur-md shadow-xl ring-1 shadow-black/5 ring-black/5 dark:border-neutral-700 dark:bg-zinc-900">
