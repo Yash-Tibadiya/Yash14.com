@@ -59,7 +59,9 @@ function AsciiWall({ side }: { side: "left" | "right" }) {
           ? "left-0 items-end mask-[linear-gradient(90deg,black_0%,black_25%,transparent_90%)]"
           : "right-0 items-start mask-[linear-gradient(270deg,black_0%,black_25%,transparent_90%)]",
       )}
-      initial={shouldReduceMotion ? false : { opacity: 0, x: isLeft ? -12 : 12 }}
+      initial={
+        shouldReduceMotion ? false : { opacity: 0, x: isLeft ? -12 : 12 }
+      }
       animate={{ opacity: 1, x: 0 }}
       transition={{
         duration: shouldReduceMotion ? 0 : 0.6,
@@ -119,7 +121,9 @@ export function SocialLinks() {
             <motion.li
               key={item.name}
               variants={itemVariants}
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.06, y: -1 }}
+              whileHover={
+                shouldReduceMotion ? undefined : { scale: 1.06, y: -1 }
+              }
               whileTap={shouldReduceMotion ? undefined : { scale: 0.94 }}
               transition={{ duration: 0.15, ease: EASE_OUT_QUINT }}
             >
