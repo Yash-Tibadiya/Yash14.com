@@ -2,13 +2,13 @@
 
 import type { Components } from "react-markdown";
 
+import { cn } from "@/lib/utils";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
-import { cn } from "@/lib/utils";
-import { UTM_PARAMS } from "@/config/site";
 import Markdown from "react-markdown";
-import rehypeExternalLinks from "rehype-external-links";
+import { UTM_PARAMS } from "@/config/site";
 import { LinkPreview } from "@/components/link-preview";
+import rehypeExternalLinks from "rehype-external-links";
 import { rehypeAddQueryParams } from "@/lib/rehype-add-query-params";
 
 const markdownComponents: Components = {

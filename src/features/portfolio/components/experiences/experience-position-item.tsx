@@ -2,11 +2,11 @@ import type { ExperiencePosition } from "@/features/portfolio/types/experiences"
 
 import { cn } from "@/lib/utils";
 import { Tag } from "@/components/ui/tag";
-import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import { IconTile } from "@/components/ui/icon-tile";
 import { differenceInMonths, parse } from "date-fns";
 import { Separator } from "@/components/base/ui/separator";
 import { BriefcaseBusinessIcon, InfinityIcon } from "lucide-react";
+import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import {
   CollapsibleContent,
   CollapsibleTrigger,

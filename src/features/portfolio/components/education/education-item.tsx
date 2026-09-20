@@ -2,10 +2,10 @@ import type { Education } from "@/features/portfolio/types/education";
 
 import { cn } from "@/lib/utils";
 import { Tag } from "@/components/ui/tag";
-import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/base/ui/separator";
 import { GraduationCapIcon, InfinityIcon } from "lucide-react";
+import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import {
   CollapsibleContent,
   CollapsibleTrigger,
