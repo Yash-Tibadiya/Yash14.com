@@ -20,7 +20,7 @@ Selected projects:
 
 Achievements:
 - Built and shipped custom business websites and e-commerce experiences while completing the degree.
-- Created [creative.yash14.com](https://github.com/Yash-Tibadiya/Creative-Portfolio), an open-source mac os inspired developer portfolio.
+- Created [creative.yash14.com](https://creative.yash14.com), an open-source mac os inspired developer portfolio.
 - Progressed from independent projects and freelance work into full-time full-stack development.`,
     skills: [
       "C++",
