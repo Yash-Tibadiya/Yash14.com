@@ -52,7 +52,7 @@ Achievements:
       start: "06.2019",
       end: "04.2021",
     },
-    description: `- Completed Grades 11 and 12 in the Science stream with IIT-JEE preparation through [Ashadeep JEE, NEET & Foundation](https://iit.ashadeep.co.in/).
+    description: `- Completed Grades 11 and 12 in the Science stream with IIT-JEE preparation through [Ashadeep Foundation](https://iit.ashadeep.co.in/).
 - Built a strong foundation in calculus, algebra, coordinate geometry, mechanics, electricity and magnetism, and physical, organic, and inorganic chemistry.
 - Developed analytical reasoning, quantitative aptitude, and time-bound problem-solving skills through competitive-exam preparation.`,
     skills: [

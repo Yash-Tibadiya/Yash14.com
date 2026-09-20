@@ -23,7 +23,7 @@ const markdownComponents: Components = {
         className={cn("link-underline", className)}
         rel={typeof rel === "string" ? rel : undefined}
         target={typeof target === "string" ? target : undefined}
-        side="bottom"
+        side="top"
       >
         {children}
       </LinkPreview>
@@ -31,7 +31,7 @@ const markdownComponents: Components = {
   },
 };
 
-export function EducationDescription({ children }: { children: string }) {
+export function MarkdownLinkPreview({ children }: { children: string }) {
   return (
     <Markdown
       components={markdownComponents}
