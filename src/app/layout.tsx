@@ -10,6 +10,7 @@ import { Providers } from "@/components/providers";
 import { Analytics } from "@vercel/analytics/next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { USER } from "@/features/portfolio/data/user";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { META_THEME_COLORS, SITE_INFO, X_HANDLE } from "@/config/site";
 
 function getWebSiteJsonLd(): WithContext<WebSite> {
@@ -139,6 +140,7 @@ export default function RootLayout({
           <NuqsAdapter>{children}</NuqsAdapter>
         </Providers>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
