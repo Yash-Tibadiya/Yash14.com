@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import { fontVariables } from "@/lib/fonts";
 import { JsonLdScript } from "@/lib/json-ld";
 import { Providers } from "@/components/providers";
@@ -137,6 +138,7 @@ export default function RootLayout({
         <Providers>
           <NuqsAdapter>{children}</NuqsAdapter>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
