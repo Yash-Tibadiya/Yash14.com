@@ -4,10 +4,10 @@ import type { Metadata, Viewport } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
 import Script from "next/script";
-import { Analytics } from "@vercel/analytics/next";
 import { fontVariables } from "@/lib/fonts";
 import { JsonLdScript } from "@/lib/json-ld";
 import { Providers } from "@/components/providers";
+import { Analytics } from "@vercel/analytics/next";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { USER } from "@/features/portfolio/data/user";
 import { META_THEME_COLORS, SITE_INFO, X_HANDLE } from "@/config/site";
