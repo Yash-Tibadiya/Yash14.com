@@ -2,11 +2,11 @@ import type { ExperiencePosition } from "@/features/portfolio/types/experiences"
 
 import { cn } from "@/lib/utils";
 import { Tag } from "@/components/ui/tag";
-import { Markdown } from "@/components/markdown";
 import { IconTile } from "@/components/ui/icon-tile";
 import { differenceInMonths, parse } from "date-fns";
 import { Separator } from "@/components/base/ui/separator";
 import { BriefcaseBusinessIcon, InfinityIcon } from "lucide-react";
+import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import {
   CollapsibleContent,
   CollapsibleTrigger,
@@ -105,7 +105,7 @@ export function ExperiencePositionItem({
       <CollapsibleContent className="overflow-hidden">
         {position.description && (
           <div className="typeset typeset-description pt-3 pb-1 pl-9">
-            <Markdown>{position.description}</Markdown>
+            <MarkdownLinkPreview>{position.description}</MarkdownLinkPreview>
           </div>
         )}
       </CollapsibleContent>

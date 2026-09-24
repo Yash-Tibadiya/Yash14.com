@@ -54,6 +54,7 @@ import {
   LineChartIcon,
   MonitorIcon,
   MoonStarIcon,
+  PaletteIcon,
   RssIcon,
   SquareDashedIcon,
   SunMediumIcon,
@@ -143,6 +144,14 @@ const PORTFOLIO_LINKS: CommandLinkItem[] = [
     href: "/#insights",
     kind: "page",
     icon: <LineChartIcon />,
+  },
+  {
+    title: "Creative Portfolio",
+    href: "https://creative.yash14.com/",
+    kind: "link",
+    icon: <PaletteIcon />,
+    keywords: ["creative", "portfolio", "design", "old portfolio"],
+    openInNewTab: true,
   },
 ];
 

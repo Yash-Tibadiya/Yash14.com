@@ -2,10 +2,10 @@ import type { Education } from "@/features/portfolio/types/education";
 
 import { cn } from "@/lib/utils";
 import { Tag } from "@/components/ui/tag";
-import { Markdown } from "@/components/markdown";
 import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/base/ui/separator";
 import { GraduationCapIcon, InfinityIcon } from "lucide-react";
+import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import {
   CollapsibleContent,
   CollapsibleTrigger,
@@ -102,7 +102,7 @@ export function EducationItem({ item }: { item: Education }) {
         <CollapsibleContent className="overflow-hidden">
           {item.description && (
             <div className="typeset typeset-description pt-3 pb-1 pl-9">
-              <Markdown>{item.description}</Markdown>
+              <MarkdownLinkPreview>{item.description}</MarkdownLinkPreview>
             </div>
           )}
         </CollapsibleContent>

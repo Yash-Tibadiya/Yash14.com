@@ -1,9 +1,13 @@
+"use client";
+
 import type { BuildInfo } from "@/lib/build-info";
 
 import { cn } from "@/lib/utils";
 import registry from "../../registry.json";
 import packageJson from "../../package.json";
 import { getBuildInfo } from "@/lib/build-info";
+import { LinkPreview } from "@/components/link-preview";
+import { motion, useReducedMotion } from "motion/react";
 import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { SiteFooterLinks } from "@/components/site-footer-links";
@@ -31,6 +35,7 @@ const STACK = [
 
 export function SiteFooter() {
   const xLink = SOCIAL.x;
+  const shouldReduceMotion = useReducedMotion();
 
   const build = getBuildInfo();
 
@@ -49,14 +54,11 @@ export function SiteFooter() {
 
           <dl className="grid grid-cols-2 gap-px bg-line font-mono md:grid-cols-4">
             <Field label="Crafted by">
-              <a
-                className="link-underline"
-                href={xLink?.href}
-                target="_blank"
-                rel="noopener"
-              >
-                {xLink?.handle}
-              </a>
+              {xLink ? (
+                <LinkPreview url={xLink.href} className="link-underline">
+                  {xLink.handle}
+                </LinkPreview>
+              ) : null}
             </Field>
 
             <Field label="Build">
@@ -73,32 +75,41 @@ export function SiteFooter() {
             </Field>
 
             <Field label="Deployed on">
-              <span className="font-sans" aria-hidden>
-                ▲
-              </span>
+              {shouldReduceMotion ? (
+                <span className="font-sans" aria-hidden>
+                  ▲
+                </span>
+              ) : (
+                <motion.span
+                  className="font-sans"
+                  aria-hidden
+                  style={{ display: "inline-block", willChange: "transform" }}
+                  animate={{ y: [0, -2, 0] }}
+                  transition={{
+                    duration: 2.4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  ▲
+                </motion.span>
+              )}
               <span className="sr-only">Vercel</span>
             </Field>
 
             <Field label="Source code">
-              <a
+              <LinkPreview
+                url={SOURCE_CODE_GITHUB_URL}
                 className="link-underline"
-                href={SOURCE_CODE_GITHUB_URL}
-                target="_blank"
-                rel="noopener"
               >
                 GitHub
-              </a>
+              </LinkPreview>
             </Field>
 
             <Field label="License">
-              <a
-                className="link-underline"
-                href={LICENSE.url}
-                target="_blank"
-                rel="noopener"
-              >
+              <LinkPreview url={LICENSE.url} className="link-underline">
                 {LICENSE.name}
-              </a>
+              </LinkPreview>
             </Field>
 
             <Field label="Typeface">Geist</Field>
@@ -106,23 +117,33 @@ export function SiteFooter() {
             <Field className="col-span-2" label="Stack">
               <ul className="flex flex-col gap-0.5">
                 {STACK.map((entry) => (
-                  <li key={entry}>{entry}</li>
+                  <li
+                    key={entry}
+                    className="w-fit transition-transform duration-200 hover:translate-x-0.5"
+                  >
+                    {entry}
+                  </li>
                 ))}
               </ul>
             </Field>
 
             <Field className="col-span-2" label="Analytics">
               <ul className="flex flex-col gap-0.5">
-                <li>PostHog</li>
+                <li className="w-fit transition-transform duration-200 hover:translate-x-0.5">
+                  PostHog
+                </li>
               </ul>
             </Field>
 
             <Field className="col-span-2 md:col-span-4" label="Inspired by">
               <ol className="-mx-4 grid grid-cols-2 gap-x-px gap-y-0.5 font-sans md:grid-cols-4">
                 {INSPIRED_BY.map((name, index) => (
-                  <li className="flex gap-2 px-4" key={name}>
+                  <li
+                    className="group/item flex gap-2 px-4 transition-transform duration-200 hover:translate-x-0.5"
+                    key={name}
+                  >
                     <span
-                      className="font-mono text-muted-foreground/80"
+                      className="font-mono text-muted-foreground/80 transition-colors duration-200 group-hover/item:text-foreground"
                       aria-hidden
                     >
                       {String(index + 1).padStart(2, "0")}
@@ -189,14 +210,9 @@ function BuildValue({ build }: { build: BuildInfo }) {
   return (
     <>
       {build.commitUrl ? (
-        <a
-          className="link-underline"
-          href={build.commitUrl}
-          target="_blank"
-          rel="noopener"
-        >
+        <LinkPreview url={build.commitUrl} className="link-underline">
           {build.commitShortSha}
-        </a>
+        </LinkPreview>
       ) : (
         build.commitShortSha
       )}
@@ -223,11 +239,11 @@ function Field({
   return (
     <div
       className={cn(
-        "flex min-w-0 flex-col gap-1 bg-background px-4 py-3",
+        "group flex min-w-0 flex-col gap-1 bg-background px-4 py-3 transition-colors duration-200 hover:bg-muted/40",
         className,
       )}
     >
-      <dt className="text-[0.625rem]/4 font-medium tracking-wider text-muted-foreground uppercase">
+      <dt className="text-[0.625rem]/4 font-medium tracking-wider text-muted-foreground uppercase transition-colors duration-200 group-hover:text-foreground/80">
         {label}
       </dt>
       <dd className="text-sm">{children}</dd>

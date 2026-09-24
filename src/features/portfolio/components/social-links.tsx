@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import { UTM_PARAMS } from "@/config/site";
 import { addQueryParams } from "@/utils/url";
 import { Button } from "@/components/base/ui/button";
-import { motion, useReducedMotion } from "motion/react";
 import { SOCIAL_LINKS } from "@/features/portfolio/data/social-links";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 import { Panel, PanelContent } from "@/features/portfolio/components/panel";
 import { SOCIAL_ICONS } from "@/features/portfolio/components/social-link-icons";
 import {
@@ -13,6 +13,24 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/base/ui/tooltip";
+
+const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const listVariants: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.08, delayChildren: 0.15 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: EASE_OUT_QUINT },
+  },
+};
 
 const ASCII_ROWS = [
   {
@@ -42,39 +60,48 @@ function AsciiWall({ side }: { side: "left" | "right" }) {
           : "right-0 items-start mask-[linear-gradient(270deg,black_0%,black_25%,transparent_90%)]",
       )}
       initial={
-        shouldReduceMotion
-          ? false
-          : {
-              clipPath: isLeft ? "inset(0 0 0 100%)" : "inset(0 100% 0 0)",
-            }
+        shouldReduceMotion ? false : { opacity: 0, x: isLeft ? -12 : 12 }
       }
-      animate={{ clipPath: "inset(0 0 0 0)" }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{
-        duration: shouldReduceMotion ? 0 : 1.1,
-        delay: shouldReduceMotion ? 0 : 0.2,
-        ease: "linear",
+        duration: shouldReduceMotion ? 0 : 0.6,
+        delay: shouldReduceMotion ? 0 : 0.1,
+        ease: EASE_OUT_QUINT,
       }}
       aria-hidden
     >
       {ASCII_ROWS.map((row, i) => (
-        <pre
+        <motion.pre
           key={row.id}
-          className={cn(
-            "bg-[linear-gradient(90deg,var(--color-muted-foreground)_0%,var(--color-foreground)_50%,var(--color-muted-foreground)_100%)] bg-size-[200%_100%] bg-clip-text font-mono text-[10px] leading-4 whitespace-nowrap text-transparent opacity-20 motion-reduce:animate-none",
-            isLeft
-              ? "animate-[ascii-shimmer_6s_linear_infinite]"
-              : "animate-[ascii-shimmer-reverse_6s_linear_infinite]",
-          )}
-          style={{ animationDelay: `${i * 0.6}s` }}
+          className="bg-[linear-gradient(90deg,var(--color-muted-foreground)_0%,var(--color-foreground)_50%,var(--color-muted-foreground)_100%)] bg-clip-text font-mono text-[10px] leading-4 whitespace-nowrap text-transparent"
+          style={{ willChange: "opacity" }}
+          initial={false}
+          animate={
+            shouldReduceMotion
+              ? { opacity: 0.16 }
+              : { opacity: [0.1, 0.22, 0.1] }
+          }
+          transition={
+            shouldReduceMotion
+              ? { duration: 0 }
+              : {
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.5,
+                }
+          }
         >
           {row.pattern.repeat(10)}
-        </pre>
+        </motion.pre>
       ))}
     </motion.div>
   );
 }
 
 export function SocialLinks() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <Panel>
       <h2 className="sr-only">Social Links</h2>
@@ -83,9 +110,23 @@ export function SocialLinks() {
         <AsciiWall side="left" />
         <AsciiWall side="right" />
 
-        <ul className="relative z-10 flex flex-wrap justify-center gap-2">
+        <motion.ul
+          className="relative z-10 flex flex-wrap justify-center gap-2"
+          variants={listVariants}
+          initial={shouldReduceMotion ? false : "hidden"}
+          whileInView="show"
+          viewport={{ once: true, margin: "-40px" }}
+        >
           {SOCIAL_LINKS.map((item) => (
-            <li key={item.name}>
+            <motion.li
+              key={item.name}
+              variants={itemVariants}
+              whileHover={
+                shouldReduceMotion ? undefined : { scale: 1.06, y: -1 }
+              }
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.94 }}
+              transition={{ duration: 0.15, ease: EASE_OUT_QUINT }}
+            >
               <Tooltip>
                 <TooltipTrigger
                   render={
@@ -111,21 +152,10 @@ export function SocialLinks() {
                   {item.title} ({item.handle})
                 </TooltipContent>
               </Tooltip>
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       </PanelContent>
-
-      <style>{`
-        @keyframes ascii-shimmer {
-          from { background-position: 200% 0; }
-          to { background-position: -200% 0; }
-        }
-        @keyframes ascii-shimmer-reverse {
-          from { background-position: -200% 0; }
-          to { background-position: 200% 0; }
-        }
-      `}</style>
     </Panel>
   );
 }
