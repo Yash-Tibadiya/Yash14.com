@@ -16,7 +16,7 @@ export const USER: User = {
   address: "Surat, India",
   // base64 encoded
   phoneNumberB64: "KzkxODc5OTQ0MjEwMQ==", // +91 87994 42101
-  emailB64: "dGliYWRpeWF5YXNoQGdtYWlsLmNvbQ==", // tibadiyayash@gmail.com
+  emailB64: "aGVsbG9AeWFzaDE0LmNvbQ==", // hello@yash14.com
   website: "https://yash14.com",
   jobTitle: "Full Stack Developer",
   jobs: [
