@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local copies of files served from Cloudflare R2 (assets.yash14.com)
+/cdn/
