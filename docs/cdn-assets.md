@@ -41,7 +41,7 @@ Next.js site on Vercel
 
 | CDN path | Used in |
 | --- | --- |
-| `assets/yash.jpg` | `USER.avatar` (`src/features/portfolio/data/user.ts`) — profile photo, vCard, JSON-LD |
+| `assets/yash.webp` | `USER.avatar` (`src/features/portfolio/data/user.ts`) — profile photo, vCard, JSON-LD |
 | `audio/yashtimbadiya.mp3` | `USER.namePronunciationUrl` — "pronounce my name" button |
 | `logo/crosseven.png` | `EXPERIENCES` (`src/features/portfolio/data/experiences.tsx`) |
 | `logo/enacton.png` | `EXPERIENCES` |
