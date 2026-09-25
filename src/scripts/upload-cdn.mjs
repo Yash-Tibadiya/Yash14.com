@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 // Syncs cdn/ to the Cloudflare R2 bucket served at assets.yash14.com.
 // The path inside cdn/ becomes the URL path: cdn/logo/acme.png -> /logo/acme.png
 //
@@ -9,9 +10,8 @@
 // (MANIFEST_KEY) of every uploaded file and its MD5. Only files recorded in
 // the manifest are ever deleted; objects uploaded some other way are untouched.
 import { execSync } from "node:child_process";
-import { createHash } from "node:crypto";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { createInterface } from "node:readline/promises";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 
 const BUCKET = process.env.R2_BUCKET || "yash14-assets";
 const DIR = "cdn";
