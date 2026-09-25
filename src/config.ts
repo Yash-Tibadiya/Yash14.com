@@ -10,6 +10,11 @@ export const config = {
     url: process.env.NEXT_PUBLIC_APP_URL || "https://yash14.com",
   },
 
+  cdn: {
+    /** Public base URL of the Cloudflare R2 bucket (custom domain). */
+    url: process.env.NEXT_PUBLIC_CDN_URL || "https://assets.yash14.com",
+  },
+
   registry: {
     namespace: process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE || "@yash14",
     namespaceUrl:

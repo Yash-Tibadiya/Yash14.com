@@ -2,6 +2,7 @@ import type { Route } from "next";
 import type { NavItem } from "@/types/nav";
 
 import { config } from "@/config";
+import { cdn } from "@/utils/cdn";
 import { USER } from "@/features/portfolio/data/user";
 
 export const SITE_INFO = {
@@ -56,5 +57,5 @@ export const UTM_PARAMS = {
 };
 
 export const BRAND_ASSETS = {
-  url: `${SITE_INFO.url}/assets/yash14-brand.zip`,
+  url: cdn("/assets/yash14-brand.zip"),
 };

@@ -1,5 +1,7 @@
 import type { User } from "@/features/portfolio/types/user";
 
+import { cdn } from "@/utils/cdn";
+
 export const USER: User = {
   firstName: "Yash",
   lastName: "Timbadiya",
@@ -33,9 +35,9 @@ export const USER: User = {
 - Creator of [yash14.com](https://github.com/Yash-Tibadiya/Yash14.com)
 `,
   //TODO: Add name pronunciation url
-  avatar: "/assets/yash.jpg",
+  avatar: cdn("/assets/yash.jpg"),
   ogImage: "",
-  namePronunciationUrl: "/audio/yashtimbadiya.mp3",
+  namePronunciationUrl: cdn("/audio/yashtimbadiya.mp3"),
   timeZone: "Asia/Kolkata",
   keywords: [
     "Full Stack Developer",

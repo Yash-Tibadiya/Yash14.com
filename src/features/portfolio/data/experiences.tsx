@@ -1,12 +1,13 @@
 import type { Experience } from "@/features/portfolio/types/experiences";
 
+import { cdn } from "@/utils/cdn";
 import { BriefcaseBusinessIcon, CodeXmlIcon } from "lucide-react";
 
 export const EXPERIENCES: Experience[] = [
   {
     id: "cross-even",
     companyName: "Cross Even",
-    companyLogo: "/logo/crosseven.png",
+    companyLogo: cdn("/logo/crosseven.png"),
     companyWebsite: "https://crosseven.com",
     largeLogo: true,
     invertLogoInLight: true,
@@ -71,7 +72,7 @@ Products I've built and maintain:
   {
     id: "enacton",
     companyName: "EnactOn Technologies",
-    companyLogo: "/logo/enacton.png",
+    companyLogo: cdn("/logo/enacton.png"),
     companyWebsite: "https://www.enacton.com",
     location: "Gujarat, India",
     locationType: "Remote",
