@@ -35,7 +35,7 @@ export const USER: User = {
 - Creator of [yash14.com](https://github.com/Yash-Tibadiya/Yash14.com)
 `,
   //TODO: Add name pronunciation url
-  avatar: cdn("/assets/yash.jpg"),
+  avatar: cdn("/assets/yash.webp"),
   ogImage: "",
   namePronunciationUrl: cdn("/audio/yashtimbadiya.mp3"),
   timeZone: "Asia/Kolkata",
