@@ -10,10 +10,13 @@ type GitHubContributionsResponse = {
   contributions: Activity[];
 };
 
-export const getGitHubContributions = unstable_cache(
+const CONTRIBUTIONS_FETCH_TIMEOUT_MS = 10_000;
+
+const getCachedGitHubContributions = unstable_cache(
   async () => {
     const res = await fetch(
       `${config.github.contributionsApiUrl}/v4/${GITHUB_USERNAME}?y=last`,
+      { signal: AbortSignal.timeout(CONTRIBUTIONS_FETCH_TIMEOUT_MS) },
     );
     if (!res.ok) {
       return [];
@@ -24,3 +27,14 @@ export const getGitHubContributions = unstable_cache(
   ["github-contributions"],
   { revalidate: 86400 }, // Cache for 1 day (86400 seconds)
 );
+
+export async function getGitHubContributions(): Promise<Activity[]> {
+  try {
+    return await getCachedGitHubContributions();
+  } catch (error) {
+    // The contributions API is optional. A timeout during static generation
+    // must not fail the Vercel build; the graph renders nothing until retry.
+    console.error("GitHub contributions unavailable.", error);
+    return [];
+  }
+}
