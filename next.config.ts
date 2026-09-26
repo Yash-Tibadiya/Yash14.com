@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   env: {
     BUILD_TIMESTAMP: new Date().toISOString(),
+    // Inlined so the client-rendered footer can read them.
+    VERCEL_ENV: process.env.VERCEL_ENV ?? "",
+    VERCEL_GIT_COMMIT_SHA: process.env.VERCEL_GIT_COMMIT_SHA ?? "",
   },
   images: {
     remotePatterns: [
