@@ -121,9 +121,6 @@ export function SocialLinks() {
             <motion.li
               key={item.name}
               variants={itemVariants}
-              whileHover={
-                shouldReduceMotion ? undefined : { scale: 1.06, y: -1 }
-              }
               whileTap={shouldReduceMotion ? undefined : { scale: 0.94 }}
               transition={{ duration: 0.15, ease: EASE_OUT_QUINT }}
             >

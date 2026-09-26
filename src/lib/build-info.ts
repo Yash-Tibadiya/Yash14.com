@@ -3,8 +3,8 @@ import { USER } from "@/features/portfolio/data/user";
 import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
 
 /**
- * Reads the Vercel deployment environment variables, which are server-side
- * only — do not import this from a client component. Set them in `.env.local`
+ * Reads the Vercel deployment environment variables, inlined at build time by
+ * `next.config.ts` so client components can use them. Set them in `.env.local`
  * to exercise the non-development rendering.
  */
 
@@ -44,7 +44,7 @@ function resolveEnvironment(): BuildEnvironment {
 
 export function getBuildInfo(): BuildInfo {
   const environment = resolveEnvironment();
-  const commitSha = process.env.VERCEL_GIT_COMMIT_SHA;
+  const commitSha = process.env.VERCEL_GIT_COMMIT_SHA || undefined;
 
   return {
     commitShortSha: commitSha?.slice(0, SHORT_SHA_LENGTH) ?? null,
