@@ -10,7 +10,7 @@ export const EDUCATION: Education[] = [
       start: "09.2021",
       end: "04.2025",
     },
-    description: `- Completed a Bachelor of Technology in Information Technology.
+    description: `- Completed a Bachelor of Technology in Information Technology at [P P Savani University](https://www.ppsu.ac.in/).
 - Developed strong foundations in data structures, databases, object-oriented programming, web development, and software engineering.
 - Turned academic learning into production experience by starting professional full-stack development work before graduation.
 
