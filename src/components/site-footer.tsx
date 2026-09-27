@@ -5,12 +5,13 @@ import type { BuildInfo } from "@/lib/build-info";
 import { cn } from "@/lib/utils";
 import registry from "../../registry.json";
 import packageJson from "../../package.json";
+import { addQueryParams } from "@/utils/url";
 import { LinkPreview } from "@/components/link-preview";
 import { motion, useReducedMotion } from "motion/react";
 import { getBuildInfo, getStack } from "@/lib/build-info";
-import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { SiteFooterLinks } from "@/components/site-footer-links";
+import { LICENSE, SOURCE_CODE_GITHUB_URL, UTM_PARAMS } from "@/config/site";
 import { SiteFooterInteractiveLogotype } from "@/components/site-footer-brand";
 
 const INSPIRED_BY = [
@@ -50,7 +51,10 @@ export function SiteFooter() {
           <dl className="grid grid-cols-2 gap-px bg-line font-mono md:grid-cols-4">
             <Field label="Crafted by">
               {xLink ? (
-                <LinkPreview url={xLink.href} className="link-underline">
+                <LinkPreview
+                  url={addQueryParams(xLink.href, UTM_PARAMS)}
+                  className="link-underline"
+                >
                   {xLink.handle}
                 </LinkPreview>
               ) : null}
@@ -111,12 +115,19 @@ export function SiteFooter() {
 
             <Field className="col-span-2" label="Stack">
               <ul className="flex flex-col gap-0.5">
-                {stack.map((entry) => (
+                {stack.map((item) => (
                   <li
-                    key={entry}
+                    key={item.name}
                     className="w-fit transition-transform duration-200 hover:translate-x-0.5"
                   >
-                    {entry}
+                    <a
+                      className="link-underline"
+                      href={addQueryParams(item.href, UTM_PARAMS)}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {item.name}@{item.version}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -125,7 +136,14 @@ export function SiteFooter() {
             <Field label="Analytics">
               <ul className="flex flex-col gap-0.5">
                 <li className="w-fit transition-transform duration-200 hover:translate-x-0.5">
-                  PostHog
+                  <a
+                    className="link-underline"
+                    href={addQueryParams("https://posthog.com", UTM_PARAMS)}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    PostHog
+                  </a>
                 </li>
               </ul>
             </Field>

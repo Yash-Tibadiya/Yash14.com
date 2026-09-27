@@ -1,5 +1,5 @@
-import { Markdown } from "@/components/markdown";
 import { USER } from "@/features/portfolio/data/user";
+import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
 import { HelloTitle } from "@/features/portfolio/components/hello-title";
 import {
   Panel,
@@ -18,7 +18,7 @@ export function Hello() {
 
       <PanelContent>
         <div className="typeset typeset-description [&_li]:ps-0.5 [&_ul]:ps-3.5">
-          <Markdown>{USER.about}</Markdown>
+          <MarkdownLinkPreview>{USER.about}</MarkdownLinkPreview>
         </div>
       </PanelContent>
 

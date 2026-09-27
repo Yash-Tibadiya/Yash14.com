@@ -57,18 +57,30 @@ export function getBuildInfo(): BuildInfo {
   };
 }
 
-const STACK_DEPENDENCIES = ["next", "react", "shadcn", "motion", "tailwindcss"];
+const STACK_ITEMS: { name: string; href: string }[] = [
+  { name: "next", href: "https://nextjs.org" },
+  { name: "react", href: "https://react.dev" },
+  { name: "shadcn", href: "https://ui.shadcn.com" },
+  { name: "motion", href: "https://motion.dev" },
+  { name: "tailwindcss", href: "https://tailwindcss.com" },
+];
 
 const declaredVersions: Record<string, string | undefined> = {
   ...packageJson.dependencies,
   ...packageJson.devDependencies,
 };
 
-/** The stack in npm spec form: `["next@16.3.0", …]`. */
-export function getStack(): string[] {
-  return STACK_DEPENDENCIES.flatMap((dependency) => {
+export type StackItem = {
+  name: string;
+  version: string;
+  href: string;
+};
+
+/** The stack as `{ name, version, href }` entries, e.g. next 16.3.3 → nextjs.org. */
+export function getStack(): StackItem[] {
+  return STACK_ITEMS.flatMap(({ name, href }) => {
     // Drops the range prefix, so `^4.3.3` reads as a version.
-    const version = declaredVersions[dependency]?.replace(/^[^\d]*/, "");
-    return version ? [`${dependency}@${version}`] : [];
+    const version = declaredVersions[name]?.replace(/^[^\d]*/, "");
+    return version ? [{ name, version, href }] : [];
   });
 }

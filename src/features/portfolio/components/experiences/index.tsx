@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { ExperienceItem } from "./experience-item";
 import { Button } from "@/components/base/ui/button";
 import { EXPERIENCES } from "@/features/portfolio/data/experiences";
+import { CollapsibleTrigger } from "@/components/base/ui/collapsible";
 import { PanelTitleCopy } from "@/features/portfolio/components/panel-title-copy";
 import {
   Panel,
@@ -12,9 +13,8 @@ import {
 } from "@/features/portfolio/components/panel";
 import {
   Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible";
+  CollapsibleMotionContent,
+} from "@/components/base/collapsible-animated";
 
 const ID = "experience";
 const MAX = 3;
@@ -35,9 +35,9 @@ export function Experiences() {
 
       {EXPERIENCES.length > MAX && (
         <Collapsible className="group/collapsible">
-          <CollapsibleContent render={<div className="pr-2 pl-4" />}>
+          <CollapsibleMotionContent className="pr-2 pl-4">
             <ExperienceList experiences={EXPERIENCES.slice(MAX)} />
-          </CollapsibleContent>
+          </CollapsibleMotionContent>
 
           <div className="-mt-px flex items-center justify-center py-4">
             <CollapsibleTrigger
