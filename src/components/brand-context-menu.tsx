@@ -1,15 +1,16 @@
 "use client";
 
+import type React from "react";
+
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { copyText } from "@/utils/copy";
 import { BRAND_ASSETS } from "@/config/site";
+import { useCallback, useState } from "react";
 import { getMarkSVG, YTMark } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
 import { useRouter } from "@bprogress/next/app";
 import { useTiks } from "@rexa-developer/tiks/react";
-import type React from "react";
-import { useCallback, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Download, SquareDashed, Type } from "lucide-react";
 import {

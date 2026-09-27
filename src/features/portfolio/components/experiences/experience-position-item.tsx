@@ -6,14 +6,12 @@ import { IconTile } from "@/components/ui/icon-tile";
 import { differenceInMonths, parse } from "date-fns";
 import { Separator } from "@/components/base/ui/separator";
 import { BriefcaseBusinessIcon, InfinityIcon } from "lucide-react";
+import { CollapsibleTrigger } from "@/components/base/ui/collapsible";
 import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
-import {
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible";
 import {
   Collapsible,
   CollapsibleChevronsUpDownIcon,
+  CollapsibleMotionContent,
 } from "@/components/base/collapsible-animated";
 
 export function ExperiencePositionItem({
@@ -102,13 +100,13 @@ export function ExperiencePositionItem({
         </dl>
       </CollapsibleTrigger>
 
-      <CollapsibleContent className="overflow-hidden">
+      <CollapsibleMotionContent>
         {position.description && (
           <div className="typeset typeset-description pt-3 pb-1 pl-9">
             <MarkdownLinkPreview>{position.description}</MarkdownLinkPreview>
           </div>
         )}
-      </CollapsibleContent>
+      </CollapsibleMotionContent>
 
       {Array.isArray(position.skills) && position.skills.length > 0 && (
         <ul className="flex flex-wrap gap-1.5 pt-3 pl-9">

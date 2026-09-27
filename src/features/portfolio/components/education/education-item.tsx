@@ -5,14 +5,12 @@ import { Tag } from "@/components/ui/tag";
 import { IconTile } from "@/components/ui/icon-tile";
 import { Separator } from "@/components/base/ui/separator";
 import { GraduationCapIcon, InfinityIcon } from "lucide-react";
+import { CollapsibleTrigger } from "@/components/base/ui/collapsible";
 import { MarkdownLinkPreview } from "@/components/markdown-link-preview";
-import {
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/base/ui/collapsible";
 import {
   Collapsible,
   CollapsibleChevronsUpDownIcon,
+  CollapsibleMotionContent,
 } from "@/components/base/collapsible-animated";
 
 export function EducationItem({ item }: { item: Education }) {
@@ -99,13 +97,13 @@ export function EducationItem({ item }: { item: Education }) {
           </dl>
         </CollapsibleTrigger>
 
-        <CollapsibleContent className="overflow-hidden">
+        <CollapsibleMotionContent>
           {item.description && (
             <div className="typeset typeset-description pt-3 pb-1 pl-9">
               <MarkdownLinkPreview>{item.description}</MarkdownLinkPreview>
             </div>
           )}
-        </CollapsibleContent>
+        </CollapsibleMotionContent>
 
         {Array.isArray(item.skills) && item.skills.length > 0 && (
           <ul className="flex flex-wrap gap-1.5 pt-3 pl-9">
