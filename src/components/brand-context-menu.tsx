@@ -8,7 +8,8 @@ import { getMarkSVG, YTMark } from "./yt-mark";
 import { getWordmarkSVG } from "./yt-wordmark";
 import { useRouter } from "@bprogress/next/app";
 import { useTiks } from "@rexa-developer/tiks/react";
-import React, { useCallback, useState } from "react";
+import type React from "react";
+import { useCallback, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Download, SquareDashed, Type } from "lucide-react";
 import {
@@ -134,9 +135,7 @@ function BrandMenuItem({
 }: React.ComponentProps<typeof ContextMenuItem> & {
   onActivate: (element: HTMLElement) => void;
 }) {
-  const handleActivate = (
-    e: React.SyntheticEvent<HTMLElement>,
-  ) => {
+  const handleActivate = (e: React.SyntheticEvent<HTMLElement>) => {
     if (e.currentTarget instanceof HTMLElement) {
       onActivate(e.currentTarget);
     }
