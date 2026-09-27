@@ -5,9 +5,9 @@ import type { BuildInfo } from "@/lib/build-info";
 import { cn } from "@/lib/utils";
 import registry from "../../registry.json";
 import packageJson from "../../package.json";
-import { getBuildInfo } from "@/lib/build-info";
 import { LinkPreview } from "@/components/link-preview";
 import { motion, useReducedMotion } from "motion/react";
+import { getBuildInfo, getStack } from "@/lib/build-info";
 import { LICENSE, SOURCE_CODE_GITHUB_URL } from "@/config/site";
 import { SOCIAL } from "@/features/portfolio/data/social-links";
 import { SiteFooterLinks } from "@/components/site-footer-links";
@@ -27,17 +27,12 @@ const INSPIRED_BY = [
 const SITE_TITLE = "YASH14.COM";
 const SITE_SUBTITLE = packageJson.description;
 
-const STACK = [
-  `next@${packageJson.dependencies.next.replace(/^\^/, "")}`,
-  `react@${packageJson.dependencies.react.replace(/^\^/, "")}`,
-  `tailwindcss@${packageJson.devDependencies.tailwindcss.replace(/^\^/, "")}`,
-];
-
 export function SiteFooter() {
   const xLink = SOCIAL.x;
   const shouldReduceMotion = useReducedMotion();
 
   const build = getBuildInfo();
+  const stack = getStack();
 
   return (
     <footer className="max-w-screen overflow-x-clip px-2">
@@ -116,7 +111,7 @@ export function SiteFooter() {
 
             <Field className="col-span-2" label="Stack">
               <ul className="flex flex-col gap-0.5">
-                {STACK.map((entry) => (
+                {stack.map((entry) => (
                   <li
                     key={entry}
                     className="w-fit transition-transform duration-200 hover:translate-x-0.5"
@@ -127,10 +122,35 @@ export function SiteFooter() {
               </ul>
             </Field>
 
-            <Field className="col-span-2" label="Analytics">
+            <Field label="Analytics">
               <ul className="flex flex-col gap-0.5">
                 <li className="w-fit transition-transform duration-200 hover:translate-x-0.5">
                   PostHog
+                </li>
+              </ul>
+            </Field>
+
+            <Field label="For agents">
+              <ul className="flex flex-col gap-0.5">
+                <li className="w-fit transition-transform duration-200 hover:translate-x-0.5">
+                  <a
+                    className="link-underline"
+                    href="/llms.txt"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    llms.txt
+                  </a>
+                </li>
+                <li className="w-fit transition-transform duration-200 hover:translate-x-0.5">
+                  <a
+                    className="link-underline"
+                    href="/index.md"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    index.md
+                  </a>
                 </li>
               </ul>
             </Field>

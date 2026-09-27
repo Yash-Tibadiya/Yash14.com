@@ -57,7 +57,13 @@ export function getBuildInfo(): BuildInfo {
   };
 }
 
-const STACK_DEPENDENCIES = ["next", "react", "tailwindcss"];
+const STACK_DEPENDENCIES = [
+  "next",
+  "react",
+  "shadcn",
+  "motion",
+  "tailwindcss",
+];
 
 const declaredVersions: Record<string, string | undefined> = {
   ...packageJson.dependencies,

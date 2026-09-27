@@ -22,20 +22,30 @@ const nextConfig: NextConfig = {
     ],
   },
   async rewrites() {
-    return [
-      {
-        source: "/rss",
-        destination: "/components/rss",
-      },
-      {
-        source: "/registry/rss",
-        destination: "/components/rss",
-      },
-      {
-        source: "/components/:slug.mdx",
-        destination: "/doc.mdx/:slug",
-      },
-    ];
+    return {
+      // beforeFiles so this runs before prerendered pages are served;
+      // afterFiles rewrites never fire for SSG pages on Vercel.
+      beforeFiles: [
+        {
+          source: "/index.md",
+          destination: "/llms.txt",
+        },
+      ],
+      afterFiles: [
+        {
+          source: "/rss",
+          destination: "/components/rss",
+        },
+        {
+          source: "/registry/rss",
+          destination: "/components/rss",
+        },
+        {
+          source: "/components/:slug.mdx",
+          destination: "/doc.mdx/:slug",
+        },
+      ],
+    };
   },
 };
 
