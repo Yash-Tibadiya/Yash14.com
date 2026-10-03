@@ -47,12 +47,15 @@ export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: {
-    canonical: "/brand",
+    canonical: "/brand-guidelines",
   },
   openGraph: {
+    siteName: SITE_INFO.name,
+    type: "website",
+    locale: "en-IN",
     title: `${PAGE_TITLE} – ${SITE_INFO.name}`,
     description: PAGE_DESCRIPTION,
-    url: "/brand",
+    url: "/brand-guidelines",
   },
 };
 
