@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { notFound } from "next/navigation";
-import { YTMarkIsometric } from "@/features/portfolio/components/yt-mark-isometric";
+import { YTMarkIsometricOg } from "@/features/portfolio/components/yt-mark-isometric/yt-mark-isometric-og";
 
 export const metadata: Metadata = {
   title: "OG Image",
@@ -16,9 +16,9 @@ export default function OgImagePage() {
     <div className="flex min-h-screen items-center justify-center bg-zinc-800 p-8">
       <div
         id="og-image"
-        className="dark flex h-[630px] w-[1200px] shrink-0 items-center justify-center overflow-hidden bg-background px-24 text-foreground"
+        className="dark flex h-157.5 w-300 shrink-0 items-center justify-center overflow-hidden bg-background px-24 text-foreground"
       >
-        <YTMarkIsometric />
+        <YTMarkIsometricOg />
       </div>
     </div>
   );
