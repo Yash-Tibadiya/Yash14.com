@@ -8,7 +8,6 @@ import { USER } from "@/features/portfolio/data/user";
 export const SITE_INFO = {
   name: USER.displayName,
   url: config.app.url,
-  ogImage: USER.ogImage,
   description: USER.bio,
   keywords: USER.keywords,
 };

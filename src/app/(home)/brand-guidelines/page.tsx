@@ -14,11 +14,11 @@ import { CopyBrandSvgButton } from "./copy-brand-svg-button";
 import { ArrowLeftIcon, Download, LinkIcon } from "lucide-react";
 import { DocPageRoot } from "@/features/doc/components/doc-page-root";
 import { DocShareMenu } from "@/features/doc/components/doc-share-menu";
+import { LLMCopyButtonWithViewOptions } from "@/features/doc/components/doc-page-actions";
 import {
   YTMarkClearSpace,
   YTWordmarkClearSpace,
 } from "@/components/yt-clear-space";
-import { LLMCopyButtonWithViewOptions } from "@/features/doc/components/doc-page-actions";
 import {
   DocContainer,
   DocGrid,
@@ -47,12 +47,15 @@ export const metadata: Metadata = {
   title: PAGE_TITLE,
   description: PAGE_DESCRIPTION,
   alternates: {
-    canonical: "/brand",
+    canonical: "/brand-guidelines",
   },
   openGraph: {
+    siteName: SITE_INFO.name,
+    type: "website",
+    locale: "en-IN",
     title: `${PAGE_TITLE} – ${SITE_INFO.name}`,
     description: PAGE_DESCRIPTION,
-    url: "/brand",
+    url: "/brand-guidelines",
   },
 };
 
