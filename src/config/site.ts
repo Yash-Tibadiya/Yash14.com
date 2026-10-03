@@ -28,14 +28,6 @@ export const MAIN_NAV: NavItem<Route>[] = [
     title: "Brand",
     href: "/brand-guidelines",
   },
-  {
-    title: "Components",
-    href: "/components",
-  },
-  {
-    title: "Blocks",
-    href: "/blocks",
-  },
 ];
 
 export const MOBILE_NAV: NavItem<Route>[] = [

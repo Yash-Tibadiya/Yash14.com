@@ -34,27 +34,27 @@
   "scope": "/",
   "screenshots": [
     {
-      "src": "//TODO: Add screenshot",
+      "src": "https://assets.yash14.com/screenshots/screenshot-mobile-dark.webp",
       "type": "image/webp",
-      "sizes": "440x956",
+      "sizes": "550x1195",
       "form_factor": "narrow"
     },
     {
-      "src": "//TODO: Add screenshot",
+      "src": "https://assets.yash14.com/screenshots/screenshot-mobile-light.webp",
       "type": "image/webp",
-      "sizes": "440x956",
+      "sizes": "550x1195",
       "form_factor": "narrow"
     },
     {
-      "src": "//TODO: Add screenshot",
+      "src": "https://assets.yash14.com/screenshots/screenshot-desktop-dark.webp",
       "type": "image/webp",
-      "sizes": "1512x982",
+      "sizes": "2560x1279",
       "form_factor": "wide"
     },
     {
-      "src": "//TODO: Add screenshot",
+      "src": "https://assets.yash14.com/screenshots/screenshot-desktop-light.webp",
       "type": "image/webp",
-      "sizes": "1512x982",
+      "sizes": "2560x1279",
       "form_factor": "wide"
     }
   ]

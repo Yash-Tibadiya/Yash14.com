@@ -49,7 +49,7 @@ export function SiteFooterLinks() {
       <Separator />
 
       <FooterLink
-        href={DMCA_URL}
+        href={DMCA_URL || ""}
         copyUrl={DMCA_URL}
         ariaLabel="DMCA.com Protection Status"
         className="font-sans"
