@@ -13,8 +13,8 @@ export const SOCIAL = {
   },
   github: {
     title: "GitHub",
-    handle: "Yash-Tibadiya",
-    href: "https://github.com/Yash-Tibadiya",
+    handle: "Yash-Timbadiya",
+    href: "https://github.com/Yash-Timbadiya",
   },
   linkedin: {
     title: "LinkedIn",

@@ -7,18 +7,18 @@
   "author": {
     "name": "Yash Tibadiya",
     "email": "hello@yash14.com",
-    "url": "https://github.com/Yash-Tibadiya"
+    "url": "https://github.com/Yash-Timbadiya"
   },
   "contributors": [
     {
       "name": "Yash Tibadiya",
       "email": "hello@yash14.com",
-      "url": "https://github.com/Yash-Tibadiya"
+      "url": "https://github.com/Yash-Timbadiya"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Yash-Tibadiya/Yash14.com.git"
+    "url": "git+https://github.com/Yash-Timbadiya/Yash14.com.git"
   },
   "scripts": {
     "dev": "next dev",
