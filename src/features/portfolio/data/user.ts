@@ -34,7 +34,6 @@ export const USER: User = {
 - Focused on transforming complex ideas into seamless, production-ready digital solutions. I deliver polished, thoughtfully crafted projects that prioritize clean code, performance, and user experience.
 - Creator of [yash14.com](https://github.com/Yash-Timbadiya/Yash14.com)
 `,
-  //TODO: Add name pronunciation url
   avatar: cdn("/assets/yash.webp"),
   ogImage: "",
   namePronunciationUrl: cdn("/audio/yashtimbadiya.mp3"),

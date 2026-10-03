@@ -482,10 +482,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                     : [BAND_FILL_OPACITY, 0],
                   offset: bandFillProgress,
                 }}
-                transition={{
-                  stopOpacity: bandFillSweepTransition,
-                  offset: bandFillSweepTransition,
-                }}
+                transition={bandFillSweepTransition}
               />
               <motion.stop
                 offset={BAND_FILL_FEATHER}
@@ -518,10 +515,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                     : [BAND_FILL_OPACITY, 0],
                   offset: bandFillProgress,
                 }}
-                transition={{
-                  stopOpacity: bandFillSweepTransition,
-                  offset: bandFillSweepTransition,
-                }}
+                transition={bandFillSweepTransition}
               />
               <motion.stop
                 offset={BAND_FILL_FEATHER}
