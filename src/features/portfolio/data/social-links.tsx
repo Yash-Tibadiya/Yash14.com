@@ -8,8 +8,8 @@ import type { SocialProfile } from "@/features/portfolio/types/social-links";
 export const SOCIAL = {
   x: {
     title: "X",
-    handle: "@Yash_Tibadiya",
-    href: "https://x.com/Yash_Tibadiya",
+    handle: "@Yash_1434_",
+    href: "https://x.com/Yash_1434_",
   },
   github: {
     title: "GitHub",

@@ -46,7 +46,7 @@ export const MOBILE_NAV: NavItem<Route>[] = [
   ...MAIN_NAV,
 ];
 
-export const X_HANDLE = "@Yash_Tibadiya";
+export const X_HANDLE = "@Yash_1434_";
 export const GITHUB_USERNAME = "Yash-Timbadiya";
 export const SOURCE_CODE_GITHUB_REPO = "Yash-Timbadiya/Yash14.com";
 export const SOURCE_CODE_GITHUB_URL =
