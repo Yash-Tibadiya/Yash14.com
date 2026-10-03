@@ -15,7 +15,7 @@ export const SITE_INFO = {
 
 export const LICENSE = {
   name: "MIT License",
-  url: "https://github.com/Yash-Tibadiya/Yash14.com/blob/main/LICENSE",
+  url: "https://github.com/Yash-Timbadiya/Yash14.com/blob/main/LICENSE",
 };
 
 export const META_THEME_COLORS = {
@@ -46,11 +46,11 @@ export const MOBILE_NAV: NavItem<Route>[] = [
   ...MAIN_NAV,
 ];
 
-export const X_HANDLE = "@Yash_Tibadiya";
-export const GITHUB_USERNAME = "Yash-Tibadiya";
-export const SOURCE_CODE_GITHUB_REPO = "Yash-Tibadiya/Yash14.com";
+export const X_HANDLE = "@Yash_1434_";
+export const GITHUB_USERNAME = "Yash-Timbadiya";
+export const SOURCE_CODE_GITHUB_REPO = "Yash-Timbadiya/Yash14.com";
 export const SOURCE_CODE_GITHUB_URL =
-  "https://github.com/Yash-Tibadiya/Yash14.com";
+  "https://github.com/Yash-Timbadiya/Yash14.com";
 
 export const UTM_PARAMS = {
   utm_source: "yash14.com",
