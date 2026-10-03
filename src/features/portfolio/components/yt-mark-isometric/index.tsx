@@ -476,6 +476,10 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                 offset={0}
                 stopColor="var(--foreground)"
                 stopOpacity={0}
+                initial={{
+                  offset: bandFillProgress[0],
+                  stopOpacity: active ? 0 : BAND_FILL_OPACITY,
+                }}
                 animate={{
                   stopOpacity: active
                     ? [0, BAND_FILL_OPACITY]
@@ -488,6 +492,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                 offset={BAND_FILL_FEATHER}
                 stopColor="var(--foreground)"
                 stopOpacity={0}
+                initial={{ offset: bandFillTailProgress[0] }}
                 animate={{ offset: bandFillTailProgress }}
                 transition={bandFillSweepTransition}
               />
@@ -509,6 +514,10 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                 offset={0}
                 stopColor="var(--foreground)"
                 stopOpacity={0}
+                initial={{
+                  offset: bandFillProgress[0],
+                  stopOpacity: active ? 0 : BAND_FILL_OPACITY,
+                }}
                 animate={{
                   stopOpacity: active
                     ? [0, BAND_FILL_OPACITY]
@@ -521,6 +530,7 @@ export function YTMarkIsometric({ onActivate }: YTMarkIsometricProps) {
                 offset={BAND_FILL_FEATHER}
                 stopColor="var(--foreground)"
                 stopOpacity={0}
+                initial={{ offset: bandFillTailProgress[0] }}
                 animate={{ offset: bandFillTailProgress }}
                 transition={bandFillSweepTransition}
               />
