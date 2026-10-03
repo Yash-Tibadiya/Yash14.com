@@ -10,6 +10,9 @@ export const dynamic = "force-static";
 const APP_DIR = path.join(process.cwd(), "src", "app");
 const PAGE_FILE = /^page\.(tsx|ts|jsx|js|mdx)$/;
 
+// Dev-only pages that 404 in production.
+const EXCLUDED_ROUTES = new Set(["/og"]);
+
 // Dynamic ([slug]), parallel (@slot) and private (_folder) segments have no
 // single static URL, so a page under any of them is left out.
 const isExcludedSegment = (segment: string) =>
@@ -43,6 +46,7 @@ function collectRoutes(dir: string, segments: string[] = []) {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return collectRoutes(APP_DIR)
+    .filter(({ pathname }) => !EXCLUDED_ROUTES.has(pathname))
     .sort((a, b) => a.pathname.localeCompare(b.pathname))
     .map(({ pathname, lastModified }) => ({
       url: pathname === "/" ? SITE_INFO.url : `${SITE_INFO.url}${pathname}`,
