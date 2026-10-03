@@ -56,6 +56,14 @@ export const metadata: Metadata = {
     title: `${PAGE_TITLE} – ${SITE_INFO.name}`,
     description: PAGE_DESCRIPTION,
     url: "/brand-guidelines",
+    images: [
+      {
+        url: SITE_INFO.ogImage,
+        width: 1200,
+        height: 630,
+        alt: SITE_INFO.name,
+      },
+    ],
   },
 };
 

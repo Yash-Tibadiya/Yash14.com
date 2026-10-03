@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import type { WebSite, WithContext } from "schema-dts";
 
 import Script from "next/script";
+import { absoluteUrl } from "@/lib/utils";
 import { fontVariables } from "@/lib/fonts";
 import { JsonLdScript } from "@/lib/json-ld";
 import { Providers } from "@/components/providers";
@@ -62,33 +63,42 @@ export const metadata: Metadata = {
     lastName: USER.lastName,
     username: USER.username,
     gender: USER.gender,
+    images: [
+      {
+        url: SITE_INFO.ogImage,
+        width: 1200,
+        height: 630,
+        alt: SITE_INFO.name,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     site: X_HANDLE,
     creator: X_HANDLE,
+    images: [SITE_INFO.ogImage],
   },
   icons: {
     icon: [
       {
-        url: "/logo/favicon.ico",
+        url: absoluteUrl("/logo/favicon.ico"),
         sizes: "48x48",
       },
       {
-        url: "/logo/favicon.png",
+        url: absoluteUrl("/logo/favicon.png"),
         sizes: "512x512",
         type: "image/png",
         media: "(prefers-color-scheme: light)",
       },
       {
-        url: "/logo/favicon-dark.png",
+        url: absoluteUrl("/logo/favicon-dark.png"),
         sizes: "512x512",
         type: "image/png",
         media: "(prefers-color-scheme: dark)",
       },
     ],
     apple: {
-      url: "/logo/apple-touch-icon.png",
+      url: absoluteUrl("/logo/apple-touch-icon.png"),
       type: "image/png",
       sizes: "180x180",
     },
