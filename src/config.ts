@@ -1,38 +1,30 @@
-/**
- * Central application configuration. Import this instead of reading
- * `process.env` directly throughout the application.
- *
- * NEXT_PUBLIC_* variables intentionally use literal property access because
- * Next.js replaces those expressions statically in client bundles.
- */
 export const config = {
+  runtime: {
+    nodeEnv: process.env.NODE_ENV,
+    isProduction: process.env.NODE_ENV === "production",
+  },
+
   app: {
     url: process.env.NEXT_PUBLIC_APP_URL || "https://yash14.com",
   },
 
   cdn: {
     /** Public base URL of the Cloudflare R2 bucket (custom domain). */
-    url: process.env.NEXT_PUBLIC_CDN_URL || "https://assets.yash14.com",
+    url: process.env.NEXT_PUBLIC_CDN_URL,
   },
 
   registry: {
-    namespace: process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE || "@yash14",
-    namespaceUrl:
-      process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE_URL ||
-      "https://yash14.com/r/{name}.json",
+    namespace: process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE,
+    namespaceUrl: process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE_URL,
   },
 
   github: {
     apiToken: process.env.GITHUB_API_TOKEN,
-    contributionsApiUrl:
-      process.env.GITHUB_CONTRIBUTIONS_API_URL ||
-      "https://github-contributions-api.jogruber.de",
+    contributionsApiUrl: process.env.GITHUB_CONTRIBUTIONS_API_URL,
   },
 
   dmca: {
-    url:
-      process.env.NEXT_PUBLIC_DMCA_URL ||
-      "https://www.dmca.com/ProtectionPro.aspx",
+    url: process.env.NEXT_PUBLIC_DMCA_URL,
   },
 
   analytics: {
@@ -40,8 +32,13 @@ export const config = {
     posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   },
 
-  runtime: {
-    nodeEnv: process.env.NODE_ENV,
-    isProduction: process.env.NODE_ENV === "production",
+  /**
+   * Stamped into the bundle by `next.config.ts` (its `env` option), so they
+   * also work in client components.
+   */
+  build: {
+    timestamp: process.env.BUILD_TIMESTAMP,
+    vercelEnv: process.env.VERCEL_ENV,
+    commitSha: process.env.VERCEL_GIT_COMMIT_SHA,
   },
 } as const;

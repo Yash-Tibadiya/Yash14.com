@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
-import { readdirSync, statSync } from "node:fs";
-import path from "node:path";
 
+import path from "node:path";
 import { SITE_INFO } from "@/config/site";
+import { readdirSync, statSync } from "node:fs";
 
 export const revalidate = false;
 export const dynamic = "force-static";
@@ -13,7 +13,9 @@ const PAGE_FILE = /^page\.(tsx|ts|jsx|js|mdx)$/;
 // Dynamic ([slug]), parallel (@slot) and private (_folder) segments have no
 // single static URL, so a page under any of them is left out.
 const isExcludedSegment = (segment: string) =>
-  /^\[.*\]$/.test(segment) || segment.startsWith("@") || segment.startsWith("_");
+  /^\[.*\]$/.test(segment) ||
+  segment.startsWith("@") ||
+  segment.startsWith("_");
 
 // Route groups like (home) never appear in the URL.
 const isRouteGroup = (segment: string) => /^\(.*\)$/.test(segment);

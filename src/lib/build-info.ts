@@ -1,3 +1,4 @@
+import { config } from "@/config";
 import packageJson from "../../package.json";
 import { USER } from "@/features/portfolio/data/user";
 import { SOURCE_CODE_GITHUB_URL } from "@/config/site";
@@ -30,13 +31,11 @@ const dateFormatter = new Intl.DateTimeFormat("en-CA", {
 
 /** Stamped by `next.config.ts` at build time. */
 const BUILD_DATE = dateFormatter.format(
-  process.env.BUILD_TIMESTAMP
-    ? new Date(process.env.BUILD_TIMESTAMP)
-    : new Date(),
+  config.build.timestamp ? new Date(config.build.timestamp) : new Date(),
 );
 
 function resolveEnvironment(): BuildEnvironment {
-  const vercelEnv = process.env.VERCEL_ENV;
+  const vercelEnv = config.build.vercelEnv;
   return vercelEnv === "production" || vercelEnv === "preview"
     ? vercelEnv
     : "development";
@@ -44,7 +43,7 @@ function resolveEnvironment(): BuildEnvironment {
 
 export function getBuildInfo(): BuildInfo {
   const environment = resolveEnvironment();
-  const commitSha = process.env.VERCEL_GIT_COMMIT_SHA || undefined;
+  const commitSha = config.build.commitSha || undefined;
 
   return {
     commitShortSha: commitSha?.slice(0, SHORT_SHA_LENGTH) ?? null,
